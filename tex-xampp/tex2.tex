@@ -1,0 +1,155 @@
+\documentclass[dvipdfmx]{jsarticle}
+
+\include{begin}
+
+\section{XAMPPの設定}
+
+\subsection{TeraPad の登録}
+
+''XAMPPコントロールパネル'' が起動したら、まず、右上の ``Config'' をクリックする。
+
+\vspace{3mm}
+\includegraphics[width=14cm]{../03-config/21-config.png}
+\vspace{3mm}
+
+次に開いた窓で、''Editor'' の設定を変更する。
+
+メモ帳 が初期値になっているので、それを ``TeraPad'' に変更する。
+
+\textsf{C:\yen Program Files (x86)\yen terapad\yen TeraPad.exe} を指定する。
+
+\vspace{3mm}
+\includegraphics[width=13cm]{../03-config/22-terapad.png}
+\vspace{3mm}
+
+\newpage
+\subsection{php.ini の設定}
+
+XAMPPコントロールパネルの ''Apache'' の行の ``Config'' をクリックして、
+表示されたサブメニューから \textsf{PHP (pho.ini)} を選択する。
+
+\vspace{3mm}
+\includegraphics[width=14cm]{../04-php-ini/11-php-ini.png}
+\vspace{3mm}
+
+php.ini が TeraPad で 開くので、上の虫メガネの左端のアイコンをクリックして、
+出てきたウィンドウで、\textsf{timezone} と入力して、 ``先頭から検索'' を
+クリックする。
+
+\vspace{3mm}
+\includegraphics[width=13cm]{../04-php-ini/12-timezone.png}
+\vspace{3mm}
+
+上の虫メガネの右端のアイコンを 2回 あるいは 3回 クリックすると、
+1972行目あたりに \textsf{date.timezone=Europe/Berlin} という行が
+見つかる。
+
+\vspace{3mm}
+\includegraphics[width=13cm]{../04-php-ini/13-find-timezone.png}
+\vspace{3mm}
+
+
+その Europe/Berlin を \textsf{Asia/Tokyo} に変更する。
+
+\vspace{3mm}
+\includegraphics[width=13cm]{../04-php-ini/14-asia-tokyo.png}
+\vspace{3mm}
+
+これで、php.ini の設定は終了である。
+
+\subsection{余談 ------ mbstring の設定}
+
+『PHPノート』に載っている mbstring の設定は、PHP5.6以降(だったかな)は不要(非推奨)である。
+
+\href{https://www.php.net/manual/ja/mbstring.configuration.php}{https://www.php.net/manual/ja/mbstring.configuration.php}
+
+\vspace{3cm}
+
+\section{環境変数への登録}
+
+\subsection{php を環境変数 Path に登録する}
+
+\subsubsection{システム環境変数の編集}
+
+システム環境変数の \textsf{PATH} に、php.exe のある場所を登録する。
+
+スタートボタン右の 虫メガネ に、''システム'' と入力し、表示された候補から
+''システム環境変数の編集'' を選択する。
+
+\vspace{3mm}
+\includegraphics[width=14cm]{../05-path/01-system-variable.png}
+\vspace{3mm}
+
+開いたウィンドウで、''環境変数'' をクリックする。
+
+\vspace{3mm}
+\includegraphics[width=8cm]{../05-path/02-env-variable.png}
+\vspace{3mm}
+
+開いたウィンドウで、下の ``システム環境変数'' の ''\textsf{Path}'' を
+選択する。
+
+そして、下の ''編集'' をクリックする。
+
+\vspace{3mm}
+\includegraphics[width=11cm]{../05-path/03-path.png}
+\vspace{3mm}
+
+''環境変数名の編集''画面で、''新規'' を選択する。
+
+\vspace{3mm}
+\includegraphics[width=13cm]{../05-path/04-new-path.png}
+\vspace{3mm}
+
+空欄の項目ができるので、そこに
+\begin{tcolorbox}
+ C:\yen xampp\yen php
+\end{tcolorbox}
+
+と、入力する。
+
+\vspace{3mm}
+\includegraphics[width=13cm]{../05-path/05-path-xampp-php.png}
+\vspace{3mm}
+
+あとは、''OK'' をクリックして閉じていく。
+``×'' や ''キャンセル'' をクリックすると、設定が反映されない。
+必ず ''OK'' をクリックする。
+
+\subsubsection{確認}
+
+もし、今、コマンドプロンプトの黒い画面が開いていたら、いったん閉じる。
+
+それから、コマンドプロンプトを開いて、以下のコマンドを入力する。
+
+\begin{tcolorbox}
+ $>$ php -v
+\end{tcolorbox}
+
+PHPのバージョンが表示されれば成功である。
+
+\newpage
+
+\subsection{mysql を環境変数 Path に登録する}
+
+phpのときと同様にして、mysql を環境変数 Path に登録する。
+
+登録するパスは \textsf{C:\yen xampp\yen mysql\yen bin} である。
+
+\vspace{3mm}
+\includegraphics[width=13cm]{../06-mysql/01-mysql-path.png}
+\vspace{3mm}
+
+確認は、コマンドプロンプトを開きなおしてから、以下を入力する。
+
+\begin{tcolorbox}
+ $>$ mysql {-}{-}version
+\end{tcolorbox}
+\rightline{※ {-}{-} は ハイフン2つ}
+
+mysql (MariaDB) のバージョンが表示される。
+
+
+\include{end}
+
+%% 修正時刻： Mon Aug  9 09:28:12 2021

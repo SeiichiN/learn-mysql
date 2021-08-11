@@ -1,0 +1,116 @@
+\documentclass[dvipdfmx]{jsarticle}
+
+\include{begin}
+
+\section{XAMPPのダウンロードとインストール}
+
+\subsection{ダウンロード}
+
+google などで、``xampp''で検索。
+
+\vspace{3mm}
+\includegraphics[width=13cm]{../01-download/01-xampp.png}
+\vspace{3mm}
+
+XAMPP のページが開くので、''Windows版'' をダウンロードする。
+
+\vspace{3mm}
+\includegraphics[width=13cm]{../01-download/02-xampp-download.png}
+\vspace{3mm}
+
+ファイルを保存する。``ダウンロード''フォルダに保存される。
+
+\vspace{3mm}
+\includegraphics[width=10cm]{../01-download/03-xampp.png}
+\vspace{3mm}
+
+\subsection{インストール}
+
+``ダウンロード'' フォルダの ``\textsf{xampp-windows-x64-8.0.9-0-VS16-install.exe}''
+をダブルクリックしてインストールを実行する。
+
+○○が Windows の変更を許可しますか？ みたいなことが表示されたら、``はい'' を選択する。
+
+次に英語で ''Warning'' が表示される。
+
+\vspace{3mm}
+\includegraphics{../02-install/01-install.png}
+\vspace{3mm}
+
+Google翻訳
+\begin{tcolorbox}
+ 重要！ システムでアクティブ化されたユーザーアカウント制御（UAC）が原因で、XAMPPの一部の機能が制限されている可能性があります。 \\
+ UACでは、XAMPPをC:\yen Program Filesにインストールしないでください（書き込み権限がありません）。 \\
+ または、この設定後にmsconfigを使用してUACを非アクティブ化します。
+\end{tcolorbox}
+
+C:\yen Program Files にはインストールしないから、大丈夫。
+
+次は、コンポーネントの選択画面である。
+
+既定値では、すべてのコンポーネントが選択されているが、``FileZilla'' と ``Merucry'' と
+``Tomcat'' は いらない。
+インストールしても、使うことはまずない。
+
+\vspace{3mm}
+\includegraphics{../02-install/02-check.png}
+\vspace{3mm}
+
+インストール先の確認画面である。
+
+\vspace{3mm}
+\includegraphics[width=9cm]{../02-install/03-folder.png}
+\vspace{3mm}
+
+\textsf{C:\yen XAMPP} にインストールされる。(覚えておく)
+
+次は、\textsf{XAMPP Control Panel} ではどの言語を使うかを選択できる。
+が、日本語はない。
+
+\vspace{3mm}
+\includegraphics[width=10cm]{../02-install/04-english.png}
+\vspace{3mm}
+
+次の画面では、チェックをはずすが、これはチェックがはいったままでも
+かまわない。
+Bitnami for XAMPP についての情報へのリンクをつくるかどうかを
+尋ねているだけである。
+
+\vspace{3mm}
+\includegraphics[width=10cm]{../02-install/05-no.png}
+\vspace{3mm}
+
+さて、これでインストールが実行される。しばらくかかる。
+
+\subsection{インストール後のメニューの設定と起動}
+
+インストールが終了すると、スタートメニューに XAMPP のメニューができている。
+
+\textsf{XAMPP Control Panel} の項目を右クリックして、''スタートにピン留めする'' を
+クリックして、スタートパネルから呼び出せるようにしておく。
+
+\vspace{3mm}
+\includegraphics[width=13cm]{../02-install/06-start-panel.png}
+\vspace{3mm}
+
+\newpage
+XAMPPコントロールパネルを起動するときは、``管理者として実行'' をする必要がある。
+右クリックして、``その他'' --- ``管理者として実行'' を選択する。
+
+
+\vspace{3mm}
+\includegraphics[width=14cm]{../02-install/07-kanrisya.png}
+\vspace{3mm}
+
+
+
+
+
+
+
+
+
+
+\include{end}
+
+%% 修正時刻： Mon Aug  9 09:11:14 2021

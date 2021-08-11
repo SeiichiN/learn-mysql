@@ -1,0 +1,62 @@
+\documentclass[dvipdfmx]{jsarticle}
+
+\include{begin}
+
+\section{データベースをバックアップする}
+
+\subsection{バックアップ}
+
+データの入力が終わったら、データベースをバックアップする。
+
+ここでは、\textsf{mysqldump} を使っておこなう。
+
+まず、MySQLをログアウトする。
+
+\begin{tcolorbox}
+ MariaDB [sample]$>$ exit (もしくは quit) \\
+ C:\yen Users\yen XXXXXX\yen Documents\yen mysql$>$
+\end{tcolorbox}
+
+\rightline{※ XXXXXX は、各自のユーザー名}
+
+コマンドプロンプトに戻る。
+
+ここで以下のコマンドを実行する。
+
+\begin{tcolorbox}
+ $>$ mysqldump -u sampleuser -p sample $>$ sample\_db.dump
+\end{tcolorbox}
+
+\textsf{dir} というコマンドを実行すると、ファイル一覧が見れる。
+
+ファイル群の中に \textsf{sample\_db.dump} があるはず。
+
+これは テキストファイルなので、TeraPad などのエディタで内容を見ることができる。
+
+\subsection{データのリストア(復元)}
+
+データをリストアするには、まず、そのデータベースが存在していなければならない。
+
+今回でいえば、sampleuserユーザーを作成し、sampleデータベースを作っておく。
+\footnote{
+sampleuser というユーザーが存在するか調べたいので、ユーザー一覧を表示させる。\\
+\textsf{$>$ select host, name from mysql.user;} \\
+sampleuser というユーザーを作成し、なおかつ sample データベースへの権限を付与する。\\
+\textsf{$>$ grant all on sample.* to 'sampleuser'@'localhost' identified by 'sampleuser';} \\
+sample データベースの作成。\\
+\textsf{$>$ create database sample;}
+}
+
+それから、以下のコマンドを実行する。
+
+\begin{tcolorbox}
+ $>$ mysql -u sampleuser -p sample $<$ sample\_db.dump
+\end{tcolorbox}
+
+これでリストアができている。
+
+
+
+\include{end}
+
+%% 修正時刻： Wed Aug 11 09:16:28 2021

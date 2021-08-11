@@ -1,0 +1,102 @@
+\documentclass[dvipdfmx]{jsarticle}
+
+\include{begin}
+
+\section{データベースを作成する}
+
+\subsection{ユーザーを作成して、データベースを作成する}
+
+\subsubsection{MySQLの起動}
+
+まず、MySQLを起動しなくてはならない。
+\begin{enumerate}
+ \item XAMPP コントロールパネルを管理者として起動する。
+ \item MySQL の行の Start ボタンをクリックして MySQLを起動する。
+\end{enumerate}
+
+\vspace{3mm}
+\includegraphics[width=10cm]{../06-mysql/02-mysql-start.png}
+\vspace{3mm}
+
+
+\subsubsection{rootユーザーでログインする}
+
+データベースを作成するために、まずそのデータベースを扱うことのできるユーザーを作成する。
+
+ユーザーを作成するために、まず管理者(root) でログインする。
+MariaDBの場合、以下の手順でログインできる。
+
+コマンドプロンプトを起動して、以下のコマンドを入力する。
+
+\begin{tcolorbox}
+ $>$ mysql -u root -p (Enterキー)\\
+ $>$ Enter password: (何も入力せず、Enterキー)
+\end{tcolorbox}
+
+これで、4行ほどのメッセージと、次のプロンプトが表示される。
+
+\begin{tcolorbox}
+ MariaDB [(none)]$>$
+\end{tcolorbox}
+
+\newpage
+\subsubsection{ユーザーの作成と権限の付与}
+
+以下のコマンドで \textsf{sampleuser} というユーザーを作成する。
+パスワードも \textsf{sampleuser} としておく。(今回は練習のため)
+
+\begin{tcolorbox}
+ MariaDB [(none)]$>$ \textsf{create user 'sampleuser'@'localhost' identified by 'sampleuser';}
+\end{tcolorbox}
+\rightline{※ 末尾の ; (セミコロン) を忘れないように}
+
+次に以下のコマンドで \textsf{sampleuser} に \textsf{sample} データベースへの権限を
+付与しておく。
+
+\begin{tcolorbox}
+ MariaDB [(none)]$>$ \textsf{grant all privileges on sample.* to 'sampleuser'@'localhost';}
+\end{tcolorbox}
+\footnote{ユーザーの作成と権限付与を同時にすることもできる。\\
+MariaDB [(note)]$>$ \textsf{grant all on sample.* to 'sampleuser'@'localhost' identified by 'sampleuser';}}
+
+\textsf{sample} というデータベースを作成すると、いくつかファイルを作成することになるので、
+それら全部に権限を与えるため、\textsf{sample.*} としている。
+
+\rightline{※ \textsf{sample.(ドット)*(アスタリスク)}}
+
+
+これで root としての仕事は終了である。\textsf{exit} あるいは \textsf{quit} でログアウトする。
+
+\begin{tcolorbox}
+ MariaDB [(none)]$>$ \textsf{exit}
+\end{tcolorbox}
+
+\subsubsection{作成したユーザーでログインし、データベースを作成する}
+
+作成したユーザー \textsf{sampleuser} でログインする。
+
+\begin{tcolorbox}
+ $>$ mysql -u sampleuser -p (Enterキー)\\
+ $>$ Enter password: ********** (sampleuser と入力) \\
+ (... 省略 ...) \\
+ MariaDB [(none)]$>$ 
+\end{tcolorbox}
+
+データベース \textsf{sample} を作成する。
+
+\begin{tcolorbox}
+ MariaDB [(none)]$>$ \textsf{create database sample;}
+\end{tcolorbox}
+
+これで、この作成したデータベース sample は、sampleuserユーザーでアクセスできる。
+(もちろん root ユーザーもアクセスできる)
+
+
+
+
+
+
+
+\include{end}
+
+%% 修正時刻： Tue Aug 10 06:53:35 2021

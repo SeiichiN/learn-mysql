@@ -1,0 +1,23 @@
+MariaDB [sample]> select * from dept;
++-----+--------+
+| id  | name   |
++-----+--------+
+| 001 | 総務部 |
+| 002 | 営業部 |
+| 003 | 経理部 |
+| 004 | 開発部 |
++-----+--------+
+4 rows in set (0.001 sec)
+
+
+
+MariaDB [sample]> update dept set id = '005' where id = '003';
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`sample`.`emp`, CONSTRAINT `emp_ibfk_1` FOREIGN KEY (`dept_id`) REFERENCES `dept` (`id`))
+MariaDB [sample]> delete from dept where id = '002';
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`sample`.`emp`, CONSTRAINT `emp_ibfk_1` FOREIGN KEY (`dept_id`) REFERENCES `dept` (`id`))
+MariaDB [sample]>
+
+
+
+MariaDB [sample]> delete from dept where id = '002';
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`sample`.`emp`, CONSTRAINT `fk_dept_id` FOREIGN KEY (`dept_id`) REFERENCES `dept` (`id`))

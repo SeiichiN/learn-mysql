@@ -274,3 +274,10 @@ TSWLatexianTemp*
 
 # Makeindex log files
 *.lpz
+
+# added by Seiichi
+*~
+*.ps
+*.eps
+*.pdf
+!main.pdf
