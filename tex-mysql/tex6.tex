@@ -1,0 +1,118 @@
+\documentclass[dvipdfmx]{jsarticle}
+
+\include{begin}
+
+\section{MySQL その他}
+
+\subsection{MySQLの文字コード}
+
+MySQLにログインする。
+
+\begin{tcolorbox}
+ $>$ mysql -u sampleuser -p \\
+ Enter password: ********
+ MariaDB [(none)]$>$
+\end{tcolorbox}
+
+ここで以下のコマンドを実行する。
+
+\begin{tcolorbox}
+ MariaDB [(none)]$>$ show variables like '%char%';
+\end{tcolorbox}
+\rightline{※ これは ``'char'という文字列を含む変数を表示しなさい'' と
+いう意味のコマンドである。}
+
+\begin{verbatim}
++--------------------------+--------------------------------+
+| Variable_name            | Value                          |
++--------------------------+--------------------------------+
+| character_set_client     | cp932                          |
+| character_set_connection | cp932                          |
+| character_set_database   | utf8mb4                        |
+| character_set_filesystem | binary                         |
+| character_set_results    | cp932                          |
+| character_set_server     | utf8mb4                        |
+| character_set_system     | utf8                           |
+| character_sets_dir       | C:\xampp\mysql\share\charsets\ |
++--------------------------+--------------------------------+
+\end{verbatim}
+
+MySQL は、サーバープログラムとクライアントプログラムで動作している。
+
+XAMPPコントロールパネルで ``Start'' ボタンをクリックしがのは、
+サーバープログラムを起動しているのである。
+
+コマンドプロンプトで ``mysql -u sampleuser -p'' としているのは、
+クライアントプログラムを使って、サーバープログラムに接続し、
+ログイン処理をおこなっているのである。
+
+普通はサーバーはネットワーク上のどこか離れた場所にあるのだけれど、
+XAMPPでは、各自のパソコン内でサーバープログラムと
+クライアントプログラムが動いていることになる。
+
+さて、上記の結果の意味は以下である。
+
+\begin{tabular}{lcl} 
+character\_set\_client     & : & cp932 \\
+\end{tabular}
+
+\hspace{8mm}クライアントの文字コードは cp932(SJIS)である。
+
+\begin{tabular}{lcl} 
+character\_set\_connection & : & cp932 \\
+\end{tabular}
+
+\hspace{8mm}クライアントから受け取った文字を cp932(SJIS)に変換する。
+ 
+\begin{tabular}{lcl} 
+character\_set\_database   & : & utf8mb4 \\
+\end{tabular}
+
+\hspace{8mm}データベースで使用する文字コードは utf8mb4 である。
+ 
+\begin{tabular}{lcl} 
+character\_set\_filesystem & : & binary  \\
+\end{tabular}
+
+
+\begin{tabular}{lcl} 
+character\_set\_results    & : & cp932   \\
+\end{tabular}
+
+\hspace{8mm}クライアントへ結果を送信するときの文字コードは cp932(SJIS) である。
+
+\begin{tabular}{lcl} 
+character\_set\_server     & : & utf8mb4 \\
+\end{tabular}
+
+\hspace{8mm}データベース作成時の既定の文字コード
+
+\begin{tabular}{lcl} 
+character\_set\_system     & : & utf8 \\
+\end{tabular}
+
+\hspace{8mm}ファイル名をこの文字コードで使う。
+
+\begin{tabular}{lcl} 
+character\_sets\_dir       & : &
+     C:\yen xampp\yen mysql\yen share\yen charsets\yen \\ 
+\end{tabular}
+
+\hspace{8mm}文字セットを扱う上で必須となるファイルを配置しているディレクトリ
+
+XAMPPの場合、初期状態で Windowsに最適な設定になっているはずである。
+
+クライアント --- cp932(Shift_JIS) \\
+サーバー     --- UTF-8
+
+
+\subsection{データベース作成時の文字コード}
+
+
+
+
+
+
+\include{end}
+
+%% 修正時刻： Thu Aug 12 15:33:33 2021
