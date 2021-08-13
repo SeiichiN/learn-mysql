@@ -7,7 +7,17 @@
 以下は、MySQLがどんな設定で動作しているかということで、
 特に指定しなくても困らない。
 
-\subsection{MySQLの文字コード(文字セット)}
+\subsection{文字コードあるいは文字セット}
+
+単に文字コードといった場合、文字セットを指すことが多い。
+
+\includegraphics[width=15cm]{../06-mysql/character-set.png} \\
+\rightline{\href{https://www.tohoho-web.com/ex/charset.html}
+{(出典)文字コード入門 https://www.tohoho-web.com/ex/charset.html}}
+
+
+
+\subsubsection{MySQLの文字コード(文字セット)}
 
 MySQLにログインする。
 
@@ -115,7 +125,7 @@ XAMPPの場合、初期状態(この状態)で Windowsに最適な設定にな�
 \end{quote}
 
 
-\subsection{データベース作成時の文字セット}
+\subsubsection{データベース作成時の文字セット}
 
 MySQLはデータベースを作成するとき、\textsf{utf8mb4} という文字セットを使っている。
 
@@ -145,9 +155,9 @@ MySQL で 単に ``utf8'' と指定した場合は ``utf8mb3'' が指定され�
 ただ、これは近いうちに ``utf8mb4'' になるらしい。(MySQL8.0ではそうなっているという)。
 
 今回は何も指定せずにデータベースを作成したが、
-``utf8mb4'' が暗黙のうちに指定されているようである。
+``utf8mb4'' が暗黙のうちに指定されている。
 
-\subsection{テーブル作成時の文字セット}
+\subsubsection{テーブル作成時の文字セット}
 
 テーブル作成時の文字セットは、MySQLにログインし、sampleデータベースの使用を宣言してのち、
 以下のコマンドを実行することで確認できる。
@@ -175,11 +185,32 @@ CREATE TABLE `emp` (
 \fbox{DEFAULT CHARSET=utf8mb4} とあるので、``utf8mb4''が使われているのがわかる。
 
 
+\subsection{照合順序(collation)}
 
-\href{https://www.tohoho-web.com/ex/charset.html}{文字コード入門}
+照合順序(collation)というのは、文字データを並び変える場合、どういう順序で並び変えるかということである。たとえば、``は''と''ば''と''ぱ''の場合とかである。
+
+MySQLではテーブルを作成したときに、何も指定しなければ、``\textsf{utf8mb4\_general\_ci}''
+という照合順序が指定される。
+
+これは、\verb!> show table status from sample;! というコマンドで確認できる。
+
+``\textsf{utf8mb4\_general\_ci}'' というのは、大文字と小文字を区別しないという指定である。
+
+``Tom'' と ``tom'' が区別されるとややこしいから、通常はこの区別しないという指定でよい。
+
+\subsection{ストレージエンジン}
+
+MySQLでは、ストレージエンジンとして ``InnoDB'' というのが使われている。
+
+MySQL5.5から ``InnoDB'' がデフォルトのストレージエンジンとなった。
+それ以前は、MyISAM というのが使われていた。
+
+``InnoDB''の大きな特徴としては ``外部キー制約'' が使えるようになったことがあげられる。
+
+
 
 
 
 \include{end}
 
-%% 修正時刻： Fri Aug 13 08:11:22 2021
+%% 修正時刻： Fri Aug 13 10:22:26 2021
