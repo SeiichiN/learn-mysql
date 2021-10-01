@@ -2,6 +2,75 @@
 
 \include{begin}
 
+\section{データベースを設計する}
+
+\subsection{扱うデータ}
+
+以下のようなデータを扱うこととする。
+
+\vspace{3mm}
+ \begin{tabular}{|c|} \hline
+  菅原文太 \\
+  40歳 \\
+  1933年生まれ \\
+  総務部 \\ \hline
+ \end{tabular}
+ \quad
+ \begin{tabular}{|c|} \hline
+  千葉真一 \\
+  34歳 \\
+  1939年生まれ \\
+  営業部 \\ \hline
+ \end{tabular}
+ \quad
+ \begin{tabular}{|c|} \hline
+  北大路欣也 \\
+  30歳 \\
+  1943年生まれ \\
+  経理部 \\ \hline
+ \end{tabular}
+ \quad
+ \begin{tabular}{|c|} \hline
+  梶芽衣子 \\
+  26歳 \\
+  1947年生まれ \\
+  営業部 \\ \hline
+ \end{tabular}
+\vspace{3mm}
+
+\subsection{primary key}
+
+データベースにデータを格納する際には、そのデータに primary key (独自キー) が必要となる。
+primary key とは、そのデータを他と区別するためのデータである。
+菅原文太というデータは、この4つの中では独自であるが、他のデータを追加する際に、同じデータに出会う可能性
+(同姓同名)を排除できない。
+さらに日本語である以上、文字コードの問題を避けることもできない。つまり、同じ菅原文太という文字でも
+UTF-8 と Shift\_JIS では別物と判定されるのである。
+
+となると、この4つのデータには primary key となるものがないということになる。
+
+このような場合、データベースの設計者が primary key を追加することになる。
+ここでは 数字を primary key として追加する。
+つまり、菅原文太は 1、千葉真一は 2 というふうにする。
+
+\subsection{表を分ける}
+
+4つの各データには、総務部、営業部、経理部 という部署名がはいっている。
+これらは、部署データとして、別の表で管理するのが自然である。
+そして、各人のデータから部署データを参照しているというふうにするのがよい。
+
+\vspace{3mm}
+XX会社 部署一覧 \\
+\hspace{5mm}
+\begin{tabular}{|c|} \hline
+ 総務部 \\
+ 営業部 \\
+ 経理部 \\
+ 開発部 \\ \hline
+\end{tabular}\vspace{3mm}
+
+
+\newpage
 \section{データベースを作成する}
 
 \subsection{ユーザーを作成して、データベースを作成する}
@@ -42,22 +111,21 @@ MariaDBの場合、以下の手順でログインできる。
 \newpage
 \subsubsection{ユーザーの作成と権限の付与}
 
-以下のコマンドで \textsf{sampleuser} というユーザーを作成する。
-パスワードも \textsf{sampleuser} としておく。(今回は練習のため)
+以下のコマンドで \textsf{sampleuser} を作成し、\textsf{sampleuser} というパスワードを設定し、
+\textsf{sample} データベースへの権限を与えることができる。
+\footnote{ユーザーの作成と権限付与を別々にすることもできる。\\
+sampleuser というユーザーの作成と sampleuser というパスワードの設定\\
+MariaDB [(note)]$>$ grant all on sample.* to 'sampleuser'@'localhost' identified by 'sampleuser'; \\
+sampleuser に sample データベースへの権限を付与する。\\
+MariaDB [(none)]$>$ grant all privileges on sample.* to 'sampleuser'@'localhost';
+}
 
 \begin{tcolorbox}
- MariaDB [(none)]$>$ \textsf{create user 'sampleuser'@'localhost' identified by 'sampleuser';}
+MariaDB [(note)]$>$ grant \ all \ on \ sample.* \ to \ 'sampleuser'@'localhost' \\
+\hspace{24mm} -$>$ identified \ by \ 'sampleuser';
 \end{tcolorbox}
-\rightline{※ 末尾の ; (セミコロン) を忘れないように}
 
-次に以下のコマンドで \textsf{sampleuser} に \textsf{sample} データベースへの権限を
-付与しておく。
 
-\begin{tcolorbox}
- MariaDB [(none)]$>$ \textsf{grant all privileges on sample.* to 'sampleuser'@'localhost';}
-\end{tcolorbox}
-\footnote{ユーザーの作成と権限付与を同時にすることもできる。\\
-MariaDB [(note)]$>$ \textsf{grant all on sample.* to 'sampleuser'@'localhost' identified by 'sampleuser';}}
 
 \textsf{sample} というデータベースを作成すると、いくつかファイルを作成することになるので、
 それら全部に権限を与えるため、\textsf{sample.*} としている。
@@ -99,4 +167,4 @@ MariaDB [(note)]$>$ \textsf{grant all on sample.* to 'sampleuser'@'localhost' id
 
 \include{end}
 
-%% 修正時刻： Tue Aug 10 06:53:35 2021
+%% 修正時刻： Fri Oct  1 09:16:59 2021

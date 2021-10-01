@@ -23,7 +23,7 @@
 \end{table}
 
 \begin{table}[h]
- \caption{dep}
+ \caption{dept}
  \begin{center}
   \begin{tabular}{|l|c|} \hline
    ID   & 部署名 \\ \hline\hline
@@ -122,21 +122,23 @@ deptテーブルは、このような定義になる。
 以下のコマンドにより empテーブルを作成できる。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ create table emp ( \\
- \hspace{6mm} \verb!->! id int primary key auto\_increment, (カンマ) \\
- \hspace{6mm} \verb!->! name varchar(20) not null, \\
- \hspace{6mm} \verb!->! age int not null, \\
- \hspace{6mm} \verb!->! birthday year not null, \\
- \hspace{6mm} \verb!->! dept\_id char(3) (カンマなし) \\
+ MariaDB [sample]$>$ create \ table \ emp \ ( \\
+ \hspace{6mm} \verb!->! id \ int \ auto\_increment\,, (カンマ) \\
+ \hspace{6mm} \verb!->! name \ varchar(20) \ not \ null\,, \\
+ \hspace{6mm} \verb!->! age \ int \ not \ null\,, \\
+ \hspace{6mm} \verb!->! birthday \ year \ not \ null\,, \\
+ \hspace{6mm} \verb!->! dept\_id \ char(3), \\
+ \hspace{6mm} \verb!->! primary \ key\  (id) (カンマなし) \\
  \hspace{6mm} \verb!->! );
 \end{tcolorbox}
 
 同様に deptテーブルも作成する。
+\footnote{primary key の指定は、id の指定のときに書くこともできるし、別項目に分けて書くこともできる。}
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ create table dept ( \\
- \hspace{6mm} \verb!->! id char(3) primary key, (カンマ) \\
- \hspace{6mm} \verb!->! name varchar(20) not null (カンマなし) \\
+ MariaDB [sample]$>$ create \ table \ dept \ ( \\
+ \hspace{6mm} \verb!->! id \ char(3) \ primary \ key\,, (カンマ) \\
+ \hspace{6mm} \verb!->! name \ varchar(20) \ not \ null (カンマなし) \\
  \hspace{6mm} \verb!->! );
 \end{tcolorbox}
 
@@ -413,4 +415,4 @@ SQLのコマンド文字列は大文字で記述し、ユーザーが用意し�
 
 \include{end}
 
-%% 修正時刻： Tue Aug 10 11:54:35 2021
+%% 修正時刻： Fri Oct  1 09:27:52 2021
