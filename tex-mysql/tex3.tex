@@ -24,7 +24,7 @@
 ここで以下のコマンドを実行する。
 
 \begin{tcolorbox}
- $>$ mysqldump -u sampleuser -p sample $>$ sample\_db.dump
+ $>$ mysqldump -u sampleuser -p --databases sample $>$ sample\_db.dump
 \end{tcolorbox}
 
 \textsf{dir} というコマンドを実行すると、ファイル一覧が見れる。
@@ -32,26 +32,25 @@
 ファイル群の中に \textsf{sample\_db.dump} があるはず。
 
 これは テキストファイルなので、TeraPad などのエディタで内容を見ることができる。
+\footnote{また、{\em --databases} オプションをつけずにバックアップを取ることもできる。 \\
+\fbox{ $>$ mysqldump -u sampleuser -p sample $>$ sample\_db.dump } \\
+この場合は、バックアップファイルの記述の中に、CREATE DATABASE 文がない。
+}
 
 \subsection{データのリストア(復元)}
 
-データをリストアするには、まず、そのデータベースが存在していなければならない。
-
-今回でいえば、sampleuserユーザーを作成し、sampleデータベースを作っておく。
-\footnote{
-sampleuser というユーザーが存在するか調べたいので、ユーザー一覧を表示させる。\\
-\textsf{$>$ select host, name from mysql.user;} \\
-sampleuser というユーザーを作成し、なおかつ sample データベースへの権限を付与する。\\
-\textsf{$>$ grant all on sample.* to 'sampleuser'@'localhost' identified by 'sampleuser';} \\
-sample データベースの作成。\\
-\textsf{$>$ create database sample;}
+以下のコマンドを実行する。
+\footnote{--databases オプションをつけずにバックアップファイルを作成した場合は、まず sample
+データベースを作成してから \\
+\fbox{ $>$ mysql -u sampleuser -p $<$ sample\_db.dump } \\
+とするか、あるいは、sampleuserでログインしてから \\
+\fbox{MariaDB[sample] $>$ source sample\_db.dump} とすればよい。
 }
-
-それから、以下のコマンドを実行する。
-
 \begin{tcolorbox}
- $>$ mysql -u sampleuser -p sample $<$ sample\_db.dump
+ $>$ mysql -u sampleuser -p $<$ sample\_db.dump
 \end{tcolorbox}
+
+
 
 これでリストアができている。
 
@@ -59,4 +58,4 @@ sample データベースの作成。\\
 
 \include{end}
 
-%% 修正時刻： Wed Aug 11 09:16:28 2021
+%% 修正時刻： Fri Oct  1 18:59:18 2021

@@ -50,7 +50,7 @@ emp表の id, name, age と dept表の name だけを表示させる。
 
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ select \underline{emp.id, emp,name, age, dept.name}
+ MariaDB [sample]$>$ select \underline{emp.id, emp.name, age, dept.name}
  from emp join dept \\
  \hspace{6mm} \verb!->! on emp.dept\_id = dept.id;
 \end{tcolorbox}
@@ -261,4 +261,4 @@ emp表には dept\_id が '004' である人はいない。
 
 \include{end}
 
-%% 修正時刻： Wed Aug 11 19:01:36 2021
+%% 修正時刻： Fri Oct  1 19:11:24 2021

@@ -61,7 +61,7 @@
  \begin{center}
   \begin{tabular}{|l|l|l|} \hline
    項目 & 型 & オプション \\ \hline
-   id   & int & primary key auto\_increment \\ 
+   id   & int & primary key, auto\_increment \\ 
    name & varchar(20) & not null \\ 
    age  & int & not null \\ 
    birthday & year & not null \\ 
@@ -356,22 +356,25 @@ SQLのコマンド文字列は大文字で記述し、ユーザーが用意し�
  USE sample;
  
  -- emp テーブルの作成
- -- もし empテーブルが存在しなかったら作成する。
- -- もし存在したら、このSQL文は実行されない。
+ -- もし empテーブルが存在していたら削除する。
+ -- その empテーブルの定義がこれから作成するのと同じという保証がないからである。
+
+ DROP TABLE IF EXISTS emp;
  
- CREATE TABLE IF NOT EXISTS emp (
-   id INT PRIMARY KEY AUTO_INCREMENT,
+ CREATE TABLE emp (
+   id INT AUTO_INCREMENT,
    name VARCHAR(20) NOT NULL,
    age INT NOT NULL,
    birthday YEAR NOT NULL,
-   dept_id CHAR(3)
+   dept_id CHAR(3),
+   PRIMARY KEY (id)
  );
 
  -- dept テーブルの作成
- -- もし deptテーブルが存在しなかったら作成する。
- -- もし存在したら、このSQL文は実行されない。
+ -- もし deptテーブルが存在していたら削除する。
+ DROP TABLE IF EXISTS dept; 
  
- CREATE TABLE IF NOT EXISTS dept (
+ CREATE TABLE dept (
    id CHAR(3) PRIMARY KEY,
    name VARCHAR(20) NOT NULL
  );
@@ -415,4 +418,4 @@ SQLのコマンド文字列は大文字で記述し、ユーザーが用意し�
 
 \include{end}
 
-%% 修正時刻： Fri Oct  1 09:27:52 2021
+%% 修正時刻： Fri Oct  1 17:59:20 2021

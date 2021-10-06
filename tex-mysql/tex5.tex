@@ -182,7 +182,7 @@ SELECT * FROM emp;
 
 \begin{tcolorbox}
  MariaDB [sample]$>$ insert into emp (name, age, birthday, dept\_id) values \\
- \hspace{6mm} \verb!->! ('成田三樹夫', 38, 1935, '004');
+ \hspace{6mm} \verb!->! ('成田三樹夫', 38, 1935, '005');
 \end{tcolorbox}
 
 すると、次のようなエラーメッセージが出て、入力に失敗する。
@@ -199,7 +199,7 @@ dept表にある値にして入力する。
 
 \begin{tcolorbox}
  MariaDB [sample]$>$ insert into emp (name, age, birthday, dept\_id) values \\
- \hspace{6mm} \verb!->! ('成田三樹夫', 38, 1935, '010');
+ \hspace{6mm} \verb!->! ('成田三樹夫', 38, 1935, '004');
 \end{tcolorbox}
 
 するとうまく入力できることがわかる。
@@ -461,4 +461,4 @@ ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constrai
 
 \include{end}
 
-%% 修正時刻： Wed Aug 11 22:33:33 2021
+%% 修正時刻： Fri Oct  1 19:33:56 2021
