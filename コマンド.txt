@@ -1,0 +1,50 @@
+
+> mysql -u root -p
+Password:
+
+MariaDB> grant all on sample.* to 'sampleuser'@'localhost' identified by 'sampleuser';
+
+sampleuserユーザーでログインする(パスワード:sampleuser)
+> mysql -u sampleuser -p
+Password: sampleuser
+
+MariaDB> create database sample;
+
+MariaDB> use sample;
+
+MariaDB> create table emp (
+    -> id int auto_increment,
+    -> name varchar(20) not null,
+    -> age int not null,
+    -> birthday year not null,
+    -> dept_id char(3),
+    -> primary key (id)
+    -> );
+
+MariaDB> create table dept (
+    -> id char(3) primary key auto_increment,
+    -> name varchar(20) not null
+    -> );
+
+desc emp;
+
+show create table dept;
+
+insert into emp (name, age, birthday, dept_id) values ('菅原文太', 40, 1933, '001');
+
+insert into emp (name, age, birthday, dept_id) values
+('千葉真一', 34, 1939, '002'),
+('北大路欣也', 30, 1943, '003'),
+('梶芽衣子', 26, 19d479, '002');
+
+select * from emp;
+
+insert into dept (id, name) values
+('001', '総務部'),
+('002', '営業部'),
+('003', '経理部'),
+('004', '開発部');
+
+
+
+;; 修正時刻: Fri Oct  8 01:27:01 2021
