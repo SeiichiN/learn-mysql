@@ -46,5 +46,11 @@ insert into dept (id, name) values
 ('004', '開発部');
 
 
+mysqlの文字コードの確認
+MariaDB> show variables like '%char%';
+
+
+
+
 
 ;; 修正時刻: Fri Oct  8 01:27:01 2021
