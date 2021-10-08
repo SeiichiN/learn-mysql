@@ -50,7 +50,12 @@ mysqlの文字コードの確認
 MariaDB> show variables like '%char%';
 
 
+スクリプトファイルを読み込む
+MariaDB> \. sample.sql
+あるいは
+MariaDB> source sample.sql
 
 
 
-;; 修正時刻: Fri Oct  8 01:27:01 2021
+
+;; 修正時刻: Fri Oct  8 09:37:16 2021
