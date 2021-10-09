@@ -26,7 +26,7 @@
 \end{table}
 
 \begin{table}[h]
- \caption{dep}
+ \caption{dept}
  \begin{center}
   \begin{tabular}{|l|c|} \hline
    ID   & 部署名 \\ \hline\hline
@@ -47,14 +47,15 @@ emp表のデータの ''部署ID'' を入力するとき、dept表にない番�
 これを ''外部キー制約'' という。
 
 emp表の dept\_id に入力する値は dept表にある値に制限するのであるから、
-emp表を定義する前に dept表が定義されていなくてはならない。
+emp表を定義する前に dept表が定義されていなくてはならない。 \\
 
 \textgt{dept表の定義(再掲)}
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ create table dept ( \\
- \hspace{6mm} \verb!->! id char(3) primary key, (カンマ) \\
- \hspace{6mm} \verb!->! name varchar(20) not null (カンマなし) \\
+ MariaDB [sample]$>$ CREATE \ TABLE \ dept \ ( \\
+ \hspace{6mm} \verb!->! id \ CHAR(3), \ (カンマ) \\
+ \hspace{6mm} \verb!->! name \ VARCHAR(20) \ NOT \ NULL , \ (カンマ) \\
+ \hspace{6mm} \verb!->! PRIMARY \ KEY \ (id) \ (カンマなし) \\
  \hspace{6mm} \verb!->! );
 \end{tcolorbox}
 
@@ -62,13 +63,14 @@ emp表を定義する前に dept表が定義されていなくてはならない
 \textgt{emp表の定義(外部キー制約)}
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ create table emp ( \\
- \hspace{6mm} \verb!->! id int primary key auto\_increment,  \\
- \hspace{6mm} \verb!->! name varchar(20) not null, \\
- \hspace{6mm} \verb!->! age int not null, \\
- \hspace{6mm} \verb!->! birthday year not null, \\
- \hspace{6mm} \verb!->! dept\_id char(3),  (カンマをつける)\\
- \hspace{6mm} \verb!->! \underline{foreign key(dept\_id) references dept(id)} \\
+ MariaDB [sample]$>$ CREATE \ TABLE \ emp \ ( \\
+ \hspace{6mm} \verb!->! id \ INT \ auto\_increment,  \\
+ \hspace{6mm} \verb!->! name \ VARCHAR(20) NOT NULL, \\
+ \hspace{6mm} \verb!->! age \ INT \ NOT \ NULL , \\
+ \hspace{6mm} \verb!->! birthday \ YEAR \ NOT \ NULL , \\
+ \hspace{6mm} \verb!->! dept\_id \ CHAR(3),  (カンマをつける) \\
+ \hspace{6mm} \verb!->! PRIMARY KEY (id) ,  (カンマをつける) \\
+ \hspace{6mm} \verb!->! \underline{FOREIGN \ KEY \ (dept\_id) \ REFERENCES \ dept \ (id)} \ (カンマなし) \\
  \hspace{6mm} \verb!->! );
 \end{tcolorbox}
 
@@ -83,33 +85,32 @@ CREATE DATABASE IF NOT EXISTS sample;
 -- sample データベースを使用
 USE sample;
 
-
 -- もし empテーブルが存在していたら削除する。。
 DROP TABLE IF EXISTS emp;
 
-
 -- もし deptテーブルが存在したら削除する。
 -- empテーブルが存在していたら削除できないので、
+-- (empテーブルがdeptテーブルを参照しているため)
 -- empテーブルを先に削除しなくてはならない。
 DROP TABLE IF EXISTS dept;
 
 -- dept テーブルの作成
 CREATE TABLE IF NOT EXISTS dept (
-  id   CHAR(3)     PRIMARY KEY,
-  name VARCHAR(20) NOT NULL
+  id   CHAR(3),
+  name VARCHAR(20) NOT NULL,
+  PRIMARY KEY (id)
 );
-
 
 -- emp テーブルの作成
 CREATE TABLE IF NOT EXISTS emp (
-  id       INT         PRIMARY KEY AUTO_INCREMENT,
+  id       INT         AUTO_INCREMENT,
   name     VARCHAR(20) NOT NULL,
   age      INT         NOT NULL,
   birthday YEAR        NOT NULL,
   dept_id  CHAR(3),
+  PRIMARY KEY (id),
   FOREIGN KEY(dept_id) REFERENCES dept(id)
 );
-
 
 -- 自動連番を初期化する。
 ALTER TABLE emp AUTO_INCREMENT = 1;
@@ -128,7 +129,6 @@ INSERT INTO emp (name, age, birthday, dept_id) VALUES
 ('北大路欣也', 30, 1943, '003'),
 ('梶芽衣子',   26, 1947, '002');
 
-
 SELECT * FROM dept;
 SELECT * FROM emp;
 \end{lstlisting}
@@ -140,7 +140,7 @@ SELECT * FROM emp;
 
 \begin{tcolorbox}
  $>$ mysql -u sampleuser -p \\
- Enter password: ********
+ Enter password: ******** \\
  MariaDB [(none)]$>$
 \end{tcolorbox}
 
@@ -181,7 +181,7 @@ SELECT * FROM emp;
 データを入力してみる。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ insert into emp (name, age, birthday, dept\_id) values \\
+ MariaDB [sample]$>$ INSERT INTO emp (name, age, birthday, dept\_id) VALUES \\
  \hspace{6mm} \verb!->! ('成田三樹夫', 38, 1935, '005');
 \end{tcolorbox}
 
@@ -198,7 +198,7 @@ FOREIGN KEY (`dept_id`) REFERENCES `dept` (`id`))
 dept表にある値にして入力する。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ insert into emp (name, age, birthday, dept\_id) values \\
+ MariaDB [sample]$>$ INSERT INTO emp (name, age, birthday, dept\_id) VALUES \\
  \hspace{6mm} \verb!->! ('成田三樹夫', 38, 1935, '004');
 \end{tcolorbox}
 
@@ -215,14 +215,15 @@ emp表の dept\_id も修正しなくてはならなくなる。
 
 \begin{tcolorbox}
  \textsf{
-CREATE TABLE IF NOT EXISTS emp ( \\
-\hspace{3mm}  id       INT         PRIMARY KEY AUTO\_INCREMENT, \\
-\hspace{3mm}  name     VARCHAR(20) NOT NULL, \\
-\hspace{3mm}  age      INT         NOT NULL, \\
-\hspace{3mm}  birthday YEAR        NOT NULL, \\
-\hspace{3mm}  dept\_id  CHAR(3), \\
-\hspace{3mm}  FOREIGN KEY(dept\_id) REFERENCES dept(id) \\
-\hspace{3mm}  \underline{ON DELETE SET NULL ON UPDATE CASCADE} \\
+CREATE \ TABLE \ IF \ NOT \ EXISTS \ emp \ ( \\
+\hspace{3mm}  id \     INT  \      AUTO\_INCREMENT, \\
+\hspace{3mm}  name \   VARCHAR(20) \ NOT \ NULL, \\
+\hspace{3mm}  age \    INT \       NOT \ NULL, \\
+\hspace{3mm}  birthday \ YEAR    \   NOT \ NULL, \\
+\hspace{3mm}  dept\_id \ CHAR(3), \\
+\hspace{3mm}  PRIMARY \ KEY \ (id),  \\
+\hspace{3mm}  FOREIGN \ KEY(dept\_id) \ REFERENCES \ dept(id) \\
+\hspace{3mm}  \underline{ON \ DELETE \ SET \ NULL \ ON \ UPDATE \ CASCADE} \\
 );}
  \end{tcolorbox}
 \noindent
@@ -250,11 +251,11 @@ ON UPDATE CASCADE  --- 参照先を update すると、参照元も update さ�
 たとえば、''営業部'' の ''002'' を ''005'' に変更してみる。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ \textsf{update dept set id = '005' where id = '002';}
+ MariaDB [sample]$>$ \textsf{UPDATE \ dept \ SET \ id \ = \ '005' \ WHERE \ id \ = \ '002';}
 \end{tcolorbox}
 
 \begin{tabular}{|l|} \hline
-\verb!MariaDB [sample]> select * from dept;! \\ \hline
+\verb!MariaDB [sample]> SELECT * FROM dept;! \\ \hline
 \end{tabular}
 
 \begin{spacing}{0.8}        
@@ -273,7 +274,7 @@ ON UPDATE CASCADE  --- 参照先を update すると、参照元も update さ�
 \end{spacing}
 
 \begin{tabular}{|l|} \hline
-\verb!MariaDB [sample]> select * from emp;! \\ \hline
+\verb!MariaDB [sample]> SELECT * FROM emp;! \\ \hline
 \end{tabular}
 
 \begin{spacing}{0.8}        
@@ -301,17 +302,17 @@ dept表の id が変更されたら、emp表の dept\_id も更新されてい�
 今度は、参照している表のデータを削除してみる。削除は、以下の構文を使う。
 
 \begin{tcolorbox}
- $>$ DELETE FROM <テーブル名> WHERE <削除カラム名> = <値>;
+ \verb!DELETE FROM <テーブル名> WHERE <削除カラム名> = <値>;!
 \end{tcolorbox}
 
 dept表の id:'003' name:'経理部' を削除してみる。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ delete from dept where id = '003';
+ MariaDB [sample]$>$ DELETE \ FROM \ dept \ WHERE \ id \ = \ '003';
 \end{tcolorbox}
 
 \begin{tabular}{|l|} \hline
-\verb!MariaDB [sample]> select * from dept;! \\ \hline
+\verb!MariaDB [sample]> SELECT * FROM dept;! \\ \hline
 \end{tabular}
 
 \begin{spacing}{0.8}        
@@ -329,7 +330,7 @@ dept表の id:'003' name:'経理部' を削除してみる。
 \end{spacing}
 
 \begin{tabular}{|l|} \hline
-\verb!MariaDB [sample]> select * from emp;! \\ \hline
+\verb!MariaDB [sample]> SELECT * FROM emp;! \\ \hline
 \end{tabular}
 
 \begin{spacing}{0.8}        
@@ -360,14 +361,15 @@ dept表の id:'003' name:'経理部' を削除してみる。
 
 \begin{tcolorbox}
  \textsf{
-CREATE TABLE IF NOT EXISTS emp ( \\
-\hspace{3mm}  id       INT         PRIMARY KEY AUTO\_INCREMENT, \\
-\hspace{3mm}  name     VARCHAR(20) NOT NULL, \\
-\hspace{3mm}  age      INT         NOT NULL, \\
-\hspace{3mm}  birthday YEAR        NOT NULL, \\
-\hspace{3mm}  dept\_id  CHAR(3), \\
-\hspace{3mm}  FOREIGN KEY(dept\_id) REFERENCES dept(id) \\
-\hspace{3mm}  \underline{ON DELETE RESTRICT ON UPDATE RESTRICT} \\
+CREATE \ TABLE \ IF \ NOT \ EXISTS \ emp \ ( \\
+\hspace{3mm}  id   \    INT \        AUTO\_INCREMENT, \\
+\hspace{3mm}  name \    VARCHAR(20) \ NOT \ NULL, \\
+\hspace{3mm}  age  \    INT  \       NOT \ NULL, \\
+\hspace{3mm}  birthday \ YEAR  \      NOT \ NULL, \\
+\hspace{3mm}  dept\_id \  CHAR(3), \\
+\hspace{3mm}  PRIMARY \ KEY \ (id), \\ 
+\hspace{3mm}  FOREIGN \ KEY \ (dept\_id) \ REFERENCES \ dept(id) \\
+\hspace{3mm}  \underline{ON \ DELETE \ RESTRICT \ ON \ UPDATE \ RESTRICT} \\
 );}
 \end{tcolorbox}
 
@@ -381,7 +383,7 @@ NO UPDATE RESTRICT --- 参照している表(dept)のデータを変更すると
 その後、以下のように dept表のデータを変更してみる。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ update dept set id = '005' where id = '003';
+ MariaDB [sample]$>$ UPDATE \ dept \ SET \ id = '005' \ WHERE \ id = '003';
 \end{tcolorbox}
 
 このようにエラーが出て、dept表のデータは変更できない。
@@ -395,7 +397,7 @@ NO UPDATE RESTRICT --- 参照している表(dept)のデータを変更すると
 今度は dept表のデータを削除してみる。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ delete from dept where id = '002';
+ MariaDB [sample]$>$ DELETE \, FROM \, dept \, WHERE \, id = '002';
 \end{tcolorbox}
 
 このように dept表のデータは削除もできなくなっている。
@@ -408,6 +410,10 @@ NO UPDATE RESTRICT --- 参照している表(dept)のデータを変更すると
 
 このように、参照している表は、削除したり変更したりできないほうが保守しやすい。
 しかし、その時々で適切に対応するしかない。
+
+なお、'ON DELETE \dots \dots ON UPDATE \dots \dots を指定しなかった場合は、この \\
+\hspace{10mm} \fbox{ON DELETE RESTRICT ON UPDATE RESTRICT} \\
+が自動的に指定される。
 
 \subsubsection{制約名}
 
@@ -423,11 +429,12 @@ NO UPDATE RESTRICT --- 参照している表(dept)のデータを変更すると
 \begin{tcolorbox}
  \textsf{
  CREATE TABLE IF NOT EXISTS emp ( \\
- \hspace{3mm}  id       INT         PRIMARY KEY AUTO\_INCREMENT, \\
+ \hspace{3mm}  id       INT         AUTO\_INCREMENT, \\
  \hspace{3mm}  name     VARCHAR(20) NOT NULL, \\
  \hspace{3mm}  age      INT         NOT NULL, \\
  \hspace{3mm}  birthday YEAR        NOT NULL, \\
  \hspace{3mm}  dept\_id  CHAR(3), \\
+ \hspace{3mm}  PRIMARY KEY (id), \\ 
  \hspace{3mm}  \underline{CONSTRAINT fk\_dept\_id} \\
  \hspace{3mm}  FOREIGN KEY(dept\_id) REFERENCES dept(id) \\
  \hspace{3mm}  ON DELETE RESTRICT ON UPDATE RESTRICT \\
@@ -435,12 +442,12 @@ NO UPDATE RESTRICT --- 参照している表(dept)のデータを変更すると
 \end{tcolorbox}
 \rightline{※ CONSTRAINT は ''制約'' という意味。}
 
-修正したら、\framebox[5cm][c]{$>$ source reinit\_data.sql} とする。
+修正したら、\framebox[5cm][c]{$>$ source \ reinit\_data.sql} とする。
 
 そののち、dept表のひとつのデータを削除してみる。
 
 \begin{tcolorbox}
- MariaDB [samle]$>$ delete from dept where id = '002';
+ MariaDB [samle]$>$ DELETE \ FROM \ dept \ WHERE \ id = '002';
 \end{tcolorbox}
 
 以下のように 制約名 ''fk\_dept\_id'' が出力されている。
@@ -461,4 +468,4 @@ ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constrai
 
 \include{end}
 
-%% 修正時刻： Fri Oct  1 19:33:56 2021
+%% 修正時刻： Sat Oct  9 19:03:20 2021

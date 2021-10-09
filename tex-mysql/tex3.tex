@@ -24,8 +24,17 @@
 ここで以下のコマンドを実行する。
 
 \begin{tcolorbox}
- $>$ mysqldump -u sampleuser -p --databases sample $>$ sample\_db.dump
+ $>$ mysqldump \ -u \ sampleuser \ -p \ -\! -databases \ sample \ $>$ \ sample\_db.dump
 \end{tcolorbox}
+
+\begin{tabular}{|l|} \hline
+ mysqldump \ -u \ ユーザー名 \ -p \ -\! -databases \ データベース名 \ $>$
+ 保存ファイル名 \\ \hline
+\end{tabular}
+
+\rightline{※ -\! -databases は -(ハイフン)2つ}
+
+ここでは保存ファイル名を sample\_db.dump としたが、好みのファイル名を指定すればよい。
 
 \textsf{dir} というコマンドを実行すると、ファイル一覧が見れる。
 
@@ -50,7 +59,8 @@
  $>$ mysql -u sampleuser -p $<$ sample\_db.dump
 \end{tcolorbox}
 
-
+\fbox{mysql \ -u \ ユーザー名 \ -p \ $<$ \ 保存したファイル名}
+\vspace{3mm}
 
 これでリストアができている。
 
@@ -58,4 +68,4 @@
 
 \include{end}
 
-%% 修正時刻： Fri Oct  1 18:59:18 2021
+%% 修正時刻： Sat Oct  9 07:53:15 2021

@@ -38,6 +38,15 @@
  \end{tabular}
 \vspace{3mm}
 
+あなたがプログラマで、上のような社員名簿アプリを作成することになったとする。
+PHP か Java でアプリを作成することになる。クライアントの会社の総務部がこの
+アプリを使うことになる。そのアプリには社員の登録画面、一覧画面、編集画面、
+削除画面などがあるだろう。そういった画面と処理をあなたは作らなければならない。
+
+そのときに、データを保存するしくみとして、データベースを使うことになる。
+かりに PHP でプログラミングするならば、PHPという言語を使って
+データベースを操作することになる。
+
 \subsection{primary key}
 
 データベースにデータを格納する際には、そのデータに primary key (独自キー) が必要となる。
@@ -115,16 +124,20 @@ MariaDBの場合、以下の手順でログインできる。
 \textsf{sample} データベースへの権限を与えることができる。
 \footnote{ユーザーの作成と権限付与を別々にすることもできる。\\
 sampleuser というユーザーの作成と sampleuser というパスワードの設定\\
-MariaDB [(note)]$>$ grant all on sample.* to 'sampleuser'@'localhost' identified by 'sampleuser'; \\
-sampleuser に sample データベースへの権限を付与する。\\
-MariaDB [(none)]$>$ grant all privileges on sample.* to 'sampleuser'@'localhost';
+MariaDB [(note)]$>$ CREATE USER 'sampleuser'@'localhost' IDENTIFIED BY 'sampleuser'; \\
+sampleuser に sample データベーYスへの権限を付与する。\\
+MariaDB [(none)]$>$ GRANT ALL [PRIVILEGES] ON sample.* TO 'sampleuser'@'localhost';
 }
+ここでは、ユーザー名を sampleuser、パスワードを sampleuser としている。
 
 \begin{tcolorbox}
-MariaDB [(note)]$>$ grant \ all \ on \ sample.* \ to \ 'sampleuser'@'localhost' \\
-\hspace{24mm} -$>$ identified \ by \ 'sampleuser';
+MariaDB [(note)]$>$ GRANT \ ALL \ ON \ sample.* \ TO \ 'sampleuser'@'localhost' \\
+\hspace{20mm} -$>$ IDENTIFIED \ BY \ 'sampleuser';
 \end{tcolorbox}
 
+\fbox{GRANT \ ALL \ ON \ データベース名.* \ TO \ 'ユーザー名'@'localhost'
+ \ IDENTIFIED \ BY \ 'パスワード';}
+\vspace{3mm}
 
 
 \textsf{sample} というデータベースを作成すると、いくつかファイルを作成することになるので、
@@ -150,11 +163,17 @@ MariaDB [(note)]$>$ grant \ all \ on \ sample.* \ to \ 'sampleuser'@'localhost' 
  MariaDB [(none)]$>$ 
 \end{tcolorbox}
 
+\fbox{mysql \ -u \ ユーザー名 \ -p} \\
+Enter password: \fbox{パスワード}
+\vspace{3mm}
+
 データベース \textsf{sample} を作成する。
 
 \begin{tcolorbox}
  MariaDB [(none)]$>$ \textsf{create database sample;}
 \end{tcolorbox}
+
+\fbox{CREATE \ DATABASE \ データベース名 \,;}
 
 これで、この作成したデータベース sample は、sampleuserユーザーでアクセスできる。
 (もちろん root ユーザーもアクセスできる)
@@ -167,4 +186,4 @@ MariaDB [(note)]$>$ grant \ all \ on \ sample.* \ to \ 'sampleuser'@'localhost' 
 
 \include{end}
 
-%% 修正時刻： Fri Oct  1 09:16:59 2021
+%% 修正時刻： Sat Oct  9 19:19:59 2021

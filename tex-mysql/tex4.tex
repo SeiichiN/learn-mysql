@@ -15,10 +15,25 @@ empテーブルの dept\_id は、deptテーブルの id である。
 実行例
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ select * from emp \underline{\textsf{join}} dept
- \underline{\textsf{on}} emp.dept\_id = dept.id;
+ MariaDB [sample]$>$ SELECT \ * \ FROM \ emp \ \underline{\textsf{JOIN}} \ dept \ 
+ \underline{\textsf{ON}} \ emp.dept\_id \ = \ dept.id;
 \end{tcolorbox}
 
+\begin{tabular}{|l|} \hline
+ SELECT \ * \ FROM \ メインの表 \ [INNER] \ JOIN \ サブの表 \ \\
+ ON \ メインの表.キーカラム名 \ = \ サブの表.キーカラム名 \\ \hline
+\end{tabular}
+
+\vspace{3mm}
+\begin{itemize}
+ \item *(アスタリスク) --- メインの表、サブの表のすべての項目を表示する。
+ \item emp.dept\_id --- emp表の dept\_id カラム名。ピリオドで区切って指定。
+ピリオドの後に空白を入れてはいけない。
+ \item dept.id --- dept表の id カラム名。
+\end{itemize}
+
+
+\vspace{3mm}
 これで二つのテーブルが結合される。
 
 \begin{spacing}{0.8}        
@@ -34,10 +49,10 @@ empテーブルの dept\_id は、deptテーブルの id である。
 \end{verbatim}
 \end{spacing}
 
-\textsf{join} は \textsf{inner join} と記述できる。
+\textsf{JOIN} は \textsf{INNER JOIN} と記述できる。
 ``内部結合''と呼ばれている。
 
-\textsf{on emp.dept\_id = dept.id} は 
+\textsf{ON emp.dept\_id = dept.id} は 
 emp の dept\_id と dept の id が等しければ、そのレコードを抜き出す。
 
 \rightline{※ emp.dept\_id は empテーブルの dept\_id という意味になる。}
@@ -50,9 +65,9 @@ emp表の id, name, age と dept表の name だけを表示させる。
 
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ select \underline{emp.id, emp.name, age, dept.name}
- from emp join dept \\
- \hspace{6mm} \verb!->! on emp.dept\_id = dept.id;
+ MariaDB [sample]$>$ SELECT \ \underline{emp.id, \ emp.name, \ age, \ dept.name} \ 
+ FROM \ emp \ JOIN \ dept \\
+ \hspace{6mm} \verb!->! ON \ emp.dept\_id \ = \ dept.id;
 \end{tcolorbox}
 
 \begin{spacing}{0.8}        
@@ -70,18 +85,18 @@ emp表の id, name, age と dept表の name だけを表示させる。
 
 このように必要な項目のみ表示させることができる。
 ただ、name という項目が二つあったり、英語であったりするので、
-これを適切な日本語に変える。
+これを適切な日本語に変えることにする。
 
-それには、\textsf{as句} というのが使える。
+それには、\textsf{AS句} というのが使える。
 
-たとえば、``emp.name as 名前'' とすると、``emp.neme'' は ``名前'' と表示される。
+たとえば、``emp.name AS 名前'' とすると、``emp.neme'' は ``名前'' と表示される。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ select \underline{emp.id as ID},
- \underline{emp.name as 名前}, \underline{age as 年齢},
- \underline{dept.name as 部署名} \\
- \hspace{6mm} \verb!->! from emp join dept \\
- \hspace{6mm} \verb!->! on emp.dept\_id = dept.id;
+ MariaDB [sample]$>$ SELECT \ \underline{emp.id \ AS \ ID}, \ 
+ \underline{emp.name \ AS \ 名前}, \ \underline{age \ AS \ 年齢}, \\ 
+ \hspace{6mm} \verb!->! \underline{dept.name \ AS \ 部署名} \\
+ \hspace{6mm} \verb!->! FROM \  emp \ JOIN \ dept \\
+ \hspace{6mm} \verb!->! ON \ emp.dept\_id \ = \ dept.id;
 \end{tcolorbox}
 
 \begin{spacing}{0.8}        
@@ -100,21 +115,21 @@ emp表の id, name, age と dept表の name だけを表示させる。
 さらによく見てみると、この表は部署名の順に並んでいる。
 これを ID順に並びかえる。
 
-そのためには \textsf{order句} というのが使える。
+そのためには \textsf{ORDER句} というのが使える。
 
-たとえば、今回の場合だと、\fbox{\textsf{order by emp.id [asc]}} とすることで、ID順になる。
+たとえば、今回の場合だと、\fbox{\textsf{ORDER BY emp.id [\! ASC\! ]}} とすることで、ID順になる。
 
-\textsf{asc} というのは''昇順''という意味で、省略すると asc と指定したことになる。
+\textsf{ASC} というのは''昇順''という意味で、省略すると ASC と指定したことになる。
 
-また、\textsf{desc} と指定すると ''降順'' で並びかえできる。
+また、\textsf{DESC} と指定すると ''降順'' で並びかえできる。
 
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ select emp.id as ID, emp.name as 名前, age as 年齢,
- dept.name as 部署名 \\
- \hspace{6mm} \verb!->! from emp join dept \\
- \hspace{6mm} \verb!->! on emp.dept\_id = dept.id \\
- \hspace{6mm} \verb!->! \underline{order by ID};
+ MariaDB [sample]$>$ SELECT \ emp.id \ AS \ ID, \ emp.name \ AS \ 名前, \ age \ AS \ 年齢,\\
+ \hspace{6mm} \verb!->! dept.name \ AS \ 部署名 \\
+ \hspace{6mm} \verb!->! FROM \ emp \ JOIN \ dept \\
+ \hspace{6mm} \verb!->! ON \ emp.dept\_id \ = \ dept.id \\
+ \hspace{6mm} \verb!->! \underline{ORDER \ BY \ ID};
 \end{tcolorbox}
 
 \begin{spacing}{0.8}        
@@ -130,14 +145,44 @@ emp表の id, name, age と dept表の name だけを表示させる。
 \end{verbatim}
 \end{spacing}
 
-\textsf{order by emp.id} とするところを \textsf{order by ID} としている。
+\textsf{ORDER BY emp.id} とするところを \textsf{ORDER BY ID} としている。
 
-これは、1行目で \textsf{emp.id as ID} としているので、ID を使うことができるのである。
+これは、1行目で \textsf{emp.id AS ID} としているので、ID を使うことができるのである。
+
+
+\subsection{テーブルの指定を簡略化する}
+
+emp とか dept とかのテーブルの指定も別名を使うことで簡略化できる。
+
+\begin{tcolorbox}
+ MariaDB [sample]$>$ SELECT \ \underline{e.id} \ AS \ ID, \ \underline{e.name} \ AS \ 名前, \ age \ AS \ 年齢,\\
+ \hspace{6mm} \verb!->! \underline{d.name} \ AS \ 部署名 \\
+ \hspace{6mm} \verb!->! FROM \ emp \ \underline{AS \ e} \ JOIN \ dept \ \underline{AS \ d} \\
+ \hspace{6mm} \verb!->! ON \ \underline{e.dept\_id} \ = \ \underline{d.id} \\
+ \hspace{6mm} \verb!->! ORDER \ BY \ ID;
+\end{tcolorbox}
+
+さらに、FROM や JOIN の後では、すぐ後ろに 別名(ここでは e や d のこと)がくる場合、{\em AS} は
+省略できる。
+
+\begin{tcolorbox}
+ MariaDB [sample]$>$ SELECT \ e.id \ AS \ ID, \ e.name \ AS \ 名前, \ age \ AS \ 年齢,\\
+ \hspace{6mm} \verb!->! d.name \ AS \ 部署名 \\
+ \hspace{6mm} \verb!->! FROM \ emp \ \underline{e} \ JOIN \ dept \ \underline{d} \\
+ \hspace{6mm} \verb!->! ON \ e.dept\_id \ = \ d.id \\
+ \hspace{6mm} \verb!->! ORDER \ BY \ ID;
+\end{tcolorbox}
+
+
+
+
+
+
 
 \newpage
-\subsection{外部結合(left outer join / right outer join)}
+\subsection{外部結合(LEFT OUTER JOIN / RIGHT OUTER JOIN)}
 
-\subsubsection{左外部結合 left outer join}
+\subsubsection{左外部結合 LEFT OUTER JOIN}
 
 この emp表に次のデータを追加する。
 
@@ -152,13 +197,13 @@ emp表の id, name, age と dept表の name だけを表示させる。
 \end{tcolorbox}
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ \textsf{insert into emp (name, age, birthday) values} \\
+ MariaDB [sample]$>$ \textsf{INSERT INTO emp (name, age, birthday) VALUES} \\
  \hspace{6mm} \verb!->! \textsf{('成田三樹夫', 38, 1935);}
 \end{tcolorbox}
 
 \begin{spacing}{0.8}        
 \begin{verbatim}
-MariaDB [sample]> select * from emp;
+MariaDB [sample]> SELECT * FROM emp;
 +----+------------+-----+----------+---------+
 | id | name       | age | birthday | dept_id |
 +----+------------+-----+----------+---------+
@@ -177,9 +222,10 @@ MariaDB [sample]> select * from emp;
 この状態で 内部結合 をすると、どうなるか？
 
 \begin{verbatim}
-MariaDB [sample]> select emp.id as ID, emp.name as 名前, age as 年齢,
-    -> dept.name as 部署名 from emp join dept
-    -> on emp.dept_id = dept.id
+MariaDB [sample]> SELECT e.id AS ID, e.name AS 名前, e.age AS 年齢,
+    -> d.name AS 部署名
+    -> FROM emp e JOIN dept d
+    -> ON e.dept_id = d.id
     -> order by ID;
 \end{verbatim}
 
@@ -206,14 +252,17 @@ MariaDB [sample]> select emp.id as ID, emp.name as 名前, age as 年齢,
 
 成田三樹夫は部署IDがないので結合の対象ではない。
 
-こんなときは ''左外部結合(left outer join)'' を使う。
+こんなときは \emph{左外部結合(LEFT [OUTER] JOIN)} を使う。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ select emp.id as ID, emp.name as 名前, age as 年齢, \\
- \hspace{6mm} \verb!->! dept.name as 部署名 from emp \underline{\textsf{left join}} dept \\
- \hspace{6mm} \verb!->! \textsf{on} emp.dept\_id = dept.id \\
- \hspace{6mm} \verb!->! order by ID;
+ MariaDB [sample]$>$ SELECT \ e.id \ AS \ ID, \ e.name \ AS \ 名前, \ e.age \ AS \ 年齢, \ 
+ d.name \ as \ 部署名 \\
+ \hspace{6mm} \verb!->! FROM \ emp \ e \ \underline{\textsf{LEFT JOIN}} \ dept \ d \\
+ \hspace{6mm} \verb!->! \textsf{ON} \ e.dept\_id \ = \ d.id \\
+ \hspace{6mm} \verb!->! ORDER \ BY \ ID;
 \end{tcolorbox}
+
+\rightline{※ LEFT OUTER JOIN と記述することもできる}
 
 \begin{spacing}{0.8}        
 \begin{verbatim}
@@ -229,7 +278,7 @@ MariaDB [sample]> select emp.id as ID, emp.name as 名前, age as 年齢,
 \end{verbatim}
 \end{spacing}
 
-\subsubsection{右外部結合 right outer join}
+\subsubsection{右外部結合 RIGHT [OUTER] JOIN}
 
 また、dept表をみてみると、\textsf{id : '004'} が  \textsf{開発部} であるが、
 emp表には dept\_id が '004' である人はいない。
@@ -237,10 +286,11 @@ emp表には dept\_id が '004' である人はいない。
 この状態で結合表をつくり、開発部という項目も表示させるには、次のようにする。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ select emp.id as ID, emp.name as 名前, age as 年齢, \\
- \hspace{6mm} \verb!->! dept.name as 部署名 from emp \underline{\textsf{right join}} dept \\
- \hspace{6mm} \verb!->! \textsf{on} emp.dept\_id = dept.id \\
- \hspace{6mm} \verb!->! order by ID;
+ MariaDB [sample]$>$ SELECT \ e.id \ AS \ ID, \ e.name \ AS \ 名前, \ e.age \ AS \ 年齢, \ 
+ d.name \ AS \ 部署名 \\
+ \hspace{6mm} \verb!->! FROM \ emp \ e \ \underline{\textsf{RIGHT JOIN}} \ dept \ d \\
+ \hspace{6mm} \verb!->! \textsf{ON} \ e.dept\_id \ = \ d.id \\
+ \hspace{6mm} \verb!->! ORDER \ BY \ ID;
 \end{tcolorbox}
 
 \begin{spacing}{0.8}        
@@ -261,4 +311,4 @@ emp表には dept\_id が '004' である人はいない。
 
 \include{end}
 
-%% 修正時刻： Fri Oct  1 19:11:24 2021
+%% 修正時刻： Sat Oct  9 10:45:20 2021

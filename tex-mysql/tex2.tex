@@ -116,19 +116,19 @@ deptテーブルは、このような定義になる。
 テーブルを作成する前に、データベースの使用を宣言する。
 
 \begin{tcolorbox}
- MariaDB [(none)]$>$ use sample; 
+ MariaDB [(none)]$>$ USE \ sample; \hspace{20mm} \fbox{use \ データベース名 \,;}
 \end{tcolorbox}
 
 以下のコマンドにより empテーブルを作成できる。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ create \ table \ emp \ ( \\
- \hspace{6mm} \verb!->! id \ int \ auto\_increment\,, (カンマ) \\
- \hspace{6mm} \verb!->! name \ varchar(20) \ not \ null\,, \\
- \hspace{6mm} \verb!->! age \ int \ not \ null\,, \\
- \hspace{6mm} \verb!->! birthday \ year \ not \ null\,, \\
- \hspace{6mm} \verb!->! dept\_id \ char(3), \\
- \hspace{6mm} \verb!->! primary \ key\  (id) (カンマなし) \\
+ MariaDB [sample]$>$ CREATE \ TABLE \ emp \ ( \\
+ \hspace{6mm} \verb!->! id \ INT \ AUTO\_INCREMENT\,, (カンマ) \\
+ \hspace{6mm} \verb!->! name \ VARCHAR(20) \ NOT \ NULL\,, \\
+ \hspace{6mm} \verb!->! age \ INT \ NOT \ NULL\,, \\
+ \hspace{6mm} \verb!->! birthday \ YEAR \ NOT \ NULL\,, \\
+ \hspace{6mm} \verb!->! dept\_id \ CHAR(3), \\
+ \hspace{6mm} \verb!->! PRIMARY \ KEY \  (id) (カンマなし) \\
  \hspace{6mm} \verb!->! );
 \end{tcolorbox}
 
@@ -136,9 +136,9 @@ deptテーブルは、このような定義になる。
 \footnote{primary key の指定は、id の指定のときに書くこともできるし、別項目に分けて書くこともできる。}
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ create \ table \ dept \ ( \\
- \hspace{6mm} \verb!->! id \ char(3) \ primary \ key\,, (カンマ) \\
- \hspace{6mm} \verb!->! name \ varchar(20) \ not \ null (カンマなし) \\
+ MariaDB [sample]$>$ CREATE \ TABLE \ dept \ ( \\
+ \hspace{6mm} \verb!->! id \ CHAR(3) \ PRIMARY \ KEY\,, (カンマ) \\
+ \hspace{6mm} \verb!->! name \ VARCHAR(20) \ NOT \ NULL (カンマなし) \\
  \hspace{6mm} \verb!->! );
 \end{tcolorbox}
 
@@ -163,11 +163,11 @@ MariaDB [sample]$>$ \textsf{show create table emp;}
 \begin{verbatim}
 ...(省略)... 
 CREATE TABLE `emp` ( 
-  `id` int(11) NOT NULL AUTO\_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL,
   `age` int(11) NOT NULL,
   `birthday` year(4) NOT NULL,
-  `dept\_id` char(3) DEFAULT NULL,
+  `dept_id` char(3) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
 \end{verbatim}
@@ -177,8 +177,16 @@ CREATE TABLE `emp` (
 データの登録は、以下のコマンドでできる。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ \textsf{insert into emp (name, age, birthday, dept\_id) values ('菅原文太', 40, 1933, '001');}
+ MariaDB [sample]$>$ \textsf{INSERT INTO emp (name, age, birthday, dept\_id) VALUES ('菅原文太', 40, 1933, '001');}
 \end{tcolorbox}
+
+\begin{tabular}{|l|} \hline
+ INSERT \ INTO \ テーブル名
+ ( \ カラム名1, \ カラム名2, \ カラム名3, \ \dots \dots \ ) \ VALUES \ (データ1, \\
+ データ2, \ データ3, \ \dots \dots) \\ \hline
+\end{tabular}
+
+
 \rightline{※ 各データの区切りは \textsf{,}(カンマ)}
 \noindent
 ''id'' は auto\_increment なので、指定しない。\\
@@ -187,8 +195,8 @@ CREATE TABLE `emp` (
 画面の関係で一行で入力しづらければ、次のように二行で入力することもできる。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ \textsf{insert into emp (name, age, birthday, dept\_id)} \\
- \hspace{6mm} \verb!->! \textsf{values ('千葉真一', 34, 1939, '002');}
+ MariaDB [sample]$>$ \textsf{INSERT \ INTO \ emp (name, age, birthday, dept\_id)} \\
+ \hspace{6mm} \verb!->! \textsf{VALUES \ ('千葉真一', 34, 1939, '002');}
 \end{tcolorbox}
 
 TeraPad などのエディタで記述しておいて、コピー\&貼り付け ですることもできる。
@@ -196,7 +204,7 @@ TeraPad などのエディタで記述しておいて、コピー\&貼り付け 
 以下のようにすると、一度で入力できてしまう。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ \textsf{insert into emp (name, age, birthday, dept\_id) values} \\
+ MariaDB [sample]$>$ \textsf{INSERT \ INTO \ emp (name, age, birthday, dept\_id) VALUES} \\
  \hspace{6mm} \verb!->! \textsf{('北大路欣也', 30, 1943, '003'),}   (カンマ) \\
  \hspace{6mm} \verb!->! \textsf{('梶芽衣子', 26, 1947, '002');}
 \end{tcolorbox}
@@ -206,8 +214,10 @@ TeraPad などのエディタで記述しておいて、コピー\&貼り付け 
 データの確認は次のコマンドでできる。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ \textsf{select * from emp;}
+ MariaDB [sample]$>$ \textsf{SELECT * FROM emp;}
 \end{tcolorbox}
+
+\fbox{SELECT \ * \ FROM \ テーブル名}
 
 \begin{verbatim}
 +----+------------+-----+----------+---------+
@@ -305,7 +315,7 @@ SQLのコマンド文字列は大文字で記述し、ユーザーが用意し�
 \textsf{sample}データベースの使用を宣言する。
 
 \begin{tcolorbox}
- MariaDB [(none)]$>$ \textsf{use sample;} \\
+ MariaDB [(none)]$>$ \textsf{USE sample;} \\
  MariaDB [sample]$>$
 \end{tcolorbox}
 
@@ -324,7 +334,7 @@ SQLのコマンド文字列は大文字で記述し、ユーザーが用意し�
 確認する。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ \textsf{select * from dept;}
+ MariaDB [sample]$>$ \textsf{SELECT * FROM dept;}
 \end{tcolorbox}
 
 \begin{verbatim}
@@ -379,9 +389,6 @@ SQLのコマンド文字列は大文字で記述し、ユーザーが用意し�
    name VARCHAR(20) NOT NULL
  );
 
- -- もし、データが存在していたら、削除する。
- DELETE FROM emp WHERE (SELECT COUNT(id) FROM emp) > 0;
-
  -- 自動連番を初期化する。
  ALTER TABLE emp AUTO_INCREMENT = 1;
  
@@ -391,9 +398,6 @@ SQLのコマンド文字列は大文字で記述し、ユーザーが用意し�
  ('北大路欣也', 30, 1943, '003'),
  ('梶芽衣子', 26, 1947, '002');
 
- -- もし、データが存在していたら、削除する。
- DELETE FROM dept WHERE (SELECT COUNT(id) FROM dept) > 0;
- 
  INSERT INTO dept (id, name) VALUES
  ('001', '総務部'),
  ('002', '営業部'),
@@ -418,4 +422,4 @@ SQLのコマンド文字列は大文字で記述し、ユーザーが用意し�
 
 \include{end}
 
-%% 修正時刻： Fri Oct  1 17:59:20 2021
+%% 修正時刻： Sat Oct  9 19:36:20 2021
