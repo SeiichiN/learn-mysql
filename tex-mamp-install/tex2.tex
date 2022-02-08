@@ -1,0 +1,94 @@
+\documentclass[uplatex, dvipdfmx]{jsarticle}
+
+\include{begin}
+
+\section{MAMPの設定}
+
+\subsection{PHPの設定}
+
+MAMPがせっかくPHP8に対応したが、PHP8だとWordPressを動かした場合、
+不具合が発生するので、PHP7を動かすことにする。
+
+C:\yen MAMP\yen bin\yen php にある以下のフォルダの名前を変更する。
+
+\vspace{3mm}
+\begin{tabular}{|lll|} \hline
+php8.0.1 & $\rightarrow$ & \_php8.0.1 \\
+php8.1.0 & $\rightarrow$ & \_php8.1.0 \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+PHPの設定ファイルは以下である。(php v7.4.16 の場合)
+
+"C:\yen MAMP\yen conf\yen php7.4.16\yen php.ini"
+
+一応バックアップはとっておく。
+
+\fbox{pnp.ini\_org} という名前でオリジナルファイルは残しておく。
+
+\begin{lstlisting}[caption=php.ini]
+307 memory_limit = 512M
+
+356 error_reporting = E_ALL & ~E_NOTICE
+
+375 display_errors = on
+
+494 post_max_size = 512M
+
+518 default_charset = "UTF-8"
+
+607 upload_max_filesize = 512M
+
+705 date.timezone = Asia/Tokyo
+\end{lstlisting}
+
+307, 494, 607 を 512M としたのは、今後 WordPress でバックアップファイルから
+復元するときのことを考慮したのである。
+
+356 で ~E\_NOTICE を加えたのは、変数宣言で内容が未定の場合に NOTICE が
+出力されるのが煩わしいからである。
+
+375 で on とすることにより、エラーがブラウザに出力されるようになる。
+
+518 で UTF-8 と指定しているが、これは指定しなくても UTF-8 になるようである。
+
+705 でタイムゾーンを指定している。これは必須である。
+
+要するに、絶対に指定しなければならないのは、705行めのタイムゾーンだけである。
+
+
+\subsection{MySQLの設定}
+
+設定ファイルは C:\yen MAMP\yen conf\yen mysql\yen my.ini である。
+
+オリジナルは my.ini\_org としてバックアップしておく。
+
+\begin{lstlisting}[caption=my.ini]
+...
+40 character-set-server=utf8 
+41 collation-server=utf8_general_ci
+...
+\end{lstlisting}
+
+とあるが、これを以下のようにしておく。
+
+\begin{lstlisting}[caption=my.ini]
+...
+40 character-set-server=utf8mb4 
+41 collation-server=utf8mb4_general_ci
+...
+\end{lstlisting}
+
+UTF-8の文字コードは本来4バイトなのだが、
+MySQLで使われてきたUTF-8は3バイトであった。
+そのことにより使用できる文字が制限されてきた。
+
+MySQL5.7.9 以降では UTF-8mb4(4バイト)が使えるようになった。
+
+
+
+
+
+\include{end}
+
+%% 修正時刻： Tue Feb  8 10:51:57 2022
