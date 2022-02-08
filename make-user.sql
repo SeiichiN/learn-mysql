@@ -13,7 +13,7 @@ GRANT ALL ON sample.* TO 'hatta'@'%' IDENTIFIED BY 'hatta';
 GRANT ALL ON sample.* TO 'maeda'@'%' IDENTIFIED BY 'maeda';
 GRANT ALL ON sample.* TO 'masumoto'@'%' IDENTIFIED BY 'masumoto';
 GRANT ALL ON sample.* TO 'matsumoto'@'%' IDENTIFIED BY 'matsumoto';
-GRANT ALL ON sample.* TO 'mitsuhashi'@'%' IDENTIFIED BY 'mitsuhashi';
+GRANT ALL ON sample.* TO 'mihashi'@'%' IDENTIFIED BY 'mihashi';
 
 
 -- 修正時刻: Mon Feb  7 14:41:24 2022
