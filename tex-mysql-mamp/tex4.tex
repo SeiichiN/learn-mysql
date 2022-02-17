@@ -36,18 +36,20 @@ empテーブルの dept\_id は、deptテーブルの id である。
 \vspace{3mm}
 これで二つのテーブルが結合される。
 
-\begin{spacing}{0.8}        
-\begin{verbatim}
+% \begin{spacing}{0.8}        
+% \begin{verbatim}
+\begin{lstlisting}[numbers=none]
 +----+------------+-----+----------+---------+-----+--------+
 | id | name       | age | birthday | dept_id | id  | name   |
 +----+------------+-----+----------+---------+-----+--------+
-|  1 | 菅原文太   |  40 |     1933 | 001     | 001 | 総務部 |
-|  2 | 千葉真一   |  34 |     1939 | 002     | 002 | 営業部 |
-|  4 | 梶芽衣子   |  26 |     1947 | 002     | 002 | 営業部 |
-|  3 | 北大路欣也 |  30 |     1943 | 003     | 003 | 経理部 |
+|  1 | 菅原文太    |  40 |     1933 | 001     | 001 | 総務部  |
+|  2 | 千葉真一    |  34 |     1939 | 002     | 002 | 営業部  |
+|  4 | 梶芽衣子    |  26 |     1947 | 002     | 002 | 営業部  |
+|  3 | 北大路欣也  |  30 |     1943 | 003     | 003 | 経理部  |
 +----+------------+-----+----------+---------+-----+--------+
-\end{verbatim}
-\end{spacing}
+\end{lstlisting}
+% \end{verbatim}
+% \end{spacing}
 
 \textsf{JOIN} は \textsf{INNER JOIN} と記述できる。
 ``内部結合''と呼ばれている。
@@ -70,8 +72,9 @@ emp表の id, name, age と dept表の name だけを表示させる。
  \hspace{6mm} \verb!->! ON \ emp.dept\_id \ = \ dept.id;
 \end{tcolorbox}
 
-\begin{spacing}{0.8}        
-\begin{verbatim}
+% \begin{spacing}{0.8}        
+% \begin{verbatim}
+\begin{lstlisting}[numbers=none]
 +----+------------+-----+--------+
 | id | name       | age | name   |
 +----+------------+-----+--------+
@@ -80,8 +83,9 @@ emp表の id, name, age と dept表の name だけを表示させる。
 |  4 | 梶芽衣子   |  26 | 営業部 |
 |  3 | 北大路欣也 |  30 | 経理部 |
 +----+------------+-----+--------+
-\end{verbatim}
-\end{spacing}        
+\end{lstlisting}
+% \end{verbatim}
+% \end{spacing}        
 
 このように必要な項目のみ表示させることができる。
 ただ、name という項目が二つあったり、英語であったりするので、
@@ -99,8 +103,9 @@ emp表の id, name, age と dept表の name だけを表示させる。
  \hspace{6mm} \verb!->! ON \ emp.dept\_id \ = \ dept.id;
 \end{tcolorbox}
 
-\begin{spacing}{0.8}        
-\begin{verbatim}
+% \begin{spacing}{0.8}        
+% \begin{verbatim}
+\begin{lstlisting}[numbers=none]
 +----+------------+------+--------+
 | ID | 名前       | 年齢 | 部署名 |
 +----+------------+------+--------+
@@ -109,8 +114,9 @@ emp表の id, name, age と dept表の name だけを表示させる。
 |  4 | 梶芽衣子   |   26 | 営業部 |
 |  3 | 北大路欣也 |   30 | 経理部 |
 +----+------------+------+--------+
-\end{verbatim}
-\end{spacing}
+\end{lstlisting}
+% \end{verbatim}
+% \end{spacing}
 
 さらによく見てみると、この表は部署名の順に並んでいる。
 これを ID順に並びかえる。
@@ -132,8 +138,8 @@ emp表の id, name, age と dept表の name だけを表示させる。
  \hspace{6mm} \verb!->! \underline{ORDER \ BY \ ID};
 \end{tcolorbox}
 
-\begin{spacing}{0.8}        
-\begin{verbatim}
+
+\begin{lstlisting}[numbers=none]
 +----+------------+------+--------+
 | ID | 名前       | 年齢 | 部署名 |
 +----+------------+------+--------+
@@ -142,8 +148,8 @@ emp表の id, name, age と dept表の name だけを表示させる。
 |  3 | 北大路欣也 |   30 | 経理部 |
 |  4 | 梶芽衣子   |   26 | 営業部 |
 +----+------------+------+--------+
-\end{verbatim}
-\end{spacing}
+\end{lstlisting}
+
 
 \textsf{ORDER BY emp.id} とするところを \textsf{ORDER BY ID} としている。
 
@@ -311,4 +317,4 @@ emp表には dept\_id が '004' である人はいない。
 
 \include{end}
 
-%% 修正時刻： Sun Feb  6 14:55:42 2022
+%% 修正時刻： Fri Feb 18 07:30:14 2022
