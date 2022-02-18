@@ -1,0 +1,234 @@
+\documentclass[dvipdfmx]{jsarticle}
+
+\include{begin}
+
+\section{ちょっと複雑なデータベースを考える}
+
+\subsection{データベースの例}
+
+今度は以下のようなデータについて考えてみる。
+
+\vspace{3mm}
+ \begin{tabular}{|l|l|} \hline
+  氏名 & 菅原文太 \\
+  年齢 & 40歳 \\
+  誕生年 & 1933年生まれ \\
+  部署 & 総務部 \\ 
+  趣味 & 釣り、油絵  \\ \hline
+ \end{tabular}
+
+\vspace{3mm}
+ \begin{tabular}{|l|l|} \hline
+  氏名 & 千葉真一 \\
+  年齢 & 34歳 \\
+  誕生年 &  1939年生まれ \\
+  部署 & 営業部 \\
+  趣味 & 空手、熱帯魚飼育、サッカー観戦  \\ \hline
+ \end{tabular}
+
+\vspace{3mm}
+ \begin{tabular}{|l|l|} \hline
+  氏名 & 北大路欣也 \\
+  年齢 & 30歳 \\
+  誕生年 &  1943年生まれ \\
+  部署 & 経理部 \\
+  趣味 & 茶道  \\ \hline
+ \end{tabular}
+
+\vspace{3mm}
+ \begin{tabular}{|l|l|} \hline
+  氏名 & 梶芽衣子 \\
+  年齢 & 26歳 \\
+  誕生年 &  1947年生まれ \\
+  部署 & 営業部 \\
+  趣味 & 登山、ヨガ  \\ \hline
+ \end{tabular}
+\vspace{3mm}
+
+まず、このような表がイメージされる。
+
+\begin{table}[h]
+ \caption{emp}
+ \begin{center}
+  \begin{tabular}[h]{|c|l|c|c|c|l|}
+   \hline
+   ID & 名前       & 年齢 & 誕生年 & 部署 & 趣味 \\ \hline\hline
+   1  & 菅原文太   & 40   & 1933   & 総務 & 釣り, 油絵  \\ \hline
+   2  & 千葉真一   & 34   & 1939   & 営業 & 空手, 熱帯魚飼育, サッカー観戦 \\ \hline
+   3  & 北大路欣也 & 30   & 1943   & 経理 & 茶道 \\ \hline
+   4  & 梶芽衣子   & 26   & 1947   & 営業 & 登山, ヨガ  \\ \hline
+  \end{tabular}
+ \end{center}
+\end{table}
+
+しかしながら、この表の場合、趣味のフィールドには、複数のデータが含まれている。
+これを解消したのが、次の表である。
+
+\subsection{第1正規形}
+
+\begin{table}[h]
+ \caption{emp}
+ \begin{center}
+  \begin{tabular}[h]{|c|l|c|c|c|l|l|l|}
+   \hline
+   ID & 名前       & 年齢 & 誕生年 & 部署 & 趣味1 & 趣味2 & 趣味3 \\ \hline\hline
+   1  & 菅原文太   & 40   & 1933   & 総務 & 釣り & 油絵 & \\ \hline
+   2  & 千葉真一   & 34   & 1939   & 営業 & 空手 & 熱帯魚飼育 & サッカー観戦 \\ \hline
+   3  & 北大路欣也 & 30   & 1943   & 経理 & 茶道 & & \\ \hline
+   4  & 梶芽衣子   & 26   & 1947   & 営業 & 登山 & ヨガ & \\ \hline
+  \end{tabular}
+ \end{center}
+\end{table}
+
+
+趣味のフィールドが1つのもの、3つのものとバラバラなので、フィールドを1つにする。
+
+\begin{table}[h]
+ \caption{emp}
+ \begin{center}
+  \begin{tabular}[h]{|c|l|c|c|c|l|}
+   \hline
+   ID & 名前       & 年齢 & 誕生年 & 部署 & 趣味 \\ \hline\hline
+   1  & 菅原文太   & 40   & 1933   & 総務 & 釣り \\ \hline
+   1  & 菅原文太   & 40   & 1933   & 総務 & 油絵 \\ \hline
+   2  & 千葉真一   & 34   & 1939   & 営業 & 空手  \\ \hline
+   2  & 千葉真一   & 34   & 1939   & 営業 & 熱帯魚飼育 \\ \hline
+   2  & 千葉真一   & 34   & 1939   & 営業 & サッカー観戦 \\ \hline
+   3  & 北大路欣也 & 30   & 1943   & 経理 & 茶道 \\ \hline
+   4  & 梶芽衣子   & 26   & 1947   & 営業 & 登山 \\ \hline
+   4  & 梶芽衣子   & 26   & 1947   & 営業 & ヨガ \\ \hline
+  \end{tabular}
+ \end{center}
+\end{table}
+
+ここまでが「第1正規化」で、この表を「第1正規形」と呼ぶ。
+
+\subsection{第2正規形}
+
+
+上の表は縦方向にデータが繰り返されている。
+これを表を分けることによって、解消する。
+
+\begin{multicols}{2}
+
+ emp表 \\
+  \begin{tabular}[h]{|c|l|c|c|c|}
+   \hline
+   ID & 名前       & 年齢 & 誕生年 & 部署  \\ \hline\hline
+   1  & 菅原文太   & 40   & 1933   & 総務  \\ \hline
+   2  & 千葉真一   & 34   & 1939   & 営業  \\ \hline
+   3  & 北大路欣也 & 30   & 1943   & 経理  \\ \hline
+   4  & 梶芽衣子   & 26   & 1947   & 営業  \\ \hline
+  \end{tabular}
+
+ \columnbreak
+
+ hobby表 \\
+  \begin{tabular}[h]{|c|l|}
+   \hline
+   HID    & 趣味 \\ \hline\hline
+   H01   & 釣り \\ \hline
+   H02   & 油絵 \\ \hline
+   H03   & 空手  \\ \hline
+   H04   & 熱帯魚飼育 \\ \hline
+   H05   & サッカー観戦 \\ \hline
+   H06   & 茶道 \\ \hline
+   H07   & 登山 \\ \hline
+   H08   & ヨガ \\ \hline
+  \end{tabular}
+\end{multicols}
+
+
+emp\_hobby表\\
+\begin{tabular}{|c|c|c|} \hline
+ \multicolumn{2}{|c|}{主キー} & \multirow{2}{*}{趣味} \\ \cline{1-2}
+t ID & HID &      \\ \hline\hline
+ 1  & H01 & 釣り \\ \hline
+ 1  & H02 & 油絵 \\ \hline
+ 2  & H03 & 空手 \\ \hline
+ 2  & H04 & 熱帯魚飼育 \\ \hline
+ 2  & H05 & サッカー観戦 \\ \hline
+ 3  & H06 & 茶道 \\ \hline
+ 4  & H07 & 登山 \\ \hline
+ 4  & H08 & ヨガ \\ \hline
+\end{tabular}
+
+
+\subsection{第3正規形}
+
+emp表には、表には現れていないが、id に従属せず、別のキーに従属すると
+考えられるフィールドが存在する。それは「所属」である。
+これを別の表(dept表)とする。
+
+\begin{multicols}{2}
+ emp表 \\
+  \begin{tabular}[h]{|c|l|c|c|}
+   \hline
+   ID & 名前       & 年齢 & 誕生年 \\ \hline\hline
+   1  & 菅原文太   & 40   & 1933   \\ \hline
+   2  & 千葉真一   & 34   & 1939   \\ \hline
+   3  & 北大路欣也 & 30   & 1943   \\ \hline
+   4  & 梶芽衣子   & 26   & 1947   \\ \hline
+  \end{tabular}
+
+ \columnbreak
+
+ dept表 \\
+ \begin{tabular}{|c|c|} \hline
+  DID & 部署名 \\ \hline\hline
+  D01 & 総務部 \\ \hline
+  D02 & 営業部 \\ \hline
+  D03 & 経理部 \\ \hline
+  D04 & 開発部 \\ \hline
+ \end{tabular}
+\end{multicols}
+  
+\begin{multicols}{2}
+ hobby表 \\
+  \begin{tabular}[h]{|c|l|}
+   \hline
+   HID   & 趣味 \\ \hline\hline
+   H01   & 釣り \\ \hline
+   H02   & 油絵 \\ \hline
+   H03   & 空手  \\ \hline
+   H04   & 熱帯魚飼育 \\ \hline
+   H05   & サッカー観戦 \\ \hline
+   H06   & 茶道 \\ \hline
+   H07   & 登山 \\ \hline
+   H08   & ヨガ \\ \hline
+  \end{tabular}
+
+ \columnbreak
+ 
+ emp\_hobby表\\
+ \begin{tabular}{|c|c|c|} \hline
+  \multicolumn{2}{|c|}{主キー} & \multirow{2}{*}{趣味} \\ \cline{1-2}
+  ID & HID &      \\ \hline\hline
+  1  & H01 & 釣り \\ \hline
+  1  & H02 & 油絵 \\ \hline
+  2  & H03 & 空手 \\ \hline
+  2  & H04 & 熱帯魚飼育 \\ \hline
+  2  & H05 & サッカー観戦 \\ \hline
+  3  & H06 & 茶道 \\ \hline
+  4  & H07 & 登山 \\ \hline
+  4  & H08 & ヨガ \\ \hline
+ \end{tabular}
+\end{multicols}
+
+
+\section{ER図}
+
+第3正規形ができたところで、ER図を作ってみる。
+
+emp表\\
+\begin{tabular}{|c|} \hline
+ ID \\ \hline
+ name \\ \hline
+ age \\ \hline
+ birthyear \\ \hline
+\end{tabular}
+ 
+
+\include{end}
+
+%% 修正時刻： Fri Feb 18 15:07:09 2022

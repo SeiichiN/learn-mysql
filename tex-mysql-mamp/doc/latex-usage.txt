@@ -194,6 +194,9 @@ $\to$  -- ->
  \includegraphics{game7-3.png}
 \end{multicols}
 
+段組みの強制改段
+\columnbreak
+
 
 行頭の字下げを一時的に解除
 \noindent
