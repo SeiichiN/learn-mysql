@@ -1,0 +1,74 @@
+
+\documentclass[dvipdfmx]{jsarticle}
+
+\include{begin}
+
+\section{練習問題}
+
+次の各表からデータベースを設計してください。ER図を書くのをゴールとします。
+
+データベース名は \textsf{mountain}。
+ユーザー名は 'moutain\_user'。パスワードは '1234' です。
+
+また、その中に、teizanテーブルがあります。
+
+\begin{multicols}{2}
+\vspace{3mm}
+\noindent
+\begin{tabular}{|l|l|l|l|} \hline
+id & 名前       & 性別 & 誕生日 \\ \hline\hline 
+1 & 染谷将太    & 男性 & 1992-09-03 \\ \hline
+2 & 二階堂ふみ  & 女性 & 1994-09-21 \\ \hline
+3 & 渡辺哲      & 男性 & 1950-03-11 \\ \hline
+4 & 窪塚洋介    & 男性 & 1979-05-07 \\ \hline
+5 & 吉高由里子  & 女性 & 1988-07-22  \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+\columnbreak
+ 
+\vspace{3mm}
+\noindent
+\begin{tabular}{|l|l|l|l|l|} \hline
+ id & 山岳名   & かな           &  標高(m) & 所在地   \\ \hline\hline
+ 20 & 八溝山    & やみぞさん      &   1022  & 福島県   \\ \hline 
+ 30 & 荒船山    & あらふねやま    &   1423  & 群馬県    \\ \hline
+ 50 & 大山      & おおやま        &   1252  & 神奈川県  \\ \hline
+ 44 & 高尾山    & たかおさん      &    599  & 東京都    \\ \hline
+ 50 & 大山      & おおやま        &   1252  & 神奈川県  \\ \hline
+ 82 & 比叡山    & ひえいざん      &    848  & 京都府    \\ \hline
+ 53 & 駒ガ岳    & こまがたけ      &   1438  & 神奈川県  \\ \hline
+ 58 & 弥彦山    & やひこやま      &    634  & 新潟県    \\ \hline
+ 66 & 身延山    & みのぶさん      &   1153  & 山梨県    \\ \hline
+ 67 & 高社山    & たかやしろやま  &   1351  & 長野県    \\ \hline
+ 26 & 榛名山    & はるなさん      &   1449  & 群馬県    \\ \hline
+ 30 & 荒船山    & あらふねやま    &   1423  & 群馬県    \\ \hline
+ 43 & 権現山    & ごんげんやま    &   1312  & 山梨県    \\ \hline
+ 66 & 身延山    & みのぶさん      &   1153  & 山梨県    \\ \hline
+ 30 & 荒船山    & あらふねやま    &   1423  & 群馬県    \\ \hline
+ 50 & 大山      & おおやま        &   1252  & 神奈川県  \\ \hline
+ 53 & 駒ガ岳    & こまがたけ      &   1438  & 神奈川県  \\ \hline
+ 80 & 伊吹山    & いぶきやま      &   1377  & 滋賀県    \\ \hline
+ 82 & 比叡山    & ひえいざん      &    848  & 京都府    \\ \hline
+\end{tabular}
+\vspace{3mm}
+\end{multicols}
+
+\vspace{3mm}
+\noindent
+\begin{tabular}{|l|l|l|} \hline
+id & 名前       & 登った山 \\ \hline\hline
+1 & 染谷将太    & 八溝山, 荒船山, 大山  \\ \hline
+2 & 二階堂ふみ  & 榛名山, 荒船山, 権現山, 身延山 \\ \hline
+3 & 渡辺哲      & 高尾山, 大山, 比叡山 \\ \hline
+4 & 窪塚洋介    & 駒ガ岳, 弥彦山, 身延山, 高社山 \\ \hline
+5 & 吉高由里子  & 荒船山, 大山, 駒ガ岳, 伊吹山, 比叡山 \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+
+
+
+\include{end}
+
+%% 修正時刻： Sat Feb 19 22:19:46 2022

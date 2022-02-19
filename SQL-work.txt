@@ -1,0 +1,55 @@
+select *
+    from emp
+    join emp_hobby
+    on emp_hobby.id = emp.id
+      join gender
+      on emp.genger_id = gender.gid
+
+
+  emp.name as 名前,
+  gender.g_name as 性別, 
+    
+    
+    
+create view hobby_view as
+select e.name, g.g_name, d.dept_name, h.h_name
+from emp as e
+  inner join emp_hobby as eh
+  on eh.id = e.id
+    inner join gender as g
+    on g.gid = e.gender_id
+      inner join dept as d
+      on d.did = e.dept_id
+        inner join hobby as h
+        on h.hid = eh.hid
+  where h.h_name in ('空手', 'サッカー観戦')
+  group by e.name
+
+
+SELECT
+  p.name as 名前,
+  g.gname as 性別,
+  TIMESTAMPDIFF(YEAR, p.birthday, CURDATE()) as 年齢,
+  t.name as 山岳名,
+  s.stname as 所在地
+  FROM person_teizan as pt
+    INNER JOIN person as p
+    ON pt.p_id = p.id
+      INNER JOIN teizan as t
+      ON pt.t_id = t.id
+        INNER JOIN gender as g
+        ON p.g_id = g.gid
+          INNER JOIN state as s
+          ON t.stcode = s.code
+          
+SELECT *
+  FROM person_teizan as pt
+    INNER JOIN person as p
+    ON pt.p_id = p.id
+      INNER JOIN teizan as t
+      ON pt.t_id = t.id
+        INNER JOIN gender as g
+        ON p.g_id = g.gid
+          INNER JOIN state as s
+          ON t.stcode = s.code
+
