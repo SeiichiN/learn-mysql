@@ -121,26 +121,26 @@ deptテーブルは、このような定義になる。
 
 以下のコマンドにより empテーブルを作成できる。
 
-\begin{tcolorbox}
- mysql$>$ CREATE \ TABLE \ emp \ ( \\
- \hspace{6mm} \verb!->! id \ INT \ AUTO\_INCREMENT\,, (カンマ) \\
- \hspace{6mm} \verb!->! name \ VARCHAR(20) \ NOT \ NULL\,, \\
- \hspace{6mm} \verb!->! age \ INT \ NOT \ NULL\,, \\
- \hspace{6mm} \verb!->! birthday \ YEAR \ NOT \ NULL\,, \\
- \hspace{6mm} \verb!->! dept\_id \ CHAR(3), \\
- \hspace{6mm} \verb!->! PRIMARY \ KEY \  (id) (カンマなし) \\
- \hspace{6mm} \verb!->! );
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none]
+ mysql> CREATE TABLE emp (
+     ->   id INT AUTO_INCREMENT,
+     ->   name VARCHAR(20) NOT NULL,
+     ->   age INT NOT NULL,
+     ->   birthday YEAR NOT NULL,
+     ->   dept_id CHAR(3),
+     ->   PRIMARY KEY (id)
+     -> );
+\end{lstlisting}
 
 同様に deptテーブルも作成する。
 \footnote{primary key の指定は、id の指定のときに書くこともできるし、別項目に分けて書くこともできる。}
 
-\begin{tcolorbox}
- mysql$>$ CREATE \ TABLE \ dept \ ( \\
- \hspace{6mm} \verb!->! id \ CHAR(3) \ PRIMARY \ KEY\,, (カンマ) \\
- \hspace{6mm} \verb!->! name \ VARCHAR(20) \ NOT \ NULL (カンマなし) \\
- \hspace{6mm} \verb!->! );
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none]
+ mysql> CREATE TABLE dept (
+     ->   id CHAR(3) PRIMARY KEY,
+     ->   name VARCHAR(20) NOT NULL
+     -> );
+\end{lstlisting}
 
 \vspace{3mm}
 \noindent ※
@@ -176,9 +176,9 @@ CREATE TABLE `emp` (
 
 データの登録は、以下のコマンドでできる。
 
-\begin{tcolorbox}
- mysql$>$ \textsf{INSERT INTO emp (name, age, birthday, dept\_id) VALUES ('菅原文太', 40, 1933, '001');}
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=sql]
+ mysql> INSERT INTO emp (name, age, birthday, dept_id) VALUES ('菅原文太', 40, 1933, '001');
+\end{lstlisting}
 
 \begin{tabular}{|l|} \hline
  INSERT \ INTO \ テーブル名
@@ -189,25 +189,25 @@ CREATE TABLE `emp` (
 
 \rightline{※ 各データの区切りは \textsf{,}(カンマ)}
 \noindent
-''id'' は auto\_increment なので、指定しない。\\
+''id'' は auto\_increment(自動連番) なので、指定しない。\\
 また、dept\_id は char(3) なので、\textsf{'001'} シングルクォーテーションを使って入力する。
 
 画面の関係で一行で入力しづらければ、次のように二行で入力することもできる。
 
-\begin{tcolorbox}
- mysql$>$ \textsf{INSERT \ INTO \ emp (name, age, birthday, dept\_id)} \\
- \hspace{6mm} \verb!->! \textsf{VALUES \ ('千葉真一', 34, 1939, '002');}
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=sql]
+ mysql> INSERT INTO emp (name, age, birthday, dept_id)
+     -> VALUES ('千葉真一', 34, 1939, '002');
+\end{lstlisting}
 
 TeraPad などのエディタで記述しておいて、コピー\&貼り付け ですることもできる。
 
 以下のようにすると、一度で入力できてしまう。
 
-\begin{tcolorbox}
- mysql$>$ \textsf{INSERT \ INTO \ emp (name, age, birthday, dept\_id) VALUES} \\
- \hspace{6mm} \verb!->! \textsf{('北大路欣也', 30, 1943, '003'),}   (カンマ) \\
- \hspace{6mm} \verb!->! \textsf{('梶芽衣子', 26, 1947, '002');}
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=sql]
+ mysql> INSERT INTO emp (name, age, birthday, dept_id) VALUES
+     -> ('北大路欣也', 30, 1943, '003'),
+     -> ('梶芽衣子', 26, 1947, '002');
+\end{lstlisting}
 
 これも、エディタに記述しておいて、コピー\&貼り付けでも できる。
 
@@ -217,7 +217,7 @@ TeraPad などのエディタで記述しておいて、コピー\&貼り付け 
  mysql$>$ \textsf{SELECT * FROM emp;}
 \end{tcolorbox}
 
-\fbox{SELECT \ * \ FROM \ テーブル名}
+\rightline{\fbox{SELECT \ * \ FROM \ テーブル名}}
 
 \begin{verbatim}
 +----+------------+-----+----------+---------+
@@ -230,12 +230,180 @@ TeraPad などのエディタで記述しておいて、コピー\&貼り付け 
 +----+------------+-----+----------+---------+
 \end{verbatim}
 
-\subsection{ファイル読込みによるデータの登録}
-
 同様に、deptテーブルについてもデータを登録する。
 
-ただ、今度は 登録のための SQL文を外部ファイルに記述しておいて、
-それを読み込むという方法で登録してみる。
+\begin{lstlisting}[numbers=none, language=sql]
+mysql> INSERT INTO dept (id, name) VALUES
+    -> ('001', '総務部'),
+    -> ('002', '営業部'),
+    -> ('003', '経理部'),
+    -> ('004', '開発部');
+\end{lstlisting}
+
+確認する。
+
+\begin{lstlisting}[numbers=none, language=sql]
+ mysql> SELECT * FROM dept;
+\end{lstlisting}
+
+\begin{verbatim}
++-----+--------+
+| id  | name   |
++-----+--------+
+| 001 | 総務部 |
+| 002 | 営業部 |
+| 003 | 経理部 |
+| 004 | 開発部 |
++-----+--------+
+\end{verbatim}
+
+\section{練習問題}
+
+\subsection{テーブル作成問題(1)}
+
+以下のようなテーブル person を作成してください。
+
+\vspace{3mm}
+\begin{tabular}{|c|l|c|c|c|l|} \hline
+ ID & 名前        & 性別  & 誕生日     & 出身      & コース            \\ \hline\hline
+  1 & 染谷将太    & 男    & 1992-09-03 & 東京都    & JavaScriptコース  \\ \hline 
+  2 & 二階堂ふみ  & 女    & 1994-09-21 & 沖縄県    & PHPコース         \\ \hline 
+  3 & 渡辺哲      & 男    & 1950-03-11 & 愛知県    & Javaコース        \\ \hline 
+  4 & 窪塚洋介    & 男    & 1979-05-07 & 神奈川県  & HTML/CSSコース    \\ \hline 
+  5 & 吉高由里子  & 女    & 1988-07-22 & 東京都    & Javaコース        \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+データ型
+\vspace{-3mm}
+\begin{itemize}
+ \item ID --- id, INT型、自動連番、主キー
+ \item 名前 --- name, VARCHAR型、(20)くらいにしておく。(全角でも半角でも)。
+ \item 性別 --- gender, CHAR型、(1)なら1文字(全角でも半角でも)
+ \item 誕生日 --- birthday, DATE型。
+ \item 出身 --- state, VARCHAR型、(5) で全ておさまる。(10)でもよい。
+ \item コース --- course, VARCHAR型、(50)くらいにする。
+\end{itemize}
+
+\newpage
+\subsection{テーブル作成問題(2)}
+
+このテーブルは、以下のように 4つ のテーブルに分けて管理しようと思います。
+
+\begin{multicols}{2}
+\vspace{3mm}
+gender表 \\
+\begin{tabular}{|c|c|} \hline
+ \underline{ID}  & 識別名 \\ \hline\hline
+ 0   & 不明 \\ \hline
+ 1   & 男性  \\ \hline
+ 2   & 女性  \\ \hline
+ 3   & その他 \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+\columnbreak
+
+gender表定義
+\begin{itemize}
+ \item ID --- gid, 主キー、CHAR(1)
+ \item 識別名 -- gname, VARCHAR(3)
+\end{itemize} 
+
+\end{multicols}
+
+ 
+\begin{multicols}{2}
+
+\vspace{3mm}
+state表 \\
+\begin{tabular}{|c|l|} \hline
+ \underline{ID} & 都道府県名 \\ \hline\hline
+ 01   & 北海道 \\ \hline
+ 02   & 青森県 \\ \hline
+ 03   & 岩手県 \\ \hline
+ 04   & 宮城県 \\ \hline
+ \dots & \dots \\ \hline
+ 47   & 沖縄県  \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+\columnbreak
+
+state表定義
+\begin{itemize}
+ \item ID --- sid, 主キー、CHAR(2)
+ \item 都道府県 -- sname, VARCHAR(5)
+\end{itemize} 
+
+ state表の入力データは別途あります。(state.sql)
+\end{multicols}
+
+
+\begin{multicols}{2}
+
+\vspace{3mm}
+course表 \\
+\begin{tabular}{|c|l|} \hline
+ \underline{ID} & コース名 \\ \hline\hline
+ 1   & HTML/CSSコース \\ \hline
+ 2   & JavaScriptコース \\ \hline
+ 3   & PHPコース \\ \hline
+ 4   & Javaコース \\ \hline
+ 5   & サーブレットJSPコース  \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+\columnbreak
+ 
+course表定義
+\begin{itemize}
+ \item ID --- cid, int型、主キー、自動連番
+ \item コース名 -- cname, VARCHAR(50)
+\end{itemize} 
+
+ 
+\end{multicols}
+
+
+ person表 は、以下のように変更する必要があります。
+
+\begin{multicols}{2}
+\vspace{3mm}
+person表 \\
+\begin{tabular}{|c|l|c|c|c|l|} \hline
+ ID & 名前        & g\_id  & 誕生日     & s\_id  & c\_id  \\ \hline\hline
+  1 & 染谷将太    &  1    & 1992-09-03 & 13    & 2     \\ \hline 
+  2 & 二階堂ふみ  &  2    & 1994-09-21 & 47    & 3     \\ \hline 
+  3 & 渡辺哲      &  1    & 1950-03-11 & 23    & 4     \\ \hline 
+  4 & 窪塚洋介    &  1    & 1979-05-07 & 14    & 1     \\ \hline 
+  5 & 吉高由里子  &  2    & 1988-07-22 & 13    & 4     \\ \hline
+\end{tabular}
+\vspace{3mm}
+ 
+\columnbreak
+
+person表定義
+\begin{itemize}
+ \item ID --- (そのまま)
+ \item 名前 --- (そのまま)
+ \item 性別 --- g\_id, CHAR(1)
+ \item 誕生日 --- (そのまま)
+ \item 出身 --- s\_id, CHAR(2)
+ \item コース --- c\_id, INT型、
+\end{itemize}
+
+\end{multicols}
+
+
+
+\newpage
+\section{ファイル読込みによるデータの登録}
+
+同様のことを、
+登録のための SQL文を外部ファイルに記述しておいて、
+それを読み込むという方法でもできる。
+dept表を例にして説明する。
 
 \subsubsection{作業のためのフォルダを用意して、そこでファイルをつくる。}
 
@@ -244,7 +412,7 @@ TeraPad などのエディタで記述しておいて、コピー\&貼り付け 
 
 そこに、以下の内容のファイル ''insert\_dept.sql'' を作成する。
 
-\begin{lstlisting}[caption=insert\_dept.sql]
+\begin{lstlisting}[caption=insert\_dept.sql, language=sql]
 -- dept テーブル
 
 INSERT INTO dept (id, name) VALUES
@@ -301,41 +469,45 @@ SQLのコマンド文字列は大文字で記述し、ユーザーが用意し�
  2021/08/09  22:05          222  insert_dept.sql  
 \end{verbatim}
 
-\newpage
 
 \subsubsection{ファイルを読み込んで、SQL文を実行する}
 
-ここで、mysql を起動する。
+ここで、mysqlサーバーに接続する。
 
-\begin{tcolorbox}
- C:\yen Users\yen (ユーザー名)\yen Documents\yen mysql$>$ \textsf{mysql -u sampleuser -p} \\
- \textsf{Enter password: **********}
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=sql]
+C:\Users\(ユーザー名)\Documents\mysql> mysql -u sampleuser -p
+ Password: ********
+\end{lstlisting}
 
 \textsf{sample}データベースの使用を宣言する。
 
-\begin{tcolorbox}
- mysql$>$ \textsf{USE sample;} \\
- mysql$>$
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=sql]
+ mysql> USE sample;
+\end{lstlisting}
+
+先ほど作った dept表は削除する。
+
+\begin{lstlisting}[numbers=none, language=sql]
+ mysql> DROP TABLE dept;
+\end{lstlisting}
 
 次に、以下のコマンドで \textsf{insert\_dept.sql} を実行できる。
 
-\begin{tcolorbox}
- mysql$>$ \textsf{source insert\_dept.sql}
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=sql]
+ mysql> source insert_dept.sql
+\end{lstlisting}
 
 あるいは、以下のような省略形もある。
 
-\begin{tcolorbox}
- mysql$>$ \textsf{\yen . insert\_dept.sql}
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=sql]
+ mysql> \. insert_dept.sql
+\end{lstlisting}
 
 確認する。
 
-\begin{tcolorbox}
- mysql$>$ \textsf{SELECT * FROM dept;}
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=sql]
+ mysql> SELECT * FROM dept;
+\end{lstlisting}
 
 \begin{verbatim}
 +-----+--------+
@@ -483,4 +655,4 @@ SQLのコマンド文字列は大文字で記述し、ユーザーが用意し�
 
 \include{end}
 
-%% 修正時刻： Fri Feb 18 07:24:35 2022
+%% 修正時刻： Sun Feb 20 16:40:35 2022
