@@ -313,8 +313,59 @@ emp表には dept\_id が '004' である人はいない。
 \end{verbatim}
 \end{spacing}
 
+\newpage
+\section{練習問題}
+
+\subsection{結合の練習}
+
+\fbox{4.2 テーブル作成問題(2)} で作った4つの表を結合しましょう。
+
+gender表、state表、course表、person表 を内部結合して、以下のように表示させてください。
+
+\vspace{3mm}
+\begin{tabular}{|c|l|c|l|l|l|} \hline
+ ID & 名前            & 性別   & 誕生日     & 出身         & コース            \\ \hline\hline 
+  1 & 染谷将太        & 男     & 1992-09-03 & 東京都       & JavaScriptコース  \\ \hline
+  3 & 渡辺哲          & 男     & 1950-03-11 & 愛知県       & Javaコース        \\ \hline
+  4 & 窪塚洋介        & 男     & 1979-05-07 & 神奈川県     & HTML/CSSコース    \\ \hline
+  2 & 二階堂ふみ      & 女     & 1994-09-21 & 沖縄県       & PHPコース         \\ \hline
+  5 & 吉高由里子      & 女     & 1988-07-22 & 東京都       & Javaコース        \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+\begin{lstlisting}[numbers=none]
+mysql> SELECT timestampdiff(YEAR, birthday, curdate()) AS 年齢 FROM person;
+\end{lstlisting}
+
+とすると、以下のように出力できる。
+
+\vspace{3mm}
+\begin{tabular}{|c|} \hline
+ 年齢 \\ \hline\hline
+  29  \\ \hline
+  27  \\ \hline
+  71  \\ \hline
+  42  \\ \hline
+  33  \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+このことから、以下のように表示させることができるはず。
+
+\vspace{3mm}
+\begin{tabular}{|c|l|c|l|l|l|} \hline
+ ID & 名前            & 性別   & 年齢 & 出身         & コース            \\ \hline\hline 
+  1 & 染谷将太        & 男     & 29  & 東京都       & JavaScriptコース  \\ \hline
+  3 & 渡辺哲          & 男     & 71  & 愛知県       & Javaコース        \\ \hline
+  4 & 窪塚洋介        & 男     & 42  & 神奈川県     & HTML/CSSコース    \\ \hline
+  2 & 二階堂ふみ      & 女     & 27  & 沖縄県       & PHPコース         \\ \hline
+  5 & 吉高由里子      & 女     & 33  & 東京都       & Javaコース        \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+
 
 
 \include{end}
 
-%% 修正時刻： Fri Feb 18 07:30:14 2022
+%% 修正時刻： Sun Feb 20 18:19:23 2022

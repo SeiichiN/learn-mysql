@@ -153,6 +153,8 @@ SELECT で表のデータを表示するとき、WHERE で条件を指定する�
  \verb!mysql> SELECT * FROM emp WHERE name LIKE '%葉%';!
 \end{tcolorbox}
 
+\rightline{(\%のうしろには空白はありません。\%の前にもありません。)}
+
 \begin{verbatim}
 +----+--------------+-----+----------+---------+
 | id | name         | age | birthday | dept_id |
@@ -161,12 +163,14 @@ SELECT で表のデータを表示するとき、WHERE で条件を指定する�
 +----+--------------+-----+----------+---------+
 \end{verbatim}
 
-\begin{tabular}{|l|}
- \verb!SELECT [カラム名, ...] FROM テーブル名 WHERE カラム名 LIKE '%語句%';! \\
+\begin{tabular}{|l|} \hline
+ \verb!SELECT [カラム名, ...] FROM テーブル名 WHERE カラム名 LIKE '%語句%';! \\ \hline
 \end{tabular}
+\vspace{3mm}
 
-{\em \%} は 0文字以上の文字列に合致する。\\
-{\em \_} は 1文字以上の文字列に合致する。
+\noindent
+{\em \%}(パーセント) は 0文字以上の文字列に合致する。\\
+{\em \_}(アンダースコア) は 1文字以上の文字列に合致する。
 
 
 \subsection{MySQLの管理}
@@ -191,7 +195,7 @@ Windowsのコマンドプロンプトで実行すると、以下のようにな�
 \verb!| character_set_database   | utf8mb4                           |! \\
 \verb!| character_set_filesystem | binary                            |! \\
 \verb!| character_set_results    | cp932                             |! \\
-\verb!| character_set_server     | utf8                              |! \\
+\verb!| character_set_server     | utf8mb4                           |! \\
 \verb!| character_set_system     | utf8                              |! \\
 \verb!| character_sets_dir       | C:\MAMP\bin\mysql\share\charsets\ |! \\ 
 \verb!+--------------------------+-----------------------------------+! \\ \hline
@@ -208,10 +212,10 @@ Macのターミナルや、同じWindowsでも、コマンドプロンプトが 
 \verb!+--------------------------+-----------------------------------+! \\
 \verb!| character_set_client     | utf8                              |! \\
 \verb!| character_set_connection | utf8                              |! \\
-\verb!| character_set_database   | utf8                              |! \\
+\verb!| character_set_database   | utf8mb4                           |! \\
 \verb!| character_set_filesystem | binary                            |! \\
 \verb!| character_set_results    | utf8                              |! \\
-\verb!| character_set_server     | utf8                              |! \\
+\verb!| character_set_server     | utf8mb4                           |! \\
 \verb!| character_set_system     | utf8                              |! \\
 \verb!| character_sets_dir       | C:\MAMP\bin\mysql\share\charsets\ |! \\ 
 \verb!+--------------------------+-----------------------------------+! \\ \hline
@@ -260,4 +264,4 @@ MySQLで今までに作成したユーザーの一覧を見たい場合、以下
 
 \include{end}
 
-%% 修正時刻： Sun Feb  6 15:26:53 2022
+%% 修正時刻： Sun Feb 20 18:35:26 2022

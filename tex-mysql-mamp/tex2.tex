@@ -257,7 +257,147 @@ mysql> INSERT INTO dept (id, name) VALUES
 +-----+--------+
 \end{verbatim}
 
+\section{練習問題}
 
+\subsection{テーブル作成問題(1)}
+
+以下のようなテーブル person を作成してください。
+
+\vspace{3mm}
+\begin{tabular}{|c|l|c|c|c|l|} \hline
+ ID & 名前        & 性別  & 誕生日     & 出身      & コース            \\ \hline\hline
+  1 & 染谷将太    & 男    & 1992-09-03 & 東京都    & JavaScriptコース  \\ \hline 
+  2 & 二階堂ふみ  & 女    & 1994-09-21 & 沖縄県    & PHPコース         \\ \hline 
+  3 & 渡辺哲      & 男    & 1950-03-11 & 愛知県    & Javaコース        \\ \hline 
+  4 & 窪塚洋介    & 男    & 1979-05-07 & 神奈川県  & HTML/CSSコース    \\ \hline 
+  5 & 吉高由里子  & 女    & 1988-07-22 & 東京都    & Javaコース        \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+データ型
+\vspace{-3mm}
+\begin{itemize}
+ \item ID --- id, INT型、自動連番、主キー
+ \item 名前 --- name, VARCHAR型、(20)くらいにしておく。(全角でも半角でも)。
+ \item 性別 --- gender, CHAR型、(1)なら1文字(全角でも半角でも)
+ \item 誕生日 --- birthday, DATE型。
+ \item 出身 --- state, VARCHAR型、(5) で全ておさまる。(10)でもよい。
+ \item コース --- course, VARCHAR型、(50)くらいにする。
+\end{itemize}
+
+\newpage
+\subsection{テーブル作成問題(2)}
+
+このテーブルは、以下のように 4つ のテーブルに分けて管理しようと思います。
+
+\begin{multicols}{2}
+\vspace{3mm}
+gender表 \\
+\begin{tabular}{|c|c|} \hline
+ \underline{ID}  & 識別名 \\ \hline\hline
+ 0   & 不明 \\ \hline
+ 1   & 男性  \\ \hline
+ 2   & 女性  \\ \hline
+ 3   & その他 \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+\columnbreak
+
+gender表定義
+\begin{itemize}
+ \item ID --- gid, 主キー、CHAR(1)
+ \item 識別名 -- gname, VARCHAR(3)
+\end{itemize} 
+
+\end{multicols}
+
+ 
+\begin{multicols}{2}
+
+\vspace{3mm}
+state表 \\
+\begin{tabular}{|c|l|} \hline
+ \underline{ID} & 都道府県名 \\ \hline\hline
+ 01   & 北海道 \\ \hline
+ 02   & 青森県 \\ \hline
+ 03   & 岩手県 \\ \hline
+ 04   & 宮城県 \\ \hline
+ \dots & \dots \\ \hline
+ 47   & 沖縄県  \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+\columnbreak
+
+state表定義
+\begin{itemize}
+ \item ID --- sid, 主キー、CHAR(2)
+ \item 都道府県 -- sname, VARCHAR(5)
+\end{itemize} 
+
+ state表の入力データは別途あります。(state.sql)
+\end{multicols}
+
+
+\begin{multicols}{2}
+
+\vspace{3mm}
+course表 \\
+\begin{tabular}{|c|l|} \hline
+ \underline{ID} & コース名 \\ \hline\hline
+ 1   & HTML/CSSコース \\ \hline
+ 2   & JavaScriptコース \\ \hline
+ 3   & PHPコース \\ \hline
+ 4   & Javaコース \\ \hline
+ 5   & サーブレットJSPコース  \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+\columnbreak
+ 
+course表定義
+\begin{itemize}
+ \item ID --- cid, int型、主キー、自動連番
+ \item コース名 -- cname, VARCHAR(50)
+\end{itemize} 
+
+ 
+\end{multicols}
+
+
+ person表 は、以下のように変更する必要があります。
+
+\begin{multicols}{2}
+\vspace{3mm}
+person表 \\
+\begin{tabular}{|c|l|c|c|c|l|} \hline
+ ID & 名前        & g\_id  & 誕生日     & s\_id  & c\_id  \\ \hline\hline
+  1 & 染谷将太    &  1    & 1992-09-03 & 13    & 2     \\ \hline 
+  2 & 二階堂ふみ  &  2    & 1994-09-21 & 47    & 3     \\ \hline 
+  3 & 渡辺哲      &  1    & 1950-03-11 & 23    & 4     \\ \hline 
+  4 & 窪塚洋介    &  1    & 1979-05-07 & 14    & 1     \\ \hline 
+  5 & 吉高由里子  &  2    & 1988-07-22 & 13    & 4     \\ \hline
+\end{tabular}
+\vspace{3mm}
+ 
+\columnbreak
+
+person表定義
+\begin{itemize}
+ \item ID --- (そのまま)
+ \item 名前 --- (そのまま)
+ \item 性別 --- g\_id, CHAR(1)
+ \item 誕生日 --- (そのまま)
+ \item 出身 --- s\_id, CHAR(2)
+ \item コース --- c\_id, INT型、
+\end{itemize}
+
+\end{multicols}
+
+
+
+\newpage
 \section{ファイル読込みによるデータの登録}
 
 同様のことを、
@@ -515,4 +655,4 @@ C:\Users\(ユーザー名)\Documents\mysql> mysql -u sampleuser -p
 
 \include{end}
 
-%% 修正時刻： Sun Feb 20 13:35:20 2022
+%% 修正時刻： Sun Feb 20 16:40:35 2022

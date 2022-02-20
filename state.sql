@@ -1,43 +1,16 @@
--- phpMyAdmin SQL Dump
--- version 4.9.5deb2
--- https://www.phpmyadmin.net/
---
--- ホスト: localhost:3306
--- 生成日時: 2022 年 2 月 19 日 12:43
--- サーバのバージョン： 10.3.32-MariaDB-0ubuntu0.20.04.1
--- PHP のバージョン: 7.4.3
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*
+CREATE TABLE state (
+  sid char(2) PRIMARY KEY,
+  sname varchar(5)
+) 
+*/
 
 --
--- データベース: `student`
+-- state
 --
 
--- --------------------------------------------------------
-
---
--- テーブルの構造 `state`
---
-
-CREATE TABLE `state` (
-  `code` char(2) NOT NULL,
-  `name` varchar(5) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- テーブルのデータのダンプ `state`
---
-
-INSERT INTO `state` (`code`, `name`) VALUES
+INSERT INTO state (sid, sname) VALUES
 ('01', '北海道'),
 ('02', '青森県'),
 ('03', '岩手県'),
@@ -86,17 +59,5 @@ INSERT INTO `state` (`code`, `name`) VALUES
 ('46', '鹿児島県'),
 ('47', '沖縄県');
 
---
--- ダンプしたテーブルのインデックス
---
 
---
--- テーブルのインデックス `state`
---
-ALTER TABLE `state`
-  ADD PRIMARY KEY (`code`);
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+-- 修正時刻: Sun Feb 20 16:36:57 2022
