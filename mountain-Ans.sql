@@ -5,10 +5,10 @@ CREATE DATABASE IF NOT EXISTS mountain;
 
 USE mountain;
 
+-- state
 DROP TABLE IF EXISTS teizan;
 DROP TABLE IF EXISTS state;
 
--- state
 CREATE TABLE `state` (
   `code` char(2) NOT NULL,
   `stname` varchar(5) NOT NULL,
@@ -186,7 +186,116 @@ INSERT INTO teizan (name, kana, stcode, height) VALUE
 ('開聞岳', 'かいもんだけ', '46', 924),
 ('日本国', 'にほんこく', '15', 555);
 
+--
+-- gender
+--
+DROP TABLE IF EXISTS person;
+DROP TABLE IF EXISTS gender;
+
+CREATE TABLE gender (
+  gid CHAR(1) PRIMARY KEY,
+  gname VARCHAR(3) NOT NULL
+);
+
+INSERT INTO gender (gid, gname) VALUES
+('0', '不明'),
+('1', '男性'),
+('2', '女性'),
+('3', 'その他');
 
 
+--
+-- person
+--
 
--- 修正時刻: Sun Feb 20 10:09:22 2022
+CREATE TABLE person (
+  id int(11) AUTO_INCREMENT,
+  name varchar(20) NOT NULL,
+  g_id char(1) NOT NULL,
+  birthday date NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (g_id) REFERENCES gender (gid)
+);
+
+--
+-- テーブルのデータのダンプ `person`
+--
+ALTER TABLE person AUTO_INCREMENT = 1;
+
+INSERT INTO `person` (`name`, `g_id`, `birthday`) VALUES
+('染谷将太',   '1', '1992-09-03'),
+('二階堂ふみ', '2', '1994-09-21'),
+('渡辺哲',     '1', '1950-03-11'),
+('窪塚洋介',   '1', '1979-05-07'),
+('吉高由里子', '2', '1988-07-22');
+
+
+-- 
+-- person_teizan
+--
+
+DROP TABLE IF EXISTS person_teizan;
+
+CREATE TABLE person_teizan (
+  p_id INT NOT NULL,
+  t_id INT NOT NULL,
+  PRIMARY KEY (p_id, t_id)
+);
+
+INSERT INTO person_teizan (p_id, t_id) VALUES
+(1, 20),
+(1, 30),
+(1, 50),
+(2, 66),
+(2, 26),
+(2, 30),
+(2, 43),
+(3, 82),
+(3, 44),
+(3, 50),
+(4, 53),
+(4, 58),
+(4, 66),
+(4, 67),
+(5, 82),
+(5, 80),
+(5, 50),
+(5, 30),
+(5, 53);
+
+DROP VIEW IF EXISTS pt_view;
+
+CREATE VIEW pt_view AS
+SELECT
+  p.name as 名前, t.name as 山岳名
+  FROM person_teizan as pt
+    INNER JOIN person as p
+    ON pt.p_id = p.id
+      INNER JOIN teizan as t
+      ON pt.t_id = t.id;
+
+SELECT * FROM pt_view;
+
+DROP VIEW IF EXISTS pt_view2;
+
+CREATE VIEW pt_view2 AS
+SELECT
+  p.name as 名前,
+  g.gname as 性別,
+  TIMESTAMPDIFF(YEAR, p.birthday, CURDATE()) as 年齢,
+  t.name as 山岳名,
+  s.stname as 所在地
+  FROM person_teizan as pt
+    INNER JOIN person as p
+    ON pt.p_id = p.id
+      INNER JOIN teizan as t
+      ON pt.t_id = t.id
+        INNER JOIN gender as g
+        ON p.g_id = g.gid
+          INNER JOIN state as s
+          ON t.stcode = s.code;
+          
+SELECT * FROM pt_view2;
+
+
+-- 修正時刻: Sun Feb 20 11:05:03 2022

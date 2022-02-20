@@ -107,7 +107,9 @@ emp表 \\
 ここまでが「第1正規化」で、この表を「第1正規形」と呼ぶ。
 
 \vspace{5mm}
-\fbox{\large \textgt{第1正規形} :\quad 1つのセルには1つの値しか含まない}
+\begin{tcolorbox}
+{\large \textgt{第1正規形} :\quad 1つのセルには1つの値しか含まない}
+\end{tcolorbox}
 
 \newpage
 \subsection{第2正規形}
@@ -170,8 +172,15 @@ emp\_hobby表\\
  4  & H05 & 梶芽衣子 & サッカー観戦 \\ \cline{1-2}
 \end{tabular}
 
+\vspace{3mm}
+名前と趣味の列は、わかりやすくするためにつけた。
+emp\_hobby表は、ID と HID の2つの列だけの表である。
+
+
 \vspace{5mm}
-\fbox{\large \textgt{第2正規形} :\quad 単一列の主キーであるか、もしくは、すべての列が主キーの一部である。}
+\begin{tcolorbox}
+{\large \textgt{第2正規形} :\quad 表の中に主キーが1つである。複合列が主キーとなっている場合は、主キーの1つだけに従属する列があってはならない。}
+\end{tcolorbox}
 
 
 
@@ -258,7 +267,9 @@ emp表には、表には現れていないが、id に従属せず、別のキ�
 \end{multicols}
 
 \vspace{5mm}
-\fbox{\large \textgt{第3正規形} :\quad すべての列が主キーに従属している。}
+\begin{tcolorbox}
+\large{\textgt{第3正規形} :\quad すべての列が主キーに従属している。}
+\end{tcolorbox}
 
 
 \newpage
@@ -270,12 +281,199 @@ emp表には、表には現れていないが、id に従属せず、別のキ�
 \includegraphics[width=14cm]{img/ER.png}
 \vspace{3mm}
 
+\vspace{3mm}
+\begin{center}
+\includegraphics[width=6cm]{img/ERD-Notation-ja.png}
+\end{center}
+\vspace{3mm}
 
 
+\newpage
+\section{実際にデータベースを作ってみる}
+
+\subsection{sampleuserでMySQLサーバーにログインする}
+
+以下のようなデータベースであるとする。
+
+\begin{tcolorbox}
+ データベース名 : \quad sample \\
+ ユーザー : \quad sampleuser \\
+ パスワード : \quad '1234'
+\end{tcolorbox}
+
+管理者(root) で MySQLサーバーにログインし、sampleデータベース用のユーザーを作成する。
+(すでに sampleuser が存在していて、sample データベースに対する権限を持っていたら不要)
+
+\begin{lstlisting}[numbers=none, language=sql]
+ > mysql -u root -p
+ Password: ********
+ mysql> GRANT ALL ON sample.* TO 'sampleuser'@'localhost' IDENTIFIED BY '1234';
+ mysql> exit
+\end{lstlisting}
+
+現在どのユーザーがいて、どのデータベースに権限を持っているかは、以下のコマンドで調べられる。
+
+\begin{lstlisting}[language=sql]
+ mysql> SELECT user, host, db FROM mysql.db;
+ (出力例)
++---------------+-----------+------------+
+| user          | host      | db         |
++---------------+-----------+------------+
+| sampleuser    | localhost | sample     |
++---------------+-----------+------------+
+\end{lstlisting}
+
+MySQLに sampleuser としてログインし、作業を行う。
+ます、データベースを作成する。(rootで作成してもよい)
+そして、sampleデータベースの使用を宣言する。
+
+\begin{lstlisting}[language=sql]
+ > mysql -u sampleuser -p
+ Password: ********
+ mysql> CREATE DATABASE sample;
+ mysql> USE sample;
+\end{lstlisting}
 
 
+\subsection{テーブルの定義}
+
+以下のようにテーブルを定義する。
+
+\begin{lstlisting}[caption=gender表, language=sql]
+ mysql> CREATE TABLE gender (
+     ->   gid CHAR(1) PRIMARY KEY,
+     ->   gname VARCHAR(3) NOT NULL
+     -> );
+\end{lstlisting}
+
+\begin{lstlisting}[caption=dept表, language=sql]
+ mysql> CREATE TABLE dept (
+     ->   did CHAR(3) PRIMARY KEY,
+     ->   dept_name VARCHAR(20) NOT NULL
+     -> );
+\end{lstlisting}
+
+\begin{lstlisting}[caption=emp表, language=sql]
+ mysql> CREATE TABLE emp (
+     ->   id INT AUTO_INCREMENT,
+     ->   name VARCHAR(100) NOT NULL,
+     ->   gender_id CHAR(1) NOT NULL,
+     ->   age INT NOT NULL,
+     ->   birthyear INT NOT NULL,
+     ->   dept_id CHAR(3),
+     ->   PRIMARY KEY (id),
+     ->   FOREIGN KEY (gender_id) REFERENCES gender (gid),
+     ->   FOREIGN KEY (dept_id) REFERENCES dept (did)
+     -> );
+\end{lstlisting}
+
+\begin{lstlisting}[caption=hobby表, language=sql]
+ mysql> CREATE TABLE hobby (
+     ->   hid CHAR(3) PRIMARY KEY,
+     ->   hname VARCHAR(20) NOT NULL
+     -> );
+\end{lstlisting}
+
+\begin{lstlisting}[caption=emp\_hobby表, language=sql]
+ mysql> CREATE TABLE emp_hobby (
+     ->   id INT NOT NULL,
+     ->   hid CHAR(3) NOT NULL,
+     ->   PRIMARY KEY (id, hid),
+     -> );
+\end{lstlisting}
+
+\subsection{データの登録}
+
+\begin{lstlisting}[caption=gender]
+INSERT INTO gender (gid, g_name) VALUES
+('0', '不明'),
+('1', '男性'),
+('2', '女性'),
+('3', 'その他');
+\end{lstlisting}
+
+\begin{lstlisting}[caption=dept]
+INSERT INTO dept (did, dept_name) VALUES
+('001', '総務部'),
+('002', '営業部'),
+('003', '経理部'),
+('004', '開発部'); 
+\end{lstlisting}
+
+\begin{lstlisting}[caption=emp]
+-- 自動連番の初期値を1にセット
+ALTER TABLE emp AUTO_INCREMENT = 1;
+
+INSERT INTO emp (name, gender_id, age, birthyear, dept_id) VALUES
+('菅原文太', '1', 40, 1933, '001'),
+('千葉真一', '1', 34, 1939, '002'),
+('北大路欣也', '1', 30, 1943, '003'),
+('梶芽衣子', '2', 26, 1947, '002'); 
+\end{lstlisting}
+
+\begin{lstlisting}[caption=hobby]
+INSERT INTO hobby (hid, hname) VALUES
+('H01', '釣り'),
+('H02', '油絵'),
+('H03', '空手'),
+('H04', '熱帯魚飼育'),
+('H05', 'サッカー観戦'),
+('H06', '茶道'),
+('H07', '登山'),
+('H08', 'ヨガ'); 
+\end{lstlisting}
+
+\begin{lstlisting}[caption=emp\_hobby]
+INSERT INTO emp_hobby (id, hid) VALUES
+(1, 'H01'),
+(1, 'H02'),
+(1, 'H03'),
+(2, 'H03'),
+(2, 'H04'),
+(2, 'H05'),
+(2, 'H01'),
+(3, 'H06'),
+(3, 'H03'),
+(4, 'H07'),
+(4, 'H08'),
+(4, 'H05'); 
+\end{lstlisting}
+
+\subsection{データを表示する}
+
+以下のように ビュー を作成してみた。
+
+\begin{lstlisting}[language=sql]
+CREATE VIEW hobby_view AS
+SELECT e.name AS 名前,
+       g.g_name AS 性別,
+       d.dept_name AS 所属,
+       h.h_name AS 趣味
+  FROM emp AS e
+    INNER JOIN emp_hobby AS eh
+    ON eh.id = e.id
+      INNER JOIN gender AS g
+      ON g.gid = e.gender_id
+        INNER JOIN dept AS d
+        ON d.did = e.dept_id
+          INNER JOIN hobby AS h
+          ON h.hid = eh.hid; 
+
+SELECT * FROM hobby_view
+  WHERE 趣味 LIKE '%空手%';
+\end{lstlisting}
+
+\begin{lstlisting}[caption=出力例, numbers=none]
++-----------------+--------+-----------+--------+
+| 名前            | 性別    | 所属      | 趣味    |
++-----------------+--------+-----------+--------+
+| 菅原文太         | 男性    | 総務部    | 空手    |
+| 千葉真一         | 男性    | 営業部    | 空手    |
+| 北大路欣也       | 男性    | 経理部    | 空手    |
++-----------------+--------+-----------+--------+
+\end{lstlisting}
 
 
 \include{end}
 
-%% 修正時刻： Sat Feb 19 19:08:31 2022
+%% 修正時刻： Sun Feb 20 09:14:26 2022

@@ -5,12 +5,36 @@
 
 \section{練習問題}
 
-次の各表からデータベースを設計してください。ER図を書くのをゴールとします。
-
 データベース名は \textsf{mountain}。
 ユーザー名は 'moutain\_user'。パスワードは '1234' です。
 
-また、その中に、teizanテーブルがあります。
+また、その中に、teizanテーブルと stateテーブルがあります。
+
+まず、mountain\_user ユーザーを作成し、
+mountain\_user に mountain データベースへの権限を与えてください。
+
+\begin{lstlisting}[caption=作業例, numbers=none, language=sql]
+ > mysql -u root -p
+ Password: ********
+ mysql> GRANT ALL ON mountain.* TO 'mountain_user'@'localhost'
+     -> IDENTIFIED BY '1234';
+ mysql> exit
+\end{lstlisting}
+
+次に、mountain\_userユーザーでログインし、mountain.sql を読み込んでください。
+
+\begin{lstlisting}[caption=作業例, numbers=none, language=sql]
+ > mysql -u mountain_user -p
+ Password: *******
+ mysql> source mountain.sql     (あるいは)    \. mountain.sql
+\end{lstlisting}
+
+これで、teizanテーブルと stateテーブルが読み込まれます。
+
+\subsection{ER図を書く}
+
+次の各表からデータベースを設計してください。ER図を書くのをゴールとします。
+
 
 \begin{multicols}{2}
 \vspace{3mm}
@@ -32,26 +56,22 @@ id & 名前       & 性別 & 誕生日 \\ \hline\hline
 \begin{tabular}{|l|l|l|l|l|} \hline
  id & 山岳名   & かな           &  標高(m) & 所在地   \\ \hline\hline
  20 & 八溝山    & やみぞさん      &   1022  & 福島県   \\ \hline 
+ 26 & 榛名山    & はるなさん      &   1449  & 群馬県    \\ \hline
  30 & 荒船山    & あらふねやま    &   1423  & 群馬県    \\ \hline
- 50 & 大山      & おおやま        &   1252  & 神奈川県  \\ \hline
+ 43 & 権現山    & ごんげんやま    &   1312  & 山梨県    \\ \hline
  44 & 高尾山    & たかおさん      &    599  & 東京都    \\ \hline
  50 & 大山      & おおやま        &   1252  & 神奈川県  \\ \hline
- 82 & 比叡山    & ひえいざん      &    848  & 京都府    \\ \hline
  53 & 駒ガ岳    & こまがたけ      &   1438  & 神奈川県  \\ \hline
  58 & 弥彦山    & やひこやま      &    634  & 新潟県    \\ \hline
  66 & 身延山    & みのぶさん      &   1153  & 山梨県    \\ \hline
  67 & 高社山    & たかやしろやま  &   1351  & 長野県    \\ \hline
- 26 & 榛名山    & はるなさん      &   1449  & 群馬県    \\ \hline
- 30 & 荒船山    & あらふねやま    &   1423  & 群馬県    \\ \hline
- 43 & 権現山    & ごんげんやま    &   1312  & 山梨県    \\ \hline
  66 & 身延山    & みのぶさん      &   1153  & 山梨県    \\ \hline
- 30 & 荒船山    & あらふねやま    &   1423  & 群馬県    \\ \hline
- 50 & 大山      & おおやま        &   1252  & 神奈川県  \\ \hline
- 53 & 駒ガ岳    & こまがたけ      &   1438  & 神奈川県  \\ \hline
  80 & 伊吹山    & いぶきやま      &   1377  & 滋賀県    \\ \hline
  82 & 比叡山    & ひえいざん      &    848  & 京都府    \\ \hline
 \end{tabular}
+
 \vspace{3mm}
+この表は1部です。完全な表は teizanテーブルです。
 \end{multicols}
 
 \vspace{3mm}
@@ -66,9 +86,168 @@ id & 名前       & 登った山 \\ \hline\hline
 \end{tabular}
 \vspace{3mm}
 
+\subsection{テーブル定義を書く}
+
+以下のテーブルの定義を書いてください。
+
+\fbox{gender表} \fbox{person表} \fbox{person\_teizan表} \\
+
+条件
+\vspace{-3mm}
+\begin{enumerate}
+ \item person表の主キー(id)は整数型で、自動連番である。
+ \item person表の性別の項目は、gender表の主キーを参照している。
+ \item person表の birthday カラムは、DATE型にする。
+ \item teizan表の所在地の項目は、state表の主キーを参照している。
+ \item person\_teizan表は、personを表すキーとteizanを表すキーの2つが主キーと
+       なっている(複合主キー)。
+\end{enumerate}
+
+\vspace{3mm}
+gender表 \\
+\begin{tabular}{|c|c|} \hline
+ gid & gname \\ \hline\hline
+ 0   & 不明  \\ \hline
+ 1   & 男性   \\ \hline
+ 2   & 女性  \\ \hline
+ 3   & その他 \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+
+\vspace{3mm}
+person表 \\
+\begin{tabular}{|c|l|c|l|} \hline
+ id & name           & g\_id & birthday   \\ \hline\hline
+ 1 & 染谷将太        & 1    & 1992-09-03 \\ \hline
+ 2 & 二階堂ふみ      & 2    & 1994-09-21 \\ \hline
+ 3 & 渡辺哲          & 1    & 1950-03-11 \\ \hline
+ 4 & 窪塚洋介        & 1    & 1979-05-07 \\ \hline
+ 5 & 吉高由里子      & 2    & 1988-07-22 \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+
+\begin{lstlisting}[caption=person\_teizan, numbers=none]
++-------+---------+------+-----+---------+-------+
+| Field | Type    | Null | Key | Default | Extra |
++-------+---------+------+-----+---------+-------+
+| p_id  | int(11) | NO   | PRI | NULL    |       |
+| t_id  | int(11) | NO   | PRI | NULL    |       |
++-------+---------+------+-----+---------+-------+
+\end{lstlisting}
+
+person\_teizan表 \\
+\begin{tabular}{|c|c|} \hline
+ p\_id & t\_id \\ \hline\hline
+ 1 &   20 \\ \hline
+ 1 &   30  \\ \hline
+ 1 &   50  \\ \hline
+ 2 &   26  \\ \hline
+ 2 &   30  \\ \hline
+ 2 &   43  \\ \hline
+ 2 &   66  \\ \hline
+ 3 &   44  \\ \hline
+ 3 &   50  \\ \hline
+ 3 &   82  \\ \hline
+ 4 &   53  \\ \hline
+ 4 &   58  \\ \hline
+ 4 &   66  \\ \hline
+ 4 &   67  \\ \hline
+ 5 &   30  \\ \hline
+ 5 &   50  \\ \hline
+ 5 &   53  \\ \hline
+ 5 &   80  \\ \hline
+ 5 &   82  \\ \hline
+\end{tabular}
+
+\newpage
+\subsection{データを表示する}
+
+以下のように表示するよう、SQL文を組み立ててください。
+
+\vspace{3mm}
+\begin{tabular}{|l|l|} \hline
+ 名前            & 山岳名  \\ \hline\hline
+ 染谷将太        & 八溝山    \\ \hline
+ 染谷将太        & 荒船山    \\ \hline
+ 染谷将太        & 大山      \\ \hline
+ 二階堂ふみ      & 榛名山    \\ \hline
+ 二階堂ふみ      & 荒船山    \\ \hline
+ 二階堂ふみ      & 権現山    \\ \hline
+ 二階堂ふみ      & 身延山    \\ \hline
+ 渡辺哲          & 高尾山    \\ \hline
+ 渡辺哲          & 大山      \\ \hline
+ 渡辺哲          & 比叡山    \\ \hline
+ 窪塚洋介        & 駒ガ岳    \\ \hline
+ 窪塚洋介        & 弥彦山    \\ \hline
+ 窪塚洋介        & 身延山    \\ \hline
+ 窪塚洋介        & 高社山    \\ \hline
+ 吉高由里子      & 荒船山    \\ \hline
+ 吉高由里子      & 大山      \\ \hline
+ 吉高由里子      & 駒ガ岳    \\ \hline
+ 吉高由里子      & 伊吹山    \\ \hline
+ 吉高由里子      & 比叡山    \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+\newpage
+以下のように表示するよう、SQL文を組み立ててください。
+
+\vspace{3mm}
+\begin{tabular}{|c|c|c|c|c|} \hline
+ 名前            & 性別   & 年齢   & 山岳名    & 所在地   \\ \hline\hline
+ 染谷将太        & 男性   &     29 & 八溝山    & 福島県   \\ \hline    
+ 染谷将太        & 男性   &     29 & 荒船山    & 群馬県   \\ \hline    
+ 染谷将太        & 男性   &     29 & 大山      & 神奈川県 \\ \hline    
+ 渡辺哲          & 男性   &     71 & 高尾山    & 東京都   \\ \hline    
+ 渡辺哲          & 男性   &     71 & 大山      & 神奈川県 \\ \hline    
+ 渡辺哲          & 男性   &     71 & 比叡山    & 京都府   \\ \hline    
+ 窪塚洋介        & 男性   &     42 & 駒ガ岳    & 神奈川県 \\ \hline    
+ 窪塚洋介        & 男性   &     42 & 弥彦山    & 新潟県   \\ \hline    
+ 窪塚洋介        & 男性   &     42 & 身延山    & 山梨県   \\ \hline    
+ 窪塚洋介        & 男性   &     42 & 高社山    & 長野県   \\ \hline    
+ 二階堂ふみ      & 女性   &     27 & 榛名山    & 群馬県   \\ \hline    
+ 二階堂ふみ      & 女性   &     27 & 荒船山    & 群馬県   \\ \hline    
+ 二階堂ふみ      & 女性   &     27 & 権現山    & 山梨県   \\ \hline    
+ 二階堂ふみ      & 女性   &     27 & 身延山    & 山梨県   \\ \hline    
+ 吉高由里子      & 女性   &     33 & 荒船山    & 群馬県   \\ \hline    
+ 吉高由里子      & 女性   &     33 & 大山      & 神奈川県 \\ \hline    
+ 吉高由里子      & 女性   &     33 & 駒ガ岳    & 神奈川県 \\ \hline    
+ 吉高由里子      & 女性   &     33 & 伊吹山    & 滋賀県   \\ \hline    
+ 吉高由里子      & 女性   &     33 & 比叡山    & 京都府   \\ \hline    
+\end{tabular}
+\vspace{3mm}
+
+(ヒント)
+
+年齢を表示するためには、以下の関数を使うとよいです。
+
+\vspace{3mm}
+\begin{tcolorbox}
+\verb!timestampdiff(YEAR, [birthdayのカラム], curdate())!
+\end{tcolorbox}
+\vspace{3mm}
+
+たとえば、person表の場合、以下のようにすると、年齢が表示されます。
+
+\begin{lstlisting}[numbers=none]
+mysql> SELECT timestampdiff(YEAR, birthday, curdate()) AS 年齢 FROM person;
+
++--------+
+| 年齢   |
++--------+
+|     29 |
+|     27 |
+|     71 |
+|     42 |
+|     33 |
++--------+
+\end{lstlisting}
+
 
 
 
 \include{end}
 
-%% 修正時刻： Sat Feb 19 22:19:46 2022
+%% 修正時刻： Sun Feb 20 12:23:36 2022
