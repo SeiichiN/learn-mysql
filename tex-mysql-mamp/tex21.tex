@@ -2,7 +2,35 @@
 
 \include{begin}
 
-\section{データベースをバックアップする}
+\section{MySQLの管理}
+
+
+\subsection{ユーザー一覧}
+
+MySQLで今までに作成したユーザーの一覧を見たい場合、以下のコマンドでできる。
+ただし、ルート・ユーザー(root)でないと権限がないと怒られる。
+
+\begin{tcolorbox}
+ \verb!mysql> SELECT user, host, db FROM mysql.db;!
+\end{tcolorbox}
+
+パスワードは暗号化されているので、見ても仕方がないが、以下のコマンドでできる。
+
+\begin{tcolorbox}
+ \verb!mysql> SELECT user, password FROM mysql.user;!
+\end{tcolorbox}
+
+\subsection{パスワードの再設定}
+
+パスワードを忘れたなどで、パスワードを再設定したい場合は、以下のコマンドでできる。
+(rootユーザーで実行)
+
+\begin{tcolorbox}
+ mysql$>$ SET \ PASSWORD \ FOR \ 'ユーザー名'@'localhost' \ = \ password('パスワード');
+\end{tcolorbox}
+
+
+\section{データベースのバックアップと復元}
 
 \subsection{バックアップ}
 
@@ -68,4 +96,4 @@
 
 \include{end}
 
-%% 修正時刻： Sun Feb  6 14:51:07 2022
+%% 修正時刻： Mon Feb 21 14:40:09 2022
