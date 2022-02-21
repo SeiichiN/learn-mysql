@@ -2,7 +2,7 @@
 
 \include{begin}
 
-\section{MySQLの管理}
+\section{MySQLの運用と管理}
 
 
 \subsection{ユーザー一覧}
@@ -30,9 +30,9 @@ MySQLで今までに作成したユーザーの一覧を見たい場合、以下
 \end{tcolorbox}
 
 
-\section{データベースのバックアップと復元}
+\subsection{データベースのバックアップと復元}
 
-\subsection{バックアップ}
+\subsubsection{バックアップ}
 
 データの入力が終わったら、データベースをバックアップする。
 
@@ -73,7 +73,7 @@ MySQLで今までに作成したユーザーの一覧を見たい場合、以下
 この場合は、バックアップファイルの記述の中に、CREATE DATABASE 文がない。
 }
 
-\subsection{データのリストア(復元)}
+\subsubsection{データのリストア(復元)}
 
 以下のコマンドを実行する。
 \footnote{-B オプションをつけずにバックアップファイルを作成した場合は、まず sample
@@ -96,4 +96,4 @@ MySQLで今までに作成したユーザーの一覧を見たい場合、以下
 
 \include{end}
 
-%% 修正時刻： Mon Feb 21 14:40:09 2022
+%% 修正時刻： Mon Feb 21 18:01:02 2022

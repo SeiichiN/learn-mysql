@@ -2,10 +2,6 @@
 
 \include{begin}
 
-\section{MySQL その他}
-
-以下は、MySQLがどんな設定で動作しているかということで、
-特に指定しなくても困らない。
 
 \subsection{文字コードあるいは文字セット}
 
@@ -16,76 +12,9 @@
 {(出典)文字コード入門 https://www.tohoho-web.com/ex/charset.html}}
 
 
-\subsection{MySQLの文字コードの確認}
-
-MySQLで文字コードを確認するには、以下のコマンドを使う。
-
-\begin{tcolorbox}
- \verb!mysql> SHOW VARIABLES LIKE '%char%';!
-\end{tcolorbox}
-
-Windowsのコマンドプロンプトで実行すると、以下のようになる。
-
-\vspace{3mm}
-\begin{tabular}{|l|} \hline
-\verb!+--------------------------+-----------------------------------+! \\
-\verb!| Variable_name            | Value                             |! \\
-\verb!+--------------------------+-----------------------------------+! \\
-\verb!| character_set_client     | cp932                             |! \\
-\verb!| character_set_connection | cp932                             |! \\
-\verb!| character_set_database   | utf8mb4                           |! \\
-\verb!| character_set_filesystem | binary                            |! \\
-\verb!| character_set_results    | cp932                             |! \\
-\verb!| character_set_server     | utf8mb4                           |! \\
-\verb!| character_set_system     | utf8                              |! \\
-\verb!| character_sets_dir       | C:\MAMP\bin\mysql\share\charsets\ |! \\ 
-\verb!+--------------------------+-----------------------------------+! \\ \hline
-\end{tabular}
-\vspace{3mm}
-
-Macのターミナルや、同じWindowsでも、コマンドプロンプトが UTF-8(cp65001)に
-なっていると、以下のようになる。
-
-\vspace{3mm}
-\begin{tabular}{|l|} \hline
-\verb!+--------------------------+-----------------------------------+! \\
-\verb!| Variable_name            | Value                             |! \\
-\verb!+--------------------------+-----------------------------------+! \\
-\verb!| character_set_client     | utf8                              |! \\
-\verb!| character_set_connection | utf8                              |! \\
-\verb!| character_set_database   | utf8mb4                           |! \\
-\verb!| character_set_filesystem | binary                            |! \\
-\verb!| character_set_results    | utf8                              |! \\
-\verb!| character_set_server     | utf8mb4                           |! \\
-\verb!| character_set_system     | utf8                              |! \\
-\verb!| character_sets_dir       | C:\MAMP\bin\mysql\share\charsets\ |! \\ 
-\verb!+--------------------------+-----------------------------------+! \\ \hline
-\end{tabular}
-\vspace{3mm}
-
-{\em mysql} というのはクライアント・アプリで、{\em mysqld} というのが
-サーバー・アプリなのだが、mysqlクライアントが mysqldサーバーに接続
-するときに、自身の環境の文字コードを mysqldサーバーに送るのである。
-mysqldサーバーは、SQLコマンドの結果を mysqlクライアントに送るときに
-そのクライアントの文字コードにして送るのである。
-
-ただ、mysqldumpコマンドの場合、指定しなければ UTF-8 の文字コードで
-送られる。だから、mysqldumpで取得できたダンプファイルの文字コードは
-UTF-8 である。
-
-これは、リストアする時に特に意識する必要はない。
-
 \subsubsection{MySQLの文字コード(文字セット)}
 
-MySQLにログインする。
-
-\begin{tcolorbox}
- $>$ mysql -u sampleuser -p \\
- Enter password: ******** \\
- mysql$>$
-\end{tcolorbox}
-
-ここで以下のコマンドを実行する。
+MySQLにログインした状態で以下のコマンドを実行する。
 
 \begin{tcolorbox}
  mysql$>$ SHOW \ VARIABLES \ LIKE \  \verb!'%char%'!;
@@ -93,8 +22,7 @@ MySQLにログインする。
 \rightline{※ これは ``'char'という文字列を\underline{含む}変数を表示しなさい'' と
 いう意味のコマンドである。}
 
-\begin{spacing}{0.8}
-\begin{verbatim}
+\begin{lstlisting}[numbers=none]
 +--------------------------+-----------------------------------+
 | Variable_name            | Value                             |
 +--------------------------+-----------------------------------+
@@ -107,8 +35,20 @@ MySQLにログインする。
 | character_set_system     | utf8                              |
 | character_sets_dir       | C:\MAMP\bin\mysql\share\charsets\ |
 +--------------------------+-----------------------------------+
-\end{verbatim}
-\end{spacing}
+\end{lstlisting}
+
+MacやLinuxだと、cp932 のところが utf8 になっているはずである。
+\footnote{mysqlクライアントが mysqldサーバーに接続
+するときに、自身の環境の文字コードを mysqldサーバーに送るのである。
+mysqldサーバーは、SQLコマンドの結果を mysqlクライアントに送るときに
+そのクライアントの文字コードにして送るのである。
+
+ただ、mysqldumpコマンドの場合、指定しなければ UTF-8 の文字コードで
+送られる。だから、mysqldumpで取得できたダンプファイルの文字コードは
+UTF-8 である。
+
+これは、リストアする時に特に意識する必要はない。
+}
 
 MySQL は、サーバープログラムとクライアントプログラムで動作している。
 
@@ -175,7 +115,7 @@ character\_sets\_dir       & : &
 \hspace{8mm}文字セットを扱う上で必須となるファイルを配置しているディレクトリ
 \end{tcolorbox}
 
-XAMPPの場合、初期状態(この状態)で Windowsに最適な設定になっているはずである。
+MAMPの場合、初期状態(この状態)で Windowsに最適な設定になっているはずである。
 
 \begin{quote}
 クライアント --- cp932(Shift\_JIS) \\
@@ -191,7 +131,7 @@ MySQLはデータベースを作成するとき、\textsf{utf8mb4} という文�
 MySQLにログインした状態で実行する。
 
 \begin{tcolorbox}
- MariaDB [(none)]$>$ SHOW \ CREATE \ DATABASE \ sample;
+ mysql$>$ SHOW \ CREATE \ DATABASE \ sample;
 \end{tcolorbox}
 
 \begin{spacing}{0.8}
@@ -271,4 +211,4 @@ MySQL5.5から ``InnoDB'' がデフォルトのストレージエンジンとな
 
 \include{end}
 
-%% 修正時刻： Mon Feb 21 14:40:33 2022
+%% 修正時刻： Mon Feb 21 18:19:28 2022
