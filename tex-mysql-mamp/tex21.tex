@@ -2,9 +2,11 @@
 
 \include{begin}
 
-\section{データベースをバックアップする}
+\section{MySQLの運用・管理}
 
-\subsection{バックアップ}
+\subsection{データベースのバックアップと復元}
+
+\subsubsection{バックアップ}
 
 データの入力が終わったら、データベースをバックアップする。
 
@@ -45,7 +47,7 @@
 この場合は、バックアップファイルの記述の中に、CREATE DATABASE 文がない。
 }
 
-\subsection{データのリストア(復元)}
+\subsubsection{データのリストア(復元)}
 
 以下のコマンドを実行する。
 \footnote{-B オプションをつけずにバックアップファイルを作成した場合は、まず sample
@@ -66,6 +68,32 @@
 
 
 
+\subsection{ユーザー一覧}
+
+MySQLで今までに作成したユーザーの一覧を見たい場合、以下のコマンドでできる。
+ただし、ルート・ユーザー(root)でないと権限がないと怒られる。
+
+\begin{tcolorbox}
+ \verb!mysql> SELECT user, host, db FROM mysql.db;!
+\end{tcolorbox}
+
+パスワードは暗号化されているので、見ても仕方がないが、以下のコマンドでできる。
+
+\begin{tcolorbox}
+ \verb!mysql> SELECT user, password FROM mysql.user;!
+\end{tcolorbox}
+
+\subsection{パスワードの再設定}
+
+パスワードを忘れたなどで、パスワードを再設定したい場合は、以下のコマンドでできる。
+(rootユーザーで実行)
+
+\begin{tcolorbox}
+ mysql$>$ SET \ PASSWORD \ FOR \ 'ユーザー名'@'localhost' \ = \ password('パスワード');
+\end{tcolorbox}
+
+
+
 \include{end}
 
-%% 修正時刻： Sun Feb  6 14:51:07 2022
+%% 修正時刻： Mon Feb 21 13:39:59 2022
