@@ -29,8 +29,6 @@ PHPの設定ファイルは以下である。(php v7.4.16 の場合)
 \begin{lstlisting}[caption=php.ini]
 307 memory_limit = 512M
 
-356 error_reporting = E_ALL & ~E_NOTICE
-
 375 display_errors = on
 
 494 post_max_size = 512M
@@ -44,9 +42,6 @@ PHPの設定ファイルは以下である。(php v7.4.16 の場合)
 
 307, 494, 607 を 512M としたのは、今後 WordPress でバックアップファイルから
 復元するときのことを考慮したのである。
-
-356 で ~E\_NOTICE を加えたのは、変数宣言で内容が未定の場合に NOTICE が
-出力されるのが煩わしいからである。
 
 375 で on とすることにより、エラーがブラウザに出力されるようになる。
 
@@ -91,4 +86,4 @@ MySQL5.7.9 以降では UTF-8mb4(4バイト)が使えるようになった。
 
 \include{end}
 
-%% 修正時刻： Tue Feb  8 10:51:57 2022
+%% 修正時刻： Sat 2022/03/19 18:01:172
