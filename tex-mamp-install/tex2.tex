@@ -4,7 +4,7 @@
 
 \section{MAMPの設定}
 
-\subsection{PHPの設定}
+\subsection{PHPのバージョン}
 
 MAMPがせっかくPHP8に対応したが、PHP8だとWordPressを動かした場合、
 不具合が発生するので、PHP7を動かすことにする。
@@ -17,6 +17,23 @@ php8.0.1 & $\rightarrow$ & \_php8.0.1 \\
 php8.1.0 & $\rightarrow$ & \_php8.1.0 \\ \hline
 \end{tabular}
 \vspace{3mm}
+
+PHP のバージョンを確認する。
+
+\vspace{3mm}
+\includegraphics[width=10cm]{img/13-preferences.png}
+\vspace{3mm}
+
+ここに選択できるバージョンが示されるので、それを選択する。
+
+\vspace{3mm}
+\includegraphics[width=10cm]{img/14-php-ver.png}
+\vspace{3mm}
+
+このバージョンは覚えておく。
+
+
+\subsection{PHPの設定}
 
 PHPの設定ファイルは以下である。(php v7.4.16 の場合)
 
@@ -86,4 +103,4 @@ MySQL5.7.9 以降では UTF-8mb4(4バイト)が使えるようになった。
 
 \include{end}
 
-%% 修正時刻： Sat 2022/03/19 18:01:172
+%% 修正時刻： Wed 2022/04/06 06:22:582
