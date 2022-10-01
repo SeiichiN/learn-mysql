@@ -72,10 +72,14 @@ emp表の id, name, age と dept表の name だけを表示させる。
 
 
 \begin{lstlisting}[numbers=none, language=SQL]
- mysql> SELECT emp.id, emp.name, age, dept.name
+ mysql> SELECT
+     ->   emp.id,
+     ->   emp.name,
+     ->   age,
+     ->   dept.name
      -> FROM emp
      -> INNER JOIN dept
-     -> ON emp.dept_id = dept.id;
+     ->   ON emp.dept_id = dept.id;
 \end{lstlisting}
 
 
@@ -410,4 +414,4 @@ mysql> SELECT
 
 \include{end}
 
-%% 修正時刻： Sat 2022/10/01 18:25:282
+%% 修正時刻： Sun 2022/10/02 05:17:442
