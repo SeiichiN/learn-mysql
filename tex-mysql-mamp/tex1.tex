@@ -109,12 +109,14 @@ primary key には、数字やコードが使われる。
 
 \vspace{3mm}
 XX会社 部署一覧 \\
+\vspace{3mm}
 \hspace{5mm}
-\begin{tabular}{|c|} \hline
- 総務部 \\
- 営業部 \\
- 経理部 \\
- 開発部 \\ \hline
+\begin{tabular}{|l|l|} \hline
+ id   & 部署名 \\ \hline
+ d001 & 総務部 \\
+ d002 & 営業部 \\
+ d003 & 経理部 \\
+ d004 & 開発部 \\ \hline
 \end{tabular}\vspace{3mm}
 
 
@@ -154,7 +156,12 @@ MySQLの場合、以下の手順でログインできる。
 
 \begin{tcolorbox}
  mysql$>$
+\footnote{今までは windows のコマンドプロンプト環境で、プロンプトは $>$
+であった。mysql$>$ というプロンプトは MySQLデータベースにログインしている
+、つまりMySQLの環境にいるということである。だから、コマンドプロンプトでの
+コマンドは使えないことに注意する。}
 \end{tcolorbox}
+
 
 \newpage
 \subsubsection{ユーザーの作成と権限の付与}
@@ -163,14 +170,18 @@ MySQLの場合、以下の手順でログインできる。
 \textsf{sample} データベースへの権限を与えることができる。
 \footnote{ユーザーの作成と権限付与を別々にすることもできる。\\
 sampleuser というユーザーの作成と 1234 というパスワードの設定\\
-mysql$>$ CREATE USER 'sampleuser'@'localhost' IDENTIFIED BY '1234'; \\
+\hspace{3mm}
+ mysql$>$ CREATE USER 'sampleuser'@'localhost' IDENTIFIED BY '1234'; \\
 sampleuser に sample データベースへの権限を付与する。\\
-mysql$>$ GRANT ALL [PRIVILEGES] ON sample.* TO 'sampleuser'@'localhost';
+\hspace{3mm}
+ mysql$>$ GRANT ALL [PRIVILEGES] ON sample.* TO 'sampleuser'@'localhost';
 }
 ここでは、ユーザー名を sampleuser、パスワードを 1234 としている。
 
 \begin{tcolorbox}
-mysql$>$ GRANT \ ALL \ ON \ sample.* \ TO \ 'sampleuser'@'localhost' \\
+mysql$>$ GRANT \ ALL \ [PRIVILEGES]
+ \footnote{[PRIVILEGES]は省略できる。}
+ \ ON \ sample.* \ TO \ 'sampleuser'@'localhost' \\
 \hspace{20mm} -$>$ IDENTIFIED \ BY \ '1234';
 \end{tcolorbox}
 
@@ -202,8 +213,13 @@ mysql$>$ GRANT \ ALL \ ON \ sample.* \ TO \ 'sampleuser'@'localhost' \\
  mysql$>$ 
 \end{tcolorbox}
 
+\begin{multicols}{2}
 \fbox{mysql \ -u \ ユーザー名 \ -p} \\
-Enter password: \fbox{パスワード}
+Enter password: \fbox{パスワード} \\
+あるいは、このように -p の後に続けてパスワードを書くこともできる。
+(空白は{\textgt なし}で)\\
+\fbox{mysql \ -u \ ユーザー名 \ -pパスワード}
+\end{multicols}
 \vspace{3mm}
 
 データベース \textsf{sample} を作成する。
@@ -225,4 +241,4 @@ Enter password: \fbox{パスワード}
 
 \include{end}
 
-%% 修正時刻： Sun Feb  6 14:32:52 2022
+%% 修正時刻： Sat 2022/10/01 07:29:492

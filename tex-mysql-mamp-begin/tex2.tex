@@ -1,0 +1,98 @@
+\documentclass[uplatex, dvipdfmx]{jsarticle}
+
+\include{begin}
+
+\section{テーブルを定義する}
+
+\subsection{テーブルの定義}
+
+以下のようなテーブルを作成することとする。
+
+\begin{table}[h]
+ \caption{emp}
+ \begin{center}
+  \begin{tabular}[h]{|c|l|c|c|c|}
+   \hline
+   ID & 名前       & 年齢 & 誕生年 & 部署 \\ \hline\hline
+   1  & 菅原文太   & 40   & 1933   & 総務部    \\ \hline
+   2  & 千葉真一   & 34   & 1939   & 営業部    \\ \hline
+   3  & 北大路欣也 & 30   & 1943   & 経理部    \\ \hline
+   4  & 梶芽衣子   & 26   & 1947   & 営業部    \\ \hline
+  \end{tabular}
+ \end{center}
+\end{table}
+
+それぞれの列のデータ型を決める。
+
+\vspace{3mm}
+\begin{tabular}{|l|l|l|} \hline
+ 列     & データの種類   & データ型 \\ \hline
+ ID     & 整数           & int型 \\
+ 名前   & 文字列(可変長) & varchar型 \\
+ 年齢   & 整数           & int型 \\
+ 誕生年 & 年             & year型 \\
+ 部署   & 文字列(可変長) & varchar型 \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+この表は以下のように定義できる。
+表の名前を ''emp'' とする。
+
+\vspace{3mm}
+\begin{lstlisting}[
+ language=SQL,
+ caption=empテーブルの定義
+ ]
+mysql> create table emp (
+  -> id int primary key,
+  -> name varchar(20),
+  -> age int,
+  -> birthyear year,
+  -> dept varchar(20)
+  -> );
+Query OK, 0 row affected (0.015sec)
+\end{lstlisting}
+\vspace{3mm}
+
+\subsection{テーブルの確認}
+
+テーブルができたかどうかは、以下のコマンドで確認できる。
+
+\begin{tcolorbox}
+ mysql$>$ show \ tables; \ (複数形)
+\end{tcolorbox}
+
+\begin{lstlisting}[numbers=none]
++------------------+
+| Tables_in_rensyu |
++------------------+
+| emp              |
++------------------+
+\end{lstlisting}
+
+
+また、そのテーブルの定義の確認は、以下のコマンドでできる。
+
+\begin{tcolorbox}
+ mysql$>$ desc \ emp;
+\end{tcolorbox}
+
+\begin{lstlisting}[numbers=none, language={}]
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| id        | int(11)     | NO   | PRI | NULL    |       |
+| name      | varchar(20) | YES  |     | NULL    |       |
+| age       | int(11)     | YES  |     | NULL    |       |
+| birthyear | year(4)     | YES  |     | NULL    |       |
+| dept      | varchar(20) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+\end{lstlisting}
+
+
+
+
+
+\include{end}
+
+%% 修正時刻： Sat 2022/10/01 08:45:160
