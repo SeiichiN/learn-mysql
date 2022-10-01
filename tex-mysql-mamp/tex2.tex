@@ -121,7 +121,7 @@ deptテーブルは、このような定義になる。
 
 以下のコマンドにより empテーブルを作成できる。
 
-\begin{lstlisting}[numbers=none]
+\begin{lstlisting}[numbers=none, language=SQL]
  mysql> CREATE TABLE emp (
      ->   id INT AUTO_INCREMENT,
      ->   name VARCHAR(20) NOT NULL,
@@ -135,7 +135,7 @@ deptテーブルは、このような定義になる。
 同様に deptテーブルも作成する。
 \footnote{primary key の指定は、id の指定のときに書くこともできるし、別項目に分けて書くこともできる。}
 
-\begin{lstlisting}[numbers=none]
+\begin{lstlisting}[numbers=none, language=SQL]
  mysql> CREATE TABLE dept (
      ->   id CHAR(3) PRIMARY KEY,
      ->   name VARCHAR(20) NOT NULL
@@ -177,13 +177,17 @@ CREATE TABLE `emp` (
 データの登録は、以下のコマンドでできる。
 
 \begin{lstlisting}[numbers=none, language=sql]
- mysql> INSERT INTO emp (name, age, birthday, dept_id) VALUES ('菅原文太', 40, 1933, '001');
+ mysql> INSERT INTO emp
+     ->   (name, age, birthday, dept_id)
+     -> VALUES
+     ->   ('菅原文太', 40, 1933, '001');
 \end{lstlisting}
 
 \begin{tabular}{|l|} \hline
- INSERT \ INTO \ テーブル名
- ( \ カラム名1, \ カラム名2, \ カラム名3, \ \dots \dots \ ) \ VALUES \ (データ1, \\
- データ2, \ データ3, \ \dots \dots) \\ \hline
+ INSERT \ INTO \ テーブル名 \\
+ \hspace{3mm}  ( \ カラム名1, \ カラム名2, \ カラム名3, \ \dots \dots \ ) \\
+ VALUES \\
+ \hspace{3mm}  (データ1, \ データ2, \ データ3, \ \dots \dots) \\ \hline
 \end{tabular}
 
 
@@ -192,11 +196,13 @@ CREATE TABLE `emp` (
 ''id'' は auto\_increment(自動連番) なので、指定しない。\\
 また、dept\_id は char(3) なので、\textsf{'001'} シングルクォーテーションを使って入力する。
 
-画面の関係で一行で入力しづらければ、次のように二行で入力することもできる。
+画面の関係で一行で入力しづらければ、次のように複数行で入力することもできる。
 
 \begin{lstlisting}[numbers=none, language=sql]
- mysql> INSERT INTO emp (name, age, birthday, dept_id)
-     -> VALUES ('千葉真一', 34, 1939, '002');
+ mysql> INSERT INTO emp
+     ->   (name, age, birthday, dept_id)
+     -> VALUES
+     ->   ('千葉真一', 34, 1939, '002');
 \end{lstlisting}
 
 TeraPad などのエディタで記述しておいて、コピー\&貼り付け ですることもできる。
@@ -204,9 +210,11 @@ TeraPad などのエディタで記述しておいて、コピー\&貼り付け 
 以下のようにすると、一度で入力できてしまう。
 
 \begin{lstlisting}[numbers=none, language=sql]
- mysql> INSERT INTO emp (name, age, birthday, dept_id) VALUES
-     -> ('北大路欣也', 30, 1943, '003'),
-     -> ('梶芽衣子', 26, 1947, '002');
+ mysql> INSERT INTO emp
+     ->   (name, age, birthday, dept_id)
+     -> VALUES
+     ->   ('北大路欣也', 30, 1943, '003'),
+     ->   ('梶芽衣子', 26, 1947, '002');
 \end{lstlisting}
 
 これも、エディタに記述しておいて、コピー\&貼り付けでも できる。
@@ -233,11 +241,13 @@ TeraPad などのエディタで記述しておいて、コピー\&貼り付け 
 同様に、deptテーブルについてもデータを登録する。
 
 \begin{lstlisting}[numbers=none, language=sql]
-mysql> INSERT INTO dept (id, name) VALUES
-    -> ('001', '総務部'),
-    -> ('002', '営業部'),
-    -> ('003', '経理部'),
-    -> ('004', '開発部');
+mysql> INSERT INTO dept
+    ->   (id, name)
+    -> VALUES
+    ->   ('001', '総務部'),
+    ->   ('002', '営業部'),
+    ->   ('003', '経理部'),
+    ->   ('004', '開発部');
 \end{lstlisting}
 
 確認する。
@@ -415,11 +425,13 @@ dept表を例にして説明する。
 \begin{lstlisting}[caption=insert\_dept.sql, language=sql]
 -- dept テーブル
 
-INSERT INTO dept (id, name) VALUES
-('001', '総務部'),
-('002', '営業部'),
-('003', '経理部'),
-('004', '開発部');
+INSERT INTO dept
+  (id, name)
+VALUES
+  ('001', '総務部'),
+  ('002', '営業部'),
+  ('003', '経理部'),
+  ('004', '開発部');
 \end{lstlisting}
 
 {-}{-} で始まる行は、コメントである。
@@ -532,7 +544,7 @@ C:\Users\(ユーザー名)\Documents\mysql> mysql -u sampleuser -p
 
 \begin{lstlisting}[
  caption=init\_data.sql,
- language=sql
+ language=SQL
 ]
  CREATE DATABASE sample;
 
@@ -555,17 +567,21 @@ C:\Users\(ユーザー名)\Documents\mysql> mysql -u sampleuser -p
    name VARCHAR(20) NOT NULL
  );
 
- INSERT INTO emp (name, age, birthday, dept_id) VALUES
- ('菅原文太', 40, 1933, '001'),
- ('千葉真一', 34, 1939, '002') ,
- ('北大路欣也', 30, 1943, '003'),
- ('梶芽衣子', 26, 1947, '002');
+ INSERT INTO emp
+   (name, age, birthday, dept_id)
+ VALUES
+   ('菅原文太', 40, 1933, '001'),
+   ('千葉真一', 34, 1939, '002') ,
+   ('北大路欣也', 30, 1943, '003'),
+   ('梶芽衣子', 26, 1947, '002');
 
- INSERT INTO dept (id, name) VALUES
- ('001', '総務部'),
- ('002', '営業部'),
- ('003', '経理部'),
- ('004', '開発部');
+ INSERT INTO dept
+   (id, name)
+ VALUES
+   ('001', '総務部'),
+   ('002', '営業部'),
+   ('003', '経理部'),
+   ('004', '開発部');
 
  SELECT * FROM emp;
  SELECT * FROM dept;
@@ -599,7 +615,7 @@ C:\Users\(ユーザー名)\Documents\mysql> mysql -u sampleuser -p
 
 \begin{lstlisting}[
  caption=init\_data.sql,
- language=sql
+ language=SQL
 ]
  -- もし存在していなかったら sample データベースを作成する
  CREATE DATABASE IF NOT EXISTS sample;
@@ -634,17 +650,21 @@ C:\Users\(ユーザー名)\Documents\mysql> mysql -u sampleuser -p
  -- 自動連番を初期化する。
  ALTER TABLE emp AUTO_INCREMENT = 1;
  
- INSERT INTO emp (name, age, birthday, dept_id) VALUES
- ('菅原文太', 40, 1933, '001'),
- ('千葉真一', 34, 1939, '002') ,
- ('北大路欣也', 30, 1943, '003'),
- ('梶芽衣子', 26, 1947, '002');
+ INSERT INTO emp
+   (name, age, birthday, dept_id)
+ VALUES
+   ('菅原文太', 40, 1933, '001'),
+   ('千葉真一', 34, 1939, '002') ,
+   ('北大路欣也', 30, 1943, '003'),
+   ('梶芽衣子', 26, 1947, '002');
 
- INSERT INTO dept (id, name) VALUES
- ('001', '総務部'),
- ('002', '営業部'),
- ('003', '経理部'),
- ('004', '開発部');
+ INSERT INTO dept
+   (id, name)
+ VALUES
+   ('001', '総務部'),
+   ('002', '営業部'),
+   ('003', '経理部'),
+   ('004', '開発部');
 
  SELECT * FROM emp;
  SELECT * FROM dept;
@@ -655,4 +675,4 @@ C:\Users\(ユーザー名)\Documents\mysql> mysql -u sampleuser -p
 
 \include{end}
 
-%% 修正時刻： Sun Feb 20 16:40:35 2022
+%% 修正時刻： Sat 2022/10/01 21:23:252

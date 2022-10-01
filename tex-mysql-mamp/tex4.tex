@@ -15,14 +15,19 @@ empテーブルの dept\_id は、deptテーブルの id である。
 実行例
 
 \begin{tcolorbox}
- mysql$>$ SELECT \ * \ FROM \ emp \ \underline{\textsf{JOIN}} \ dept \ 
- \underline{\textsf{ON}} \ emp.dept\_id \ = \ dept.id;
+ mysql$>$ SELECT \ * \\
+ \hspace{3mm} -$>$ FROM \ emp \\
+ \hspace{3mm} -$>$ \underline{\textsf{INNER JOIN}} \ dept \\
+ \hspace{3mm} -$>$ \underline{\textsf{ON}} \ emp.dept\_id \ = \ dept.id;
 \end{tcolorbox}
 
-\begin{tabular}{|l|} \hline
- SELECT \ * \ FROM \ メインの表 \ [INNER] \ JOIN \ サブの表 \ \\
- ON \ メインの表.キーカラム名 \ = \ サブの表.キーカラム名 \\ \hline
-\end{tabular}
+\begin{lstlisting}[numbers=none, language=SQL]
+ SELECT * 
+ FROM メインの表
+ [INNER] JOIN サブの表 
+ ON メインの表.キーカラム名 = サブの表.キーカラム名
+\end{lstlisting}
+
 
 \vspace{3mm}
 \begin{itemize}
@@ -66,11 +71,13 @@ emp の dept\_id と dept の id が等しければ、そのレコードを抜�
 emp表の id, name, age と dept表の name だけを表示させる。
 
 
-\begin{tcolorbox}
- mysql$>$ SELECT \ \underline{emp.id, \ emp.name, \ age, \ dept.name} \ 
- FROM \ emp \ JOIN \ dept \\
- \hspace{6mm} \verb!->! ON \ emp.dept\_id \ = \ dept.id;
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=SQL]
+ mysql> SELECT emp.id, emp.name, age, dept.name
+     -> FROM emp
+     -> INNER JOIN dept
+     -> ON emp.dept_id = dept.id;
+\end{lstlisting}
+
 
 % \begin{spacing}{0.8}        
 % \begin{verbatim}
@@ -95,13 +102,17 @@ emp表の id, name, age と dept表の name だけを表示させる。
 
 たとえば、``emp.name AS 名前'' とすると、``emp.neme'' は ``名前'' と表示される。
 
-\begin{tcolorbox}
- mysql$>$ SELECT \ \underline{emp.id \ AS \ ID}, \ 
- \underline{emp.name \ AS \ 名前}, \ \underline{age \ AS \ 年齢}, \\ 
- \hspace{6mm} \verb!->! \underline{dept.name \ AS \ 部署名} \\
- \hspace{6mm} \verb!->! FROM \  emp \ JOIN \ dept \\
- \hspace{6mm} \verb!->! ON \ emp.dept\_id \ = \ dept.id;
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=SQL]
+ mysql> SELECT
+     ->   emp.id AS ID,
+     ->   emp.name AS 名前,
+     ->   age AS 年齢,
+     ->   dept.name AS 部署名
+     -> FROM emp
+     -> INNER JOIN dept
+     ->   ON emp.dept_id = dept.id;
+\end{lstlisting}
+
 
 % \begin{spacing}{0.8}        
 % \begin{verbatim}
@@ -130,13 +141,18 @@ emp表の id, name, age と dept表の name だけを表示させる。
 また、\textsf{DESC} と指定すると ''降順'' で並びかえできる。
 
 
-\begin{tcolorbox}
- mysql$>$ SELECT \ emp.id \ AS \ ID, \ emp.name \ AS \ 名前, \ age \ AS \ 年齢,\\
- \hspace{6mm} \verb!->! dept.name \ AS \ 部署名 \\
- \hspace{6mm} \verb!->! FROM \ emp \ JOIN \ dept \\
- \hspace{6mm} \verb!->! ON \ emp.dept\_id \ = \ dept.id \\
- \hspace{6mm} \verb!->! \underline{ORDER \ BY \ ID};
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=SQL]
+ mysql> SELECT
+     ->   emp.id AS ID,
+     ->   emp.name AS 名前,
+     ->   age AS 年齢,
+     ->   dept.name AS 部署名
+     -> FROM emp
+     -> INNER JOIN dept
+     ->   ON emp.dept_id = dept.id
+     -> ORDER BY ID;
+\end{lstlisting}
+
 
 
 \begin{lstlisting}[numbers=none]
@@ -160,24 +176,33 @@ emp表の id, name, age と dept表の name だけを表示させる。
 
 emp とか dept とかのテーブルの指定も別名を使うことで簡略化できる。
 
-\begin{tcolorbox}
- mysql$>$ SELECT \ \underline{e.id} \ AS \ ID, \ \underline{e.name} \ AS \ 名前, \ age \ AS \ 年齢,\\
- \hspace{6mm} \verb!->! \underline{d.name} \ AS \ 部署名 \\
- \hspace{6mm} \verb!->! FROM \ emp \ \underline{AS \ e} \ JOIN \ dept \ \underline{AS \ d} \\
- \hspace{6mm} \verb!->! ON \ \underline{e.dept\_id} \ = \ \underline{d.id} \\
- \hspace{6mm} \verb!->! ORDER \ BY \ ID;
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=SQL]
+ mysql> SELECT
+     ->   e.id AS ID,
+     ->   e.name AS 名前,
+     ->   age AS 年齢,
+     ->   d.name AS 部署名
+     -> FROM emp AS e
+     -> INNER JOIN dept AS d
+     ->   ON e.dept_id = d.id
+     -> ORDER BY ID;
+\end{lstlisting}
+
 
 さらに、FROM や JOIN の後では、すぐ後ろに 別名(ここでは e や d のこと)がくる場合、{\em AS} は
 省略できる。
 
-\begin{tcolorbox}
- mysql$>$ SELECT \ e.id \ AS \ ID, \ e.name \ AS \ 名前, \ age \ AS \ 年齢,\\
- \hspace{6mm} \verb!->! d.name \ AS \ 部署名 \\
- \hspace{6mm} \verb!->! FROM \ emp \ \underline{e} \ JOIN \ dept \ \underline{d} \\
- \hspace{6mm} \verb!->! ON \ e.dept\_id \ = \ d.id \\
- \hspace{6mm} \verb!->! ORDER \ BY \ ID;
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=SQL]
+ mysql> SELECT
+     ->   e.id AS ID,
+     ->   e.name AS 名前,
+     ->   age AS 年齢,
+     ->   d.name AS 部署名
+     -> FROM emp e
+     -> INNER JOIN dept d
+     ->   ON e.dept_id = d.id
+     -> ORDER BY ID;
+\end{lstlisting}
 
 
 
@@ -202,10 +227,13 @@ emp とか dept とかのテーブルの指定も別名を使うことで簡略�
  \end{tabular}
 \end{tcolorbox}
 
-\begin{tcolorbox}
- mysql$>$ \textsf{INSERT INTO emp (name, age, birthday) VALUES} \\
- \hspace{6mm} \verb!->! \textsf{('成田三樹夫', 38, 1935);}
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=SQL]
+ mysql> INSERT INTO emp
+     ->   (name, age, birthday)
+     -> VALUES
+     ->   ('成田三樹夫', 38, 1935);
+\end{lstlisting}
+
 
 \begin{spacing}{0.8}        
 \begin{verbatim}
@@ -228,11 +256,15 @@ mysql> SELECT * FROM emp;
 この状態で 内部結合 をすると、どうなるか？
 
 \begin{verbatim}
-mysql> SELECT e.id AS ID, e.name AS 名前, e.age AS 年齢,
-    -> d.name AS 部署名
-    -> FROM emp e JOIN dept d
-    -> ON e.dept_id = d.id
-    -> order by ID;
+mysql> SELECT
+    ->   e.id AS ID,
+    ->   e.name AS 名前,
+    ->   e.age AS 年齢,
+    ->   d.name AS 部署名
+    -> FROM emp e
+    -> JOIN dept d
+    ->   ON e.dept_id = d.id
+    -> ORDER BY ID;
 \end{verbatim}
 
 \begin{spacing}{0.8}        
@@ -260,15 +292,19 @@ mysql> SELECT e.id AS ID, e.name AS 名前, e.age AS 年齢,
 
 こんなときは \emph{左外部結合(LEFT [OUTER] JOIN)} を使う。
 
-\begin{tcolorbox}
- mysql$>$ SELECT \ e.id \ AS \ ID, \ e.name \ AS \ 名前, \ e.age \ AS \ 年齢, \ 
- d.name \ as \ 部署名 \\
- \hspace{6mm} \verb!->! FROM \ emp \ e \ \underline{\textsf{LEFT JOIN}} \ dept \ d \\
- \hspace{6mm} \verb!->! \textsf{ON} \ e.dept\_id \ = \ d.id \\
- \hspace{6mm} \verb!->! ORDER \ BY \ ID;
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=SQL]
+ mysql> SELECT
+     ->   e.id AS ID,
+     ->   e.name AS 名前,
+     ->   e.age AS 年齢,
+     ->   d.name as 部署名
+     -> FROM emp e
+     -> LEFT OUTER JOIN dept d
+     ->   ON e.dept_id = d.id
+     -> ORDER BY ID;
+\end{lstlisting}
 
-\rightline{※ LEFT OUTER JOIN と記述することもできる}
+\rightline{※ LEFT JOIN と記述することもできる}
 
 \begin{spacing}{0.8}        
 \begin{verbatim}
@@ -291,13 +327,17 @@ emp表には dept\_id が '004' である人はいない。
 
 この状態で結合表をつくり、開発部という項目も表示させるには、次のようにする。
 
-\begin{tcolorbox}
- mysql$>$ SELECT \ e.id \ AS \ ID, \ e.name \ AS \ 名前, \ e.age \ AS \ 年齢, \ 
- d.name \ AS \ 部署名 \\
- \hspace{6mm} \verb!->! FROM \ emp \ e \ \underline{\textsf{RIGHT JOIN}} \ dept \ d \\
- \hspace{6mm} \verb!->! \textsf{ON} \ e.dept\_id \ = \ d.id \\
- \hspace{6mm} \verb!->! ORDER \ BY \ ID;
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=SQL]
+ mysql> SELECT
+     ->   e.id AS ID,
+     ->   e.name AS 名前,
+     ->   e.age AS 年齢,
+     ->   d.name AS 部署名
+     -> FROM emp e
+     -> RIGHT OUTER JOIN dept d
+     ->   ON e.dept_id = d.id
+     -> ORDER BY ID;
+\end{lstlisting}
 
 \begin{spacing}{0.8}        
 \begin{verbatim}
@@ -333,8 +373,10 @@ gender表、state表、course表、person表 を内部結合して、以下の�
 \end{tabular}
 \vspace{3mm}
 
-\begin{lstlisting}[numbers=none]
-mysql> SELECT timestampdiff(YEAR, birthday, curdate()) AS 年齢 FROM person;
+\begin{lstlisting}[numbers=none, language=SQL]
+mysql> SELECT
+    ->   timestampdiff(YEAR, birthday, curdate()) AS 年齢
+    -> FROM person;
 \end{lstlisting}
 
 とすると、以下のように出力できる。
@@ -368,4 +410,4 @@ mysql> SELECT timestampdiff(YEAR, birthday, curdate()) AS 年齢 FROM person;
 
 \include{end}
 
-%% 修正時刻： Sun Feb 20 18:19:23 2022
+%% 修正時刻： Sat 2022/10/01 18:25:282

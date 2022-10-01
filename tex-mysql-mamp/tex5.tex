@@ -51,34 +51,41 @@ emp表を定義する前に dept表が定義されていなくてはならない
 
 \textgt{dept表の定義(再掲)}
 
-\begin{tcolorbox}
- mysql$>$ CREATE \ TABLE \ dept \ ( \\
- \hspace{6mm} \verb!->! id \ CHAR(3), \ (カンマ) \\
- \hspace{6mm} \verb!->! name \ VARCHAR(20) \ NOT \ NULL , \ (カンマ) \\
- \hspace{6mm} \verb!->! PRIMARY \ KEY \ (id) \ (カンマなし) \\
- \hspace{6mm} \verb!->! );
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=SQL]
+ mysql> CREATE TABLE dept (
+     ->   id CHAR(3),
+     ->   name VARCHAR(20) NOT NULL,
+     ->     PRIMARY KEY (id)
+     -> );
+\end{lstlisting}
+
 
 
 \textgt{emp表の定義(外部キー制約)}
 
-\begin{tcolorbox}
- mysql$>$ CREATE \ TABLE \ emp \ ( \\
- \hspace{6mm} \verb!->! id \ INT \ auto\_increment,  \\
- \hspace{6mm} \verb!->! name \ VARCHAR(20) NOT NULL, \\
- \hspace{6mm} \verb!->! age \ INT \ NOT \ NULL , \\
- \hspace{6mm} \verb!->! birthday \ YEAR \ NOT \ NULL , \\
- \hspace{6mm} \verb!->! dept\_id \ CHAR(3),  (カンマをつける) \\
- \hspace{6mm} \verb!->! PRIMARY KEY (id) ,  (カンマをつける) \\
- \hspace{6mm} \verb!->! \underline{FOREIGN \ KEY \ (dept\_id) \ REFERENCES \ dept \ (id)} \ (カンマなし) \\
- \hspace{6mm} \verb!->! );
-\end{tcolorbox}
+
+\begin{lstlisting}[numbers=none, language=SQL]
+ mysql> CREATE TABLE emp (
+     ->   id INT auto_increment,
+     ->   name VARCHAR(20) NOT NULL,
+     ->   age INT NOT NULL,
+     ->   birthday YEAR NOT NULL,
+     ->   dept_id CHAR(3),
+     ->     PRIMARY KEY (id),
+     ->     FOREIGN KEY (dept_id)
+     ->       REFERENCES dept (id)
+     -> );
+\end{lstlisting}
+
 
 現在の empテーブル、deptテーブルを削除して、再定義、初期データを
 入力する。
 そのためのスクリプトは、以下である。
 
-\begin{lstlisting}[caption=reinit\_data.sql]
+\begin{lstlisting}[
+ caption=reinit\_data.sql,
+ language=SQL
+ ]
  -- もし存在していなかったら sample データベースを作成する
 CREATE DATABASE IF NOT EXISTS sample;
 
@@ -108,26 +115,30 @@ CREATE TABLE IF NOT EXISTS emp (
   age      INT         NOT NULL,
   birthday YEAR        NOT NULL,
   dept_id  CHAR(3),
-  PRIMARY KEY (id),
-  FOREIGN KEY(dept_id) REFERENCES dept(id)
+    PRIMARY KEY (id),
+    FOREIGN KEY(dept_id) REFERENCES dept(id)
 );
 
 -- 自動連番を初期化する。
 ALTER TABLE emp AUTO_INCREMENT = 1;
 
 -- dept表の初期データ
-INSERT INTO dept (id, name) VALUES
-('001', '総務部'),
-('002', '営業部'),
-('003', '経理部'),
-('004', '開発部');
+INSERT INTO dept
+  (id, name)
+VALUES
+  ('001', '総務部'),
+  ('002', '営業部'),
+  ('003', '経理部'),
+  ('004', '開発部');
 
 -- emp表の初期データ
-INSERT INTO emp (name, age, birthday, dept_id) VALUES
-('菅原文太',   40, 1933, '001'),
-('千葉真一',   34, 1939, '002') ,
-('北大路欣也', 30, 1943, '003'),
-('梶芽衣子',   26, 1947, '002');
+INSERT INTO emp
+  (name, age, birthday, dept_id)
+VALUES
+  ('菅原文太',   40, 1933, '001'),
+  ('千葉真一',   34, 1939, '002') ,
+  ('北大路欣也', 30, 1943, '003'),
+  ('梶芽衣子',   26, 1947, '002');
 
 SELECT * FROM dept;
 SELECT * FROM emp;
@@ -180,10 +191,13 @@ SELECT * FROM emp;
 さて、この emp表に 以下のように dept\_id の項目に dept表にない値を指定して
 データを入力してみる。
 
-\begin{tcolorbox}
- mysql$>$ INSERT INTO emp (name, age, birthday, dept\_id) VALUES \\
- \hspace{6mm} \verb!->! ('成田三樹夫', 38, 1935, '005');
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=SQL]
+ mysql> INSERT INTO emp
+     ->   (name, age, birthday, dept_id)
+     -> VALUES
+     ->   ('成田三樹夫', 38, 1935, '005');
+\end{lstlisting}
+
 
 すると、次のようなエラーメッセージが出て、入力に失敗する。
 
@@ -197,10 +211,12 @@ FOREIGN KEY (`dept_id`) REFERENCES `dept` (`id`))
 
 dept表にある値にして入力する。
 
-\begin{tcolorbox}
- mysql$>$ INSERT INTO emp (name, age, birthday, dept\_id) VALUES \\
- \hspace{6mm} \verb!->! ('成田三樹夫', 38, 1935, '004');
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=SQL]
+ mysql> INSERT INTO emp
+     ->   (name, age, birthday, dept_id)
+     -> VALUES
+     ->   ('成田三樹夫', 38, 1935, '004');
+\end{lstlisting}
 
 するとうまく入力できることがわかる。
 
@@ -213,19 +229,20 @@ emp表の dept\_id も修正しなくてはならなくなる。
 こんなときのために、外部キー制約のところに以下のような記述をすることができる。
 
 
-\begin{tcolorbox}
- \textsf{
-CREATE \ TABLE \ IF \ NOT \ EXISTS \ emp \ ( \\
-\hspace{3mm}  id \     INT  \      AUTO\_INCREMENT, \\
-\hspace{3mm}  name \   VARCHAR(20) \ NOT \ NULL, \\
-\hspace{3mm}  age \    INT \       NOT \ NULL, \\
-\hspace{3mm}  birthday \ YEAR    \   NOT \ NULL, \\
-\hspace{3mm}  dept\_id \ CHAR(3), \\
-\hspace{3mm}  PRIMARY \ KEY \ (id),  \\
-\hspace{3mm}  FOREIGN \ KEY(dept\_id) \ REFERENCES \ dept(id) \\
-\hspace{3mm}  \underline{ON \ DELETE \ SET \ NULL \ ON \ UPDATE \ CASCADE} \\
-);}
- \end{tcolorbox}
+
+\begin{lstlisting}[numbers=none, language=SQL]
+CREATE TABLE IF NOT EXISTS emp (
+  id INT AUTO_INCREMENT,
+  name VARCHAR(20) NOT NULL,
+  age INT NOT NULL,
+  birthday YEAR NOT NULL,
+  dept_id CHAR(3),
+    PRIMARY KEY (id),
+    FOREIGN KEY (dept_id) REFERENCES dept (id)
+      ON DELETE SET NULL ON UPDATE CASCADE
+);
+\end{lstlisting}
+
 \noindent
 ON DELETE SET NULL --- 参照先を delete すると、参照元が null になる。\\
 ON UPDATE CASCADE  --- 参照先を update すると、参照元も update される。
@@ -250,9 +267,13 @@ ON UPDATE CASCADE  --- 参照先を update すると、参照元も update さ�
 
 たとえば、''営業部'' の ''002'' を ''005'' に変更してみる。
 
-\begin{tcolorbox}
- mysql$>$ \textsf{UPDATE \ dept \ SET \ id \ = \ '005' \ WHERE \ id \ = \ '002';}
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=SQL]
+ mysql> UPDATE dept
+     -> SET
+     ->   id = '005'
+     -> WHERE
+     ->   id = '002';
+\end{lstlisting}
 
 \begin{tabular}{|l|} \hline
 \verb!mysql> SELECT * FROM dept;! \\ \hline
@@ -307,9 +328,11 @@ dept表の id が変更されたら、emp表の dept\_id も更新されてい�
 
 dept表の id:'003' name:'経理部' を削除してみる。
 
-\begin{tcolorbox}
- mysql$>$ DELETE \ FROM \ dept \ WHERE \ id \ = \ '003';
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=SQL]
+ mysql> DELETE FROM dept
+     -> WHERE id = '003';
+\end{lstlisting}
+
 
 \begin{tabular}{|l|} \hline
 \verb!mysql> SELECT * FROM dept;! \\ \hline
@@ -359,19 +382,19 @@ dept表の id:'003' name:'経理部' を削除してみる。
 
 そこで、もっと厳しい制限をかけたほうがいい場合もある。
 
-\begin{tcolorbox}
- \textsf{
-CREATE \ TABLE \ IF \ NOT \ EXISTS \ emp \ ( \\
-\hspace{3mm}  id   \    INT \        AUTO\_INCREMENT, \\
-\hspace{3mm}  name \    VARCHAR(20) \ NOT \ NULL, \\
-\hspace{3mm}  age  \    INT  \       NOT \ NULL, \\
-\hspace{3mm}  birthday \ YEAR  \      NOT \ NULL, \\
-\hspace{3mm}  dept\_id \  CHAR(3), \\
-\hspace{3mm}  PRIMARY \ KEY \ (id), \\ 
-\hspace{3mm}  FOREIGN \ KEY \ (dept\_id) \ REFERENCES \ dept(id) \\
-\hspace{3mm}  \underline{ON \ DELETE \ RESTRICT \ ON \ UPDATE \ RESTRICT} \\
-);}
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=SQL]
+CREATE TABLE IF NOT EXISTS emp (
+  id INT AUTO_INCREMENT,
+  name VARCHAR(20) NOT NULL,
+  age INT NOT NULL,
+  birthday YEAR NOT NULL,
+  dept_id CHAR(3),
+    PRIMARY KEY (id),
+    FOREIGN KEY (dept_id) REFERENCES dept (id)
+      ON DELETE RESTRICT ON UPDATE RESTRICT
+);
+\end{lstlisting}
+
 
 \noindent
 NO DELETE RESTRICT --- 参照している表(dept)のデータを削除するときエラーにする。\\
@@ -382,9 +405,14 @@ NO UPDATE RESTRICT --- 参照している表(dept)のデータを変更すると
 
 その後、以下のように dept表のデータを変更してみる。
 
-\begin{tcolorbox}
- mysql$>$ UPDATE \ dept \ SET \ id = '005' \ WHERE \ id = '003';
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=SQL]
+ mysql> UPDATE dept
+     -> SET
+     ->   id = '005'
+     -> WHERE
+     ->   id = '003';
+\end{lstlisting}
+
 
 このようにエラーが出て、dept表のデータは変更できない。
 
@@ -396,9 +424,11 @@ NO UPDATE RESTRICT --- 参照している表(dept)のデータを変更すると
 
 今度は dept表のデータを削除してみる。
 
-\begin{tcolorbox}
- mysql$>$ DELETE \, FROM \, dept \, WHERE \, id = '002';
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=SQL]
+ mysql> DELETE FROM dept
+     -> WHERE id = '002';
+\end{lstlisting}
+
 
 このように dept表のデータは削除もできなくなっている。
 
@@ -468,4 +498,4 @@ ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constrai
 
 \include{end}
 
-%% 修正時刻： Sun Feb  6 15:00:35 2022
+%% 修正時刻： Sat 2022/10/01 18:25:282

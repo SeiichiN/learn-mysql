@@ -26,10 +26,12 @@ CREATE TABLE student (
 この name カラムに NOT NULL 制約を追加したいとする。
 以下のようにできる。
 
-\begin{tcolorbox}
-\verb!mysql> ALTER TABLE student! \\
-\verb!    -> MODIFY name varchar(20) NOT NULL;!
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=SQL]
+mysql> ALTER TABLE student
+    -> MODIFY
+    ->   name varchar(20) NOT NULL;
+\end{lstlisting}
+
 
 \vspace{3mm}
 \begin{tabular}{|l|} \hline
@@ -42,10 +44,12 @@ CREATE TABLE student (
 
 また、age (年齢) という項目を追加したいとする。以下のようにできる。
 
-\begin{tcolorbox}
-\verb!mysql> ALTER TABLE student! \\
-\verb!    -> ADD age int NOT NULL;!
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=SQL]
+mysql> ALTER TABLE student
+    -> ADD
+    ->   age int NOT NULL;
+\end{lstlisting}
+
 
 \vspace{3mm}
 \begin{tabular}{|l|} \hline
@@ -58,10 +62,11 @@ CREATE TABLE student (
 
 あるいは、id に PRIMARY KEY を設定したいとする。以下のようにできる。
 
-\begin{tcolorbox}
-\verb!mysql> ALTER TABLE student! \\
-\verb!    -> ADD PRIMARY KEY (id);!
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=SQL]
+mysql> ALTER TABLE student
+    -> ADD
+    ->   PRIMARY KEY (id);
+\end{lstlisting}
 
 \vspace{3mm}
 \begin{tabular}{|l|} \hline
@@ -89,9 +94,14 @@ CREATE TABLE student (
 
 たとえば、emp表の id=1 の人の氏名を変更するには、以下のようにする。
 
-\begin{tcolorbox}
- \verb!mysql> UPDATE emp SET name = '菅原文夫' WHERE id = 1;! 
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=SQL]
+mysql> UPDATE emp
+    -> SET
+    ->   name = '菅原文夫'
+    -> WHERE
+    ->   id = 1; 
+\end{lstlisting}
+
 
 \begin{tabular}{|l|} \hline
  \verb!UPDATE テーブル名 SET カラム名 = 訂正データ WHERE 条件! \\ \hline
@@ -103,9 +113,10 @@ CREATE TABLE student (
 
 id が 1 のデータを削除する。
 
-\begin{tcolorbox}
- \verb!mysql> DELETE FROM emp WHERE id = 1;!
-\end{tcolorbox}
+\begin{lstlisting}[numbers=none, language=SQL]
+mysql> DELETE FROM emp
+    -> WHERE id = 1;
+\end{lstlisting}
 
 \begin{tabular}{|l|} \hline
  \verb!DELETE FROM テーブル名 WHERE 条件! \\ \hline
@@ -135,9 +146,10 @@ id が 1 のデータを削除すると、1 が欠番になる。
 
 条件をつけなければ、全データが削除される。
 
-\begin{tcolorbox}
- \verb!mysql> DELETE FROM emp;!
-\end{tcolorbox}
+
+\begin{lstlisting}[numbers=none, language=SQL]
+mysql> DELETE FROM emp;
+\end{lstlisting}
 
 \begin{tabular}{|l|} \hline
  \verb!DELETE FROM テーブル名! \\ \hline
@@ -149,11 +161,12 @@ id が 1 のデータを削除すると、1 が欠番になる。
 SELECT で表のデータを表示するとき、WHERE で条件を指定する際に、''LIKE'' で
 条件を指定できる。
 
-\begin{tcolorbox}
- \verb!mysql> SELECT * FROM emp WHERE name LIKE '%葉%';!
-\end{tcolorbox}
-
-\rightline{(\%のうしろには空白はありません。\%の前にもありません。)}
+\begin{lstlisting}[numbers=none, language=SQL]
+ mysql> SELECT *
+     ->   FROM emp
+     -> WHERE
+     ->   name LIKE '%葉%';
+\end{lstlisting}
 
 \begin{verbatim}
 +----+--------------+-----+----------+---------+
@@ -180,4 +193,4 @@ SELECT で表のデータを表示するとき、WHERE で条件を指定する�
 
 \include{end}
 
-%% 修正時刻： Mon Feb 21 14:32:51 2022
+%% 修正時刻： Sat 2022/10/01 18:25:282

@@ -163,7 +163,7 @@ MySQLの場合、以下の手順でログインできる。
 \end{tcolorbox}
 
 
-\newpage
+
 \subsubsection{ユーザーの作成と権限の付与}
 
 以下のコマンドで \textsf{sampleuser} を作成し、\textsf{1234} というパスワードを設定し、
@@ -181,7 +181,8 @@ sampleuser に sample データベースへの権限を付与する。\\
 \begin{tcolorbox}
 mysql$>$ GRANT \ ALL \ [PRIVILEGES]
  \footnote{[PRIVILEGES]は省略できる。}
- \ ON \ sample.* \ TO \ 'sampleuser'@'localhost' \\
+ \ ON \ sample.* \\
+\hspace{20mm} -$>$ TO \ 'sampleuser'@'localhost' \\
 \hspace{20mm} -$>$ IDENTIFIED \ BY \ '1234';
 \end{tcolorbox}
 
@@ -241,4 +242,4 @@ Enter password: \fbox{パスワード} \\
 
 \include{end}
 
-%% 修正時刻： Sat 2022/10/01 07:29:492
+%% 修正時刻： Sat 2022/10/01 18:25:282
