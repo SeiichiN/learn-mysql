@@ -64,6 +64,8 @@ Records: 2  Duplicates: 0  Warnings: 0
 
 \section{データの表示}
 
+\subsection{一覧表示}
+
 今までに入力したデータの一覧を表示する。
 
 \begin{lstlisting}[language=SQL]
@@ -85,7 +87,7 @@ Records: 2  Duplicates: 0  Warnings: 0
 \end{lstlisting}
 
 
-\begin{lstlisting}[language={}, numbers=none]
+\begin{lstlisting}[language={}, numbers=none, backgroundcolor={\color{white}}]
 +----+-----------------+------+-----------+-----------+
 | id | name            | age  | birthyear | dept      |
 +----+-----------------+------+-----------+-----------+
@@ -96,6 +98,50 @@ Records: 2  Duplicates: 0  Warnings: 0
 +----+-----------------+------+-----------+-----------+
 4 rows in set (0.000 sec)
 \end{lstlisting}
+
+\subsection{抽出して表示}
+
+年齢が30才以上の人を抽出する。
+
+\begin{lstlisting}[language=SQL]
+ mysql> select
+     ->   *
+     -> from emp
+     -> where
+     ->   age >= 30;
+\end{lstlisting}
+
+\begin{lstlisting}[language={}, numbers=none, backgroundcolor={\color{white}}]
++----+-----------------+-----+----------+---------+
+| id | name            | age | birthday | dept    |
++----+-----------------+-----+----------+---------+
+|  1 | 菅原文太        |  40 |     1933 | 総務部  |
+|  2 | 千葉真一        |  34 |     1939 | 営業部  |
+|  3 | 北大路欣也      |  30 |     1943 | 経理部  |
++----+-----------------+-----+----------+---------+
+\end{lstlisting}
+
+所属が''営業部''である人を抽出する。
+
+\begin{lstlisting}[language=SQL]
+ mysql> select
+     ->   *
+     -> from emp
+     -> where
+     ->   dept like '営業%';
+\end{lstlisting}
+
+\begin{lstlisting}[language={}, numbers=none, backgroundcolor={\color{white}}]
++----+-----------------+------+-----------+-----------+
+| id | name            | age  | birthyear | dept      |
++----+-----------------+------+-----------+-----------+
+|  2 | 千葉真一        |   34 |      1939 | 営業部    |
+|  4 | 梶芽衣子        |   26 |      1947 | 営業部    |
++----+-----------------+------+-----------+-----------+
+\end{lstlisting}
+
+
+
 
 
 \section{データの修正}
@@ -162,4 +208,4 @@ Create Read Update Delete という。
 
 \include{end}
 
-%% 修正時刻： Sat 2022/10/01 08:45:160
+%% 修正時刻： Sun 2022/10/02 13:23:020
