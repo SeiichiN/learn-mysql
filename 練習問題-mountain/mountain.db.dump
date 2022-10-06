@@ -1,0 +1,239 @@
+-- MariaDB dump 10.19  Distrib 10.6.7-MariaDB, for debian-linux-gnu (x86_64)
+--
+-- Host: localhost    Database: mountain
+-- ------------------------------------------------------
+-- Server version	5.7.35
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Current Database: `mountain`
+--
+
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `mountain` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
+
+USE `mountain`;
+
+--
+-- Table structure for table `gender`
+--
+
+DROP TABLE IF EXISTS `gender`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `gender` (
+  `id` char(1) NOT NULL,
+  `name` varchar(3) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `gender`
+--
+
+LOCK TABLES `gender` WRITE;
+/*!40000 ALTER TABLE `gender` DISABLE KEYS */;
+INSERT INTO `gender` VALUES ('0','不明'),('1','男性'),('2','女性'),('3','その他');
+/*!40000 ALTER TABLE `gender` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `person`
+--
+
+DROP TABLE IF EXISTS `person`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `person` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  `gender_id` char(1) NOT NULL,
+  `birthday` date NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `gender_id` (`gender_id`),
+  CONSTRAINT `person_ibfk_1` FOREIGN KEY (`gender_id`) REFERENCES `gender` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `person`
+--
+
+LOCK TABLES `person` WRITE;
+/*!40000 ALTER TABLE `person` DISABLE KEYS */;
+INSERT INTO `person` VALUES (1,'染谷将太','1','1992-09-03'),(2,'二階堂ふみ','2','1994-09-21'),(3,'渡辺哲','1','1950-03-11'),(4,'窪塚洋介','1','1979-05-07'),(5,'吉高由里子','2','1988-07-22');
+/*!40000 ALTER TABLE `person` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `person_teizan`
+--
+
+DROP TABLE IF EXISTS `person_teizan`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `person_teizan` (
+  `person_id` int(11) NOT NULL,
+  `teizan_id` int(11) NOT NULL,
+  PRIMARY KEY (`person_id`,`teizan_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `person_teizan`
+--
+
+LOCK TABLES `person_teizan` WRITE;
+/*!40000 ALTER TABLE `person_teizan` DISABLE KEYS */;
+INSERT INTO `person_teizan` VALUES (1,20),(1,30),(1,50),(2,26),(2,30),(2,43),(2,66),(3,44),(3,50),(3,82),(4,53),(4,58),(4,66),(4,67),(5,30),(5,50),(5,53),(5,80),(5,82);
+/*!40000 ALTER TABLE `person_teizan` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Temporary table structure for view `pt_view`
+--
+
+DROP TABLE IF EXISTS `pt_view`;
+/*!50001 DROP VIEW IF EXISTS `pt_view`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `pt_view` (
+  `名前` tinyint NOT NULL,
+  `山岳名` tinyint NOT NULL
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary table structure for view `pt_view2`
+--
+
+DROP TABLE IF EXISTS `pt_view2`;
+/*!50001 DROP VIEW IF EXISTS `pt_view2`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `pt_view2` (
+  `名前` tinyint NOT NULL,
+  `性別` tinyint NOT NULL,
+  `年齢` tinyint NOT NULL,
+  `山岳名` tinyint NOT NULL,
+  `所在地` tinyint NOT NULL
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `state`
+--
+
+DROP TABLE IF EXISTS `state`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `state` (
+  `id` char(2) NOT NULL,
+  `name` varchar(5) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `state`
+--
+
+LOCK TABLES `state` WRITE;
+/*!40000 ALTER TABLE `state` DISABLE KEYS */;
+INSERT INTO `state` VALUES ('01','北海道'),('02','青森県'),('03','岩手県'),('04','宮城県'),('05','秋田県'),('06','山形県'),('07','福島県'),('08','茨城県'),('09','栃木県'),('10','群馬県'),('11','埼玉県'),('12','千葉県'),('13','東京都'),('14','神奈川県'),('15','新潟県'),('16','富山県'),('17','石川県'),('18','福井県'),('19','山梨県'),('20','長野県'),('21','岐阜県'),('22','静岡県'),('23','愛知県'),('24','三重県'),('25','滋賀県'),('26','京都府'),('27','大阪府'),('28','兵庫県'),('29','奈良県'),('30','和歌山県'),('31','鳥取県'),('32','島根県'),('33','岡山県'),('34','広島県'),('35','山口県'),('36','徳島県'),('37','香川県'),('38','愛媛県'),('39','高知県'),('40','福岡県'),('41','佐賀県'),('42','長崎県'),('43','熊本県'),('44','大分県'),('45','宮崎県'),('46','鹿児島県'),('47','沖縄県');
+/*!40000 ALTER TABLE `state` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `teizan`
+--
+
+DROP TABLE IF EXISTS `teizan`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `teizan` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  `kana` varchar(40) NOT NULL,
+  `state_id` char(2) NOT NULL,
+  `height` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `state_id` (`state_id`),
+  CONSTRAINT `teizan_ibfk_1` FOREIGN KEY (`state_id`) REFERENCES `state` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `teizan`
+--
+
+LOCK TABLES `teizan` WRITE;
+/*!40000 ALTER TABLE `teizan` DISABLE KEYS */;
+INSERT INTO `teizan` VALUES (1,'藻岩山','もいわやま','01',531),(2,'ニセコアンヌプリ','にせこあんぬぷり','01',1308),(3,'樽前山','たるまえさん','01',1041),(4,'渡島駒ガ岳','おしまこまがたけ','01',1131),(5,'函館山','はこだてやま','01',334),(6,'恵山','えさん','01',618),(7,'七時雨山','ななしぐれやま','03',1063),(8,'姫神山','ひめかみやま','03',1124),(9,'太平山','たいへいざん','05',1170),(10,'泉ガ岳','いずみがたけ','04',1175),(11,'霊山','りょうぜん','07',825),(12,'蓬田岳','よもぎだだけ','07',952),(13,'鎌倉岳','かまくらだけ','07',967),(14,'猫魔ガ岳','ねこまがたけ','07',1404),(15,'小野岳','おのだけ','07',1383),(16,'筑波山','つくばさん','08',877),(17,'加波山','かばさん','08',709),(18,'男体山','なんたいさん','08',654),(19,'竪破山','たつわれさん','08',658),(20,'八溝山','やみぞさん','07',1022),(21,'古賀志山','こがしやま','09',583),(22,'晃石山','てるいしやま','09',419),(23,'岩櫃山','いわびつやま','10',802),(24,'嵩山','たけやま','10',789),(25,'子持山','こもちやま','10',1296),(26,'榛名山','はるなさん','10',1449),(27,'妙義山','みょうぎさん','10',1104),(28,'鹿岳','かなだけ','10',1015),(29,'稲含山','いなふくみやま','10',1370),(30,'荒船山','あらふねやま','10',1423),(31,'御荷鉾山','みかぼやま','10',1287),(32,'城峰山','じょうみねさん','11',1038),(33,'笠山','かさやま','11',837),(34,'秩父三峰山','ちちぶみつみねさん','11',1329),(35,'武甲山','ぶこうさん','11',1304),(36,'棒ノ折山','ぼうのおれやま','11',969),(37,'伊豆ガ岳','いずがだけ','11',851),(38,'釜伏山','かまふせやま','11',582),(39,'御岳山','みたけさん','13',929),(40,'大岳山','おおだけさん','13',1266),(41,'御前山','ごぜんやま','13',1405),(42,'川苔山','かわのりやま','13',1363),(43,'権現山','ごんげんやま','19',1312),(44,'高尾山','たかおさん','13',599),(45,'天上山','てんじょうさん','13',572),(46,'乳房山','ちぶさやま','13',463),(47,'石老山','せきろうざん','14',702),(48,'高畑山','たかはたやま','19',982),(49,'扇山','おうぎやま','19',1138),(50,'大山','おおやま','14',1252),(51,'塔ノ岳','とうのだけ','14',1491),(52,'金時山','きんときやま','14',1212),(53,'駒ガ岳','こまがたけ','14',1438),(54,'明神ガ岳','みょうじんがたけ','14',1169),(55,'鋸山','のこぎりやま','12',329),(56,'伊予ガ岳','いよがたけ','12',336),(57,'富山','とみさん','12',349),(58,'弥彦山','やひこやま','15',634),(59,'米山','よねやま','15',993),(60,'金北山','きんぽくさん','15',1172),(61,'石割山','いしわりやま','19',1413),(62,'大洞山','おおぼらやま','19',1384),(63,'足和田山','あしわだやま','19',1355),(64,'長者ガ岳','ちょうじゃがたけ','19',1336),(65,'蛭ガ岳','ひるがたけ','19',1280),(66,'身延山','みのぶさん','19',1153),(67,'高社山','たかやしろやま','20',1351),(68,'独鈷山','とっこさん','20',1266),(69,'霧訪山','きりとうやま','20',1305),(70,'浜石岳','はまいしだけ','22',707),(71,'竜爪山','りゅうそうざん','22',1051),(72,'天城山','あまぎさん','22',1406),(73,'高根山','たかねやま','22',343),(74,'発端丈山','ほったんじょうやま','22',410),(75,'鳳来寺山','ほうらいじさん','23',695),(76,'本宮山','ほんぐうさん','23',789),(77,'石巻山','いしまきさん','23',358),(78,'御在所岳','ございしょだけ','24',1212),(79,'霊仙山','りょうぜんざん','25',1094),(80,'伊吹山','いぶきやま','25',1377),(81,'武奈ガ岳','ぶながだけ','25',1214),(82,'比叡山','ひえいざん','26',848),(83,'愛宕山','あたごやま','26',924),(84,'二上山','にじょうさん','29',517),(85,'三輪山','みわやま','29',467),(86,'大和葛城山','やまとかつらぎさん','29',959),(87,'多武峰','とうのみね','29',678),(88,'吉野山','よしのやま','29',858),(89,'高野山','こうやさん','30',1009),(90,'六甲山','ろっこうさん','28',931),(91,'先山','せんざん','28',448),(92,'雪彦山','せっぴこさん','28',915),(93,'蒜山','ひるぜん','33',1202),(94,'三瓶山','さんべさん','32',1126),(95,'弥山','みせん','34',535),(96,'琴平山','ことひらやま','37',524),(97,'宝満山','ほうまんざん','40',829),(98,'英彦山','ひこさん','40',1199),(99,'鶴見岳','つるみだけ','44',1375),(100,'開聞岳','かいもんだけ','46',924),(101,'日本国','にほんこく','15',555);
+/*!40000 ALTER TABLE `teizan` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Current Database: `mountain`
+--
+
+USE `mountain`;
+
+--
+-- Final view structure for view `pt_view`
+--
+
+/*!50001 DROP TABLE IF EXISTS `pt_view`*/;
+/*!50001 DROP VIEW IF EXISTS `pt_view`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`mountain_user`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `pt_view` AS select `p`.`name` AS `名前`,`t`.`name` AS `山岳名` from ((`person_teizan` `pt` join `person` `p` on((`pt`.`person_id` = `p`.`id`))) join `teizan` `t` on((`pt`.`teizan_id` = `t`.`id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `pt_view2`
+--
+
+/*!50001 DROP TABLE IF EXISTS `pt_view2`*/;
+/*!50001 DROP VIEW IF EXISTS `pt_view2`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`mountain_user`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `pt_view2` AS select `p`.`name` AS `名前`,`g`.`name` AS `性別`,timestampdiff(YEAR,`p`.`birthday`,curdate()) AS `年齢`,`t`.`name` AS `山岳名`,`s`.`name` AS `所在地` from ((((`person_teizan` `pt` join `person` `p` on((`pt`.`person_id` = `p`.`id`))) join `teizan` `t` on((`pt`.`teizan_id` = `t`.`id`))) join `gender` `g` on((`p`.`gender_id` = `g`.`id`))) join `state` `s` on((`t`.`state_id` = `s`.`id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2022-10-06 17:03:58

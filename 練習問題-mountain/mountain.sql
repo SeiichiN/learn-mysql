@@ -1,10 +1,5 @@
 -- 日本百低山リスト 2009年版
 
--- mountain
-CREATE DATABASE IF NOT EXISTS mountain;
-
-USE mountain;
-
 DROP TABLE IF EXISTS teizan;
 
 SOURCE state.sql;
@@ -14,19 +9,21 @@ CREATE TABLE teizan (
   id INT AUTO_INCREMENT,
   name VARCHAR(20) NOT NULL,
   kana VARCHAR(40) NOT NULL,
-  stcode CHAR(2) NOT NULL,
+  state_id CHAR(2) NOT NULL,
   height int NOT NULL,
   PRIMARY KEY (id)
 );
 
 ALTER TABLE teizan
   ADD
-    FOREIGN KEY (stcode)
-    REFERENCES state (sid);
+    FOREIGN KEY (state_id)
+    REFERENCES state (id);
 
 ALTER TABLE teizan AUTO_INCREMENT = 1;
 
-INSERT INTO teizan (name, kana, stcode, height) VALUE
+INSERT INTO teizan
+(name, kana, state_id, height)
+VALUE
 ('藻岩山', 'もいわやま','01',531),
 ('ニセコアンヌプリ', 'にせこあんぬぷり', '01',1308),
 ('樽前山', 'たるまえさん','01',1041),
@@ -127,9 +124,10 @@ INSERT INTO teizan (name, kana, stcode, height) VALUE
 ('英彦山', 'ひこさん', '40', 1199),
 ('鶴見岳', 'つるみだけ', '44', 1375),
 ('開聞岳', 'かいもんだけ', '46', 924),
-('日本国', 'にほんこく', '15', 555);
+('日本国', 'にほんこく', '15', 555)
+\g
 
 
 
 
--- 修正時刻: Thu 2022/10/06 06:01:522
+-- 修正時刻: Thu 2022/10/06 17:06:032
