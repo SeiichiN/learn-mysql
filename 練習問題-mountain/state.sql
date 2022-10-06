@@ -1,16 +1,19 @@
 
-/*
+DROP TABLE IF EXISTS state;
+
 CREATE TABLE state (
-  sid char(2) PRIMARY KEY,
-  sname varchar(5)
-) 
-*/
+  id char(2) PRIMARY KEY,
+  name varchar(5)
+); 
+
 
 --
 -- state
 --
 
-INSERT INTO state (sid, sname) VALUES
+INSERT INTO state
+(id, name)
+VALUES
 ('01', '北海道'),
 ('02', '青森県'),
 ('03', '岩手県'),
@@ -60,4 +63,4 @@ INSERT INTO state (sid, sname) VALUES
 ('47', '沖縄県');
 
 
--- 修正時刻: Sun Feb 20 16:36:57 2022
+-- 修正時刻: Thu 2022/10/06 16:05:582

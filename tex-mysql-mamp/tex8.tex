@@ -380,7 +380,7 @@ MySQLに sampleuser としてログインし、作業を行う。
  mysql> CREATE TABLE emp_hobby (
      ->   id INT NOT NULL,
      ->   hid CHAR(3) NOT NULL,
-     ->   PRIMARY KEY (id, hid),
+     ->   PRIMARY KEY (id, hid)
      -> );
 \end{lstlisting}
 
@@ -388,7 +388,7 @@ MySQLに sampleuser としてログインし、作業を行う。
 
 \begin{lstlisting}[caption=gender]
 INSERT INTO gender
-  (gid, g_name)
+  (gid, gname)
 VALUES
   ('0', '不明'),
   ('1', '男性'),
@@ -491,4 +491,4 @@ WHERE
 
 \include{end}
 
-%% 修正時刻： Sat 2022/10/01 18:25:282
+%% 修正時刻： Thu 2022/10/06 07:59:322

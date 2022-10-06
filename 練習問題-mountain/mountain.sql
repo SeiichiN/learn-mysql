@@ -5,67 +5,9 @@ CREATE DATABASE IF NOT EXISTS mountain;
 
 USE mountain;
 
--- state
 DROP TABLE IF EXISTS teizan;
-DROP TABLE IF EXISTS state;
 
-CREATE TABLE `state` (
-  `code` char(2) NOT NULL,
-  `stname` varchar(5) NOT NULL,
-  PRIMARY KEY (code)
-);
-
-INSERT INTO `state` (`code`, `stname`) VALUES
-('01', '北海道'),
-('02', '青森県'),
-('03', '岩手県'),
-('04', '宮城県'),
-('05', '秋田県'),
-('06', '山形県'),
-('07', '福島県'),
-('08', '茨城県'),
-('09', '栃木県'),
-('10', '群馬県'),
-('11', '埼玉県'),
-('12', '千葉県'),
-('13', '東京都'),
-('14', '神奈川県'),
-('15', '新潟県'),
-('16', '富山県'),
-('17', '石川県'),
-('18', '福井県'),
-('19', '山梨県'),
-('20', '長野県'),
-('21', '岐阜県'),
-('22', '静岡県'),
-('23', '愛知県'),
-('24', '三重県'),
-('25', '滋賀県'),
-('26', '京都府'),
-('27', '大阪府'),
-('28', '兵庫県'),
-('29', '奈良県'),
-('30', '和歌山県'),
-('31', '鳥取県'),
-('32', '島根県'),
-('33', '岡山県'),
-('34', '広島県'),
-('35', '山口県'),
-('36', '徳島県'),
-('37', '香川県'),
-('38', '愛媛県'),
-('39', '高知県'),
-('40', '福岡県'),
-('41', '佐賀県'),
-('42', '長崎県'),
-('43', '熊本県'),
-('44', '大分県'),
-('45', '宮崎県'),
-('46', '鹿児島県'),
-('47', '沖縄県');
-
-
-
+SOURCE state.sql;
 
 -- teizan
 CREATE TABLE teizan (
@@ -78,8 +20,9 @@ CREATE TABLE teizan (
 );
 
 ALTER TABLE teizan
-  ADD FOREIGN KEY (stcode)
-  REFERENCES state (code);
+  ADD
+    FOREIGN KEY (stcode)
+    REFERENCES state (sid);
 
 ALTER TABLE teizan AUTO_INCREMENT = 1;
 
@@ -186,116 +129,7 @@ INSERT INTO teizan (name, kana, stcode, height) VALUE
 ('開聞岳', 'かいもんだけ', '46', 924),
 ('日本国', 'にほんこく', '15', 555);
 
---
--- gender
---
-DROP TABLE IF EXISTS person;
-DROP TABLE IF EXISTS gender;
-
-CREATE TABLE gender (
-  gid CHAR(1) PRIMARY KEY,
-  gname VARCHAR(3) NOT NULL
-);
-
-INSERT INTO gender (gid, gname) VALUES
-('0', '不明'),
-('1', '男性'),
-('2', '女性'),
-('3', 'その他');
 
 
---
--- person
---
 
-CREATE TABLE person (
-  id int(11) AUTO_INCREMENT,
-  name varchar(20) NOT NULL,
-  g_id char(1) NOT NULL,
-  birthday date NOT NULL,
-  PRIMARY KEY (id),
-  FOREIGN KEY (g_id) REFERENCES gender (gid)
-);
-
---
--- テーブルのデータのダンプ `person`
---
-ALTER TABLE person AUTO_INCREMENT = 1;
-
-INSERT INTO `person` (`name`, `g_id`, `birthday`) VALUES
-('染谷将太',   '1', '1992-09-03'),
-('二階堂ふみ', '2', '1994-09-21'),
-('渡辺哲',     '1', '1950-03-11'),
-('窪塚洋介',   '1', '1979-05-07'),
-('吉高由里子', '2', '1988-07-22');
-
-
--- 
--- person_teizan
---
-
-DROP TABLE IF EXISTS person_teizan;
-
-CREATE TABLE person_teizan (
-  p_id INT NOT NULL,
-  t_id INT NOT NULL,
-  PRIMARY KEY (p_id, t_id)
-);
-
-INSERT INTO person_teizan (p_id, t_id) VALUES
-(1, 20),
-(1, 30),
-(1, 50),
-(2, 66),
-(2, 26),
-(2, 30),
-(2, 43),
-(3, 82),
-(3, 44),
-(3, 50),
-(4, 53),
-(4, 58),
-(4, 66),
-(4, 67),
-(5, 82),
-(5, 80),
-(5, 50),
-(5, 30),
-(5, 53);
-
-DROP VIEW IF EXISTS pt_view;
-
-CREATE VIEW pt_view AS
-SELECT
-  p.name as 名前, t.name as 山岳名
-  FROM person_teizan as pt
-    INNER JOIN person as p
-    ON pt.p_id = p.id
-      INNER JOIN teizan as t
-      ON pt.t_id = t.id;
-
-SELECT * FROM pt_view;
-
-DROP VIEW IF EXISTS pt_view2;
-
-CREATE VIEW pt_view2 AS
-SELECT
-  p.name as 名前,
-  g.gname as 性別,
-  TIMESTAMPDIFF(YEAR, p.birthday, CURDATE()) as 年齢,
-  t.name as 山岳名,
-  s.stname as 所在地
-  FROM person_teizan as pt
-    INNER JOIN person as p
-    ON pt.p_id = p.id
-      INNER JOIN teizan as t
-      ON pt.t_id = t.id
-        INNER JOIN gender as g
-        ON p.g_id = g.gid
-          INNER JOIN state as s
-          ON t.stcode = s.code;
-          
-SELECT * FROM pt_view2;
-
-
--- 修正時刻: Sun Feb 20 11:05:03 2022
+-- 修正時刻: Thu 2022/10/06 06:01:522

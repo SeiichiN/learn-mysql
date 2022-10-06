@@ -87,8 +87,16 @@ mysql> ALTER TABLE student
 \verb!     REFERENCES dept(id);      -- 参照  dept表の(id)!
 \end{tcolorbox}
 
-上の例は、emp表の中にある dept\_id という項目が、dept表の id という項目を参照しているという
-設定である。
+上の例は、emp表の中にある dept\_id という項目が、dept表の id という項目を参照しているという設定である。
+
+設定した外部キー制約を削除するには、以下のようにする。
+
+\begin{tcolorbox}
+\verb!ALTER TABLE emp ! \\
+\verb!  DROP          ! \\
+\verb!    FOREIGN KEY fk_dept;   -- ! CONSTRAINT で指定した制約名
+\end{tcolorbox}
+
 
 \subsection{表のデータの更新}
 
@@ -193,4 +201,4 @@ SELECT で表のデータを表示するとき、WHERE で条件を指定する�
 
 \include{end}
 
-%% 修正時刻： Sat 2022/10/01 18:25:282
+%% 修正時刻： Thu 2022/10/06 07:15:442
