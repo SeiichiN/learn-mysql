@@ -123,13 +123,13 @@ deptテーブルは、このような定義になる。
 
 \begin{tcolorbox}
  MariaDB [sample]$>$ CREATE \ TABLE \ emp \ ( \\
- \hspace{6mm} \verb!->! id \ INT \ AUTO\_INCREMENT\,, (カンマ) \\
- \hspace{6mm} \verb!->! name \ VARCHAR(20) \ NOT \ NULL\,, \\
- \hspace{6mm} \verb!->! age \ INT \ NOT \ NULL\,, \\
- \hspace{6mm} \verb!->! birthday \ YEAR \ NOT \ NULL\,, \\
- \hspace{6mm} \verb!->! dept\_id \ CHAR(3), \\
- \hspace{6mm} \verb!->! PRIMARY \ KEY \  (id) (カンマなし) \\
- \hspace{6mm} \verb!->! );
+ \hspace{6mm} \verb!->   id       INT         AUTO_INCREMENT,! -\,- (カンマ) \\
+ \hspace{6mm} \verb!->   name     VARCHAR(20) NOT NULL,! \\
+ \hspace{6mm} \verb!->   age      INT         NOT NULL,! \\
+ \hspace{6mm} \verb!->   birthday YEAR        NOT NULL,! \\
+ \hspace{6mm} \verb!->   dept_id  CHAR(3), ! \\
+ \hspace{6mm} \verb!->   PRIMARY KEY (id) ! -\,- (カンマなし) \\
+ \hspace{6mm} \verb!-> ); !
 \end{tcolorbox}
 
 同様に deptテーブルも作成する。
@@ -137,9 +137,9 @@ deptテーブルは、このような定義になる。
 
 \begin{tcolorbox}
  MariaDB [sample]$>$ CREATE \ TABLE \ dept \ ( \\
- \hspace{6mm} \verb!->! id \ CHAR(3) \ PRIMARY \ KEY\,, (カンマ) \\
- \hspace{6mm} \verb!->! name \ VARCHAR(20) \ NOT \ NULL (カンマなし) \\
- \hspace{6mm} \verb!->! );
+ \hspace{6mm} \verb!->   id   CHAR(3)     PRIMARY KEY,! -\ - (カンマ) \\
+ \hspace{6mm} \verb!->   name VARCHAR(20) NOT NULL! -\ - (カンマなし) \\
+ \hspace{6mm} \verb!-> );!
 \end{tcolorbox}
 
 \vspace{3mm}
@@ -422,4 +422,4 @@ SQLのコマンド文字列は大文字で記述し、ユーザーが用意し�
 
 \include{end}
 
-%% 修正時刻： Sat Oct  9 19:36:20 2021
+%% 修正時刻： Sat 2023/03/25 15:49:081

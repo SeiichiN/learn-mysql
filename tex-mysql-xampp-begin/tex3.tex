@@ -1,0 +1,211 @@
+\documentclass[uplatex, dvipdfmx]{jsarticle}
+
+\include{begin}
+
+\section{データの挿入}
+
+それでは、1件分のデータを入力する。
+
+入力データ
+
+\begin{tabular}{|c|c|c|c|c|} \hline
+ id & name & age & birthyear & dept \\ \hline
+ 1 & 菅原文太 & 40 & 1933 & 総務部 \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+\begin{lstlisting}[language=SQL]
+MariaDB [rensyu]> insert into emp 
+    -> (id, name, age, birthyear, dept)
+    -> values
+    -> (1, '菅原文太', 40, 1933, '総務部');
+Query OK, 1 row affected (0.001 sec)
+\end{lstlisting}
+
+続いて、2つめのデータを入力する。
+
+入力データ
+
+\begin{tabular}{|c|c|c|c|c|} \hline
+ id & name & age & birthyear & dept \\ \hline
+ 2 & 千葉真一 & 34 & 1939 & 営業部 \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+全項目を入力する場合、項目指定を省略できる。
+
+\begin{lstlisting}[language=SQL]
+MariaDB [rensyu]> insert into emp 
+    -> values
+    -> (2, '千葉真一', 34, 1939, '営業部');
+Query OK, 1 row affected (0.001 sec)
+\end{lstlisting}
+
+残りの2件を一度に入力する。
+
+入力データ
+
+\begin{tabular}{|c|c|c|c|c|} \hline
+ id & name & age & birthyear & dept \\ \hline
+ 3 & 北大路欣也 & 30 & 1943 & 経理部 \\ \hline
+ 4 & 梶芽衣子 & 26 & 1947 & 営業部 \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+\begin{lstlisting}[language=SQL]
+MariaDB [rensyu]> insert into emp 
+    -> values
+    -> (3, '北大路欣也', 30, 1943, '経理部'),
+    -> (4, '梶芽衣子', 26, 1947, '営業部');
+Query OK, 2 rows affected (0.003 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+\end{lstlisting}
+
+
+\section{データの表示}
+
+\subsection{一覧表示}
+
+今までに入力したデータの一覧を表示する。
+
+\begin{lstlisting}[language=SQL]
+MariaDB [rensyu]> select * from emp;
+\end{lstlisting}
+
+あるいは、次のように出力する項目を指定できる。
+\footnote{ここでは全項目を指定しているが、
+必要な項目だけに絞ることもできる。}
+
+\begin{lstlisting}[language=SQL]
+MariaDB [rensyu]> select
+     ->   id,
+     ->   name,
+     ->   age,
+     ->   birdhyear,
+     ->   dept
+     -> from emp;
+\end{lstlisting}
+
+
+\begin{lstlisting}[language={}, numbers=none, backgroundcolor={\color{white}}]
++----+-----------------+------+-----------+-----------+
+| id | name            | age  | birthyear | dept      |
++----+-----------------+------+-----------+-----------+
+|  1 | 菅原文太        |   40 |      1933 | 総務部    |
+|  2 | 千葉真一        |   34 |      1939 | 営業部    |
+|  3 | 北大路欣也      |   30 |      1943 | 経理部    |
+|  4 | 梶芽衣子        |   26 |      1947 | 営業部    |
++----+-----------------+------+-----------+-----------+
+4 rows in set (0.000 sec)
+\end{lstlisting}
+
+\subsection{抽出して表示}
+
+年齢が30才以上の人を抽出する。
+
+\begin{lstlisting}[language=SQL]
+MariaDB [rensyu]> select
+     ->   *
+     -> from emp
+     -> where
+     ->   age >= 30;
+\end{lstlisting}
+
+\begin{lstlisting}[language={}, numbers=none, backgroundcolor={\color{white}}]
++----+-----------------+-----+----------+---------+
+| id | name            | age | birthday | dept    |
++----+-----------------+-----+----------+---------+
+|  1 | 菅原文太        |  40 |     1933 | 総務部  |
+|  2 | 千葉真一        |  34 |     1939 | 営業部  |
+|  3 | 北大路欣也      |  30 |     1943 | 経理部  |
++----+-----------------+-----+----------+---------+
+\end{lstlisting}
+
+所属が''営業部''である人を抽出する。
+
+\begin{lstlisting}[language=SQL]
+MariaDB [rensyu]> select
+     ->   *
+     -> from emp
+     -> where
+     ->   dept like '営業%';
+\end{lstlisting}
+
+\begin{lstlisting}[language={}, numbers=none, backgroundcolor={\color{white}}]
++----+-----------------+------+-----------+-----------+
+| id | name            | age  | birthyear | dept      |
++----+-----------------+------+-----------+-----------+
+|  2 | 千葉真一        |   34 |      1939 | 営業部    |
+|  4 | 梶芽衣子        |   26 |      1947 | 営業部    |
++----+-----------------+------+-----------+-----------+
+\end{lstlisting}
+
+
+
+
+
+\section{データの修正}
+
+データの修正(更新)をしてみる。
+ここでは、千葉真一の 部署を''開発部'' に変更してみる。
+
+\begin{lstlisting}[language=SQL]
+MariaDB [rensyu]> update emp
+     -> set
+     ->   dept = '開発部'
+     -> where
+     ->   id = 2;
+\end{lstlisting}
+
+\begin{lstlisting}[numbers=none, language={}]
+MariaDB [rensyu]> select * from emp;
++----+-----------------+------+-----------+-----------+
+| id | name            | age  | birthyear | dept      |
++----+-----------------+------+-----------+-----------+
+|  1 | 菅原文太        |   40 |      1933 | 総務部    |
+|  2 | 千葉真一        |   34 |      1939 | 開発部    |
+|  3 | 北大路欣也      |   30 |      1943 | 経理部    |
+|  4 | 梶芽衣子        |   26 |      1947 | 営業部    |
++----+-----------------+------+-----------+-----------+
+4 rows in set (0.000 sec)
+\end{lstlisting}
+
+
+\section{データの削除}
+
+データを1件削除する。
+ここでは、北大路欣也を削除してみる。
+
+\begin{lstlisting}[language=SQL]
+MariaDB [rensyu]> delete from emp
+     -> where
+     ->   id = 3;
+\end{lstlisting}
+
+\begin{lstlisting}[numbers=none, language={}]
+MariaDB [rensyu]> select * from emp;
++----+-----------------+------+-----------+-----------+
+| id | name            | age  | birthyear | dept      |
++----+-----------------+------+-----------+-----------+
+|  1 | 菅原文太        |   40 |      1933 | 総務部    |
+|  2 | 千葉真一        |   34 |      1939 | 開発部    |
+|  4 | 梶芽衣子        |   26 |      1947 | 営業部    |
++----+-----------------+------+-----------+-----------+
+4 rows in set (0.000 sec)
+\end{lstlisting}
+
+\section{CRUD}
+
+データの挿入(作成)(insert)、表示(読込み)(select)、
+修正(更新)(update)、削除(delete) は
+基本処理である。
+
+Create Read Update Delete という。
+
+
+
+
+
+\include{end}
+
+%% 修正時刻： Sat 2023/03/25 12:26:110
