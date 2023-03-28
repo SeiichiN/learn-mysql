@@ -1,0 +1,263 @@
+\documentclass[dvipdfmx]{jsarticle}
+
+\include{begin}
+
+\section{さまざまなコマンド}
+
+\subsection{表定義関連}
+
+\subsubsection{表定義の変更}
+
+以下のような表定義があったとする。
+
+\vspace{3mm}
+\newsavebox{\sqlbox}
+\setbox\sqlbox=\vbox{\hsize 6cm
+\begin{verbatim}
+CREATE TABLE student (
+  id char(3),
+  name varchar(20)
+)
+\end{verbatim}
+}
+\fbox{\usebox{\sqlbox}}
+\vspace{3mm}
+
+この name カラムに NOT NULL 制約を追加したいとする。
+以下のようにできる。
+
+\begin{tcolorbox}
+\verb!MariaDB> ALTER TABLE student! \\
+\verb!    -> MODIFY name varchar(20) NOT NULL;!
+\end{tcolorbox}
+
+\vspace{3mm}
+\begin{tabular}{|l|} \hline
+ ALTER TABLE テーブル名 \\
+ MODIFY カラム名 カラム定義 \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+\subsubsection{表定義にカラムを追加}
+
+また、age (年齢) という項目を追加したいとする。以下のようにできる。
+
+\begin{tcolorbox}
+\verb!MariaDB> ALTER TABLE student! \\
+\verb!    -> ADD age int NOT NULL;!
+\end{tcolorbox}
+
+\vspace{3mm}
+\begin{tabular}{|l|} \hline
+ ALTER TABLE テーブル名 \\
+ ADD カラム名 カラム定義 \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+\subsubsection{表定義にプライマリーキーを追加}
+
+あるいは、id に PRIMARY KEY を設定したいとする。以下のようにできる。
+
+\begin{tcolorbox}
+\verb!MariaDB> ALTER TABLE student! \\
+\verb!    -> ADD PRIMARY KEY (id);!
+\end{tcolorbox}
+
+\vspace{3mm}
+\begin{tabular}{|l|} \hline
+ ALTER TABLE テーブル名 \\
+ ADD PRIMARY KEY (カラム名) \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+\subsubsection{表定義に外部キー制約を追加}
+
+外部キー制約を あとから設定するには、以下のようにする。
+
+\begin{tcolorbox}
+\verb!ALTER TABLE emp               -- empテーブル再定義! \\
+\verb!   ADD                         -- 追加! \\
+\verb!     CONSTRAINT fk_dept        -- 制約名 fk_dept! \\
+\verb!     FOREIGN KEY (dept_id)     -- 外部キー dept_id! \\
+\verb!     REFERENCES dept(id);      -- 参照  dept表の(id)!
+\end{tcolorbox}
+
+上の例は、emp表の中にある dept\_id という項目が、dept表の id という項目を参照しているという
+設定である。
+
+\subsection{表のデータの更新}
+
+たとえば、emp表の id=1 の人の氏名を変更するには、以下のようにする。
+
+\begin{tcolorbox}
+ \verb!MariaDB> UPDATE emp SET name = '菅原文夫' WHERE id = 1;! 
+\end{tcolorbox}
+
+\begin{tabular}{|l|} \hline
+ \verb!UPDATE テーブル名 SET カラム名 = 訂正データ WHERE 条件! \\ \hline
+\end{tabular}
+
+\subsection{表のデータの削除}
+
+\subsubsection{1件のデータを削除する}
+
+id が 1 のデータを削除する。
+
+\begin{tcolorbox}
+ \verb!MariaDB> DELETE FROM emp WHERE id = 1;!
+\end{tcolorbox}
+
+\begin{tabular}{|l|} \hline
+ \verb!DELETE FROM テーブル名 WHERE 条件! \\ \hline
+\end{tabular}
+
+id が 1 のデータを削除すると、1 が欠番になる。
+
+\begin{spacing}{0.8}        
+\begin{verbatim}
++----+------------+-----+----------+---------+
+| id | name       | age | birthday | dept_id |
++----+------------+-----+----------+---------+
+|  2 | 千葉真一   |  34 |     1939 | 002     |
+|  4 | 梶芽衣子   |  26 |     1947 | 002     |
+|  3 | 北大路欣也 |  30 |     1943 | 003     |
++----+------------+-----+----------+---------+
+\end{verbatim}
+\end{spacing}
+
+この場合、id の数字を振り直すことはしない。
+なぜなら、id は順番を表す数字ではなく、そのデータを特定するための数字だからである。
+それが プライマリー・キーの役割である。
+順番になっているのは、データを作成するときに、AUTO\_INCREMENT を使ったからである。
+
+
+\subsubsection{全データを削除する}
+
+条件をつけなければ、全データが削除される。
+
+\begin{tcolorbox}
+ \verb!MariaDB> DELETE FROM emp;!
+\end{tcolorbox}
+
+\begin{tabular}{|l|} \hline
+ \verb!DELETE FROM テーブル名! \\ \hline
+\end{tabular}
+
+
+\subsection{表のデータの表示・検索}
+
+SELECT で表のデータを表示するとき、WHERE で条件を指定する際に、''LIKE'' で
+条件を指定できる。
+
+\begin{tcolorbox}
+ \verb!MariaDB> SELECT * FROM emp WHERE name LIKE '%葉%';!
+\end{tcolorbox}
+
+\begin{verbatim}
++----+--------------+-----+----------+---------+
+| id | name         | age | birthday | dept_id |
++----+--------------+-----+----------+---------+
+|  2 | 千葉真一     |  34 |     1939 | 002     |
++----+--------------+-----+----------+---------+
+\end{verbatim}
+
+\begin{tabular}{|l|}
+ \verb!SELECT [カラム名, ...] FROM テーブル名 WHERE カラム名 LIKE '%語句%';! \\
+\end{tabular}
+
+{\em \%} は 0文字以上の文字列に合致する。\\
+{\em \_} は 1文字以上の文字列に合致する。
+
+
+\subsection{MySQLの管理}
+
+\subsubsection{MySQLの文字コードの確認}
+
+MySQLで文字コードを確認するには、以下のコマンドを使う。
+
+\begin{tcolorbox}
+ \verb!MariaDB> SHOW VARIABLES LIKE '%char%';!
+\end{tcolorbox}
+
+Windowsのコマンドプロンプトで実行すると、以下のようになる。
+
+\vspace{3mm}
+\begin{tabular}{|l|} \hline
+\verb!+--------------------------+----------------------------+! \\
+\verb!| Variable_name            | Value                      |! \\
+\verb!+--------------------------+----------------------------+! \\
+\verb!| character_set_client     | cp932                      |! \\
+\verb!| character_set_connection | cp932                      |! \\
+\verb!| character_set_database   | utf8mb4                    |! \\
+\verb!| character_set_filesystem | binary                     |! \\
+\verb!| character_set_results    | cp932                      |! \\
+\verb!| character_set_server     | utf8mb4                    |! \\
+\verb!| character_set_system     | utf8                       |! \\
+\verb!| character_sets_dir       | /usr/share/mysql/charsets/ |! \\ 
+\verb!+--------------------------+----------------------------+! \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+Macのターミナルや、同じWindowsでも、コマンドプロンプトが UTF-8(cp65001)に
+なっていると、以下のようになる。
+
+\vspace{3mm}
+\begin{tabular}{|l|} \hline
+\verb!+--------------------------+----------------------------+! \\
+\verb!| Variable_name            | Value                      |! \\
+\verb!+--------------------------+----------------------------+! \\
+\verb!| character_set_client     | utf8mb4                    |! \\
+\verb!| character_set_connection | utf8mb4                    |! \\
+\verb!| character_set_database   | utf8mb4                    |! \\
+\verb!| character_set_filesystem | binary                     |! \\
+\verb!| character_set_results    | utf8mb4                    |! \\
+\verb!| character_set_server     | utf8mb4                    |! \\
+\verb!| character_set_system     | utf8                       |! \\
+\verb!| character_sets_dir       | /usr/share/mysql/charsets/ |! \\ 
+\verb!+--------------------------+----------------------------+! \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+{\em mysql} というのはクライアント・アプリで、{\em mysqld} というのが
+サーバー・アプリなのだが、mysqlクライアントが mysqldサーバーに接続
+するときに、自身の環境の文字コードを mysqldサーバーに送るのである。
+mysqldサーバーは、SQLコマンドの結果を mysqlクライアントに送るときに
+そのクライアントの文字コードにして送るのである。
+
+ただ、mysqldumpコマンドの場合、指定しなければ UTF-8 の文字コードで
+送られる。だから、mysqldumpで取得できたダンプファイルの文字コードは
+UTF-8 である。
+
+これは、リストアする時に特に意識する必要はない。
+
+\subsection{ユーザー一覧}
+
+MySQLで今までに作成したユーザーの一覧を見たい場合、以下のコマンドでできる。
+ただし、ルート・ユーザー(root)でないと権限がないと怒られる。
+
+\begin{tcolorbox}
+ \verb!MariaDB> SELECT user, host, db FROM mysql.db;!
+\end{tcolorbox}
+
+パスワードは暗号化されているので、見ても仕方がないが、以下のコマンドでできる。
+
+\begin{tcolorbox}
+ \verb!MariaDB> SELECT user, password FROM mysql.user;!
+\end{tcolorbox}
+
+\subsection{パスワードの再設定}
+
+パスワードを忘れたなどで、パスワードを再設定したい場合は、以下のコマンドでできる。
+(rootユーザーで実行)
+
+\begin{tcolorbox}
+ MariaDB$>$ SET \ PASSWORD \ FOR \ 'ユーザー名'@'localhost' \ = \ password('パスワード');
+\end{tcolorbox}
+
+
+
+
+
+\include{end}
+
+%% 修正時刻： Thu Oct 14 07:25:07 2021

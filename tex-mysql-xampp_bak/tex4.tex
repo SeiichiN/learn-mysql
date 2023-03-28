@@ -15,17 +15,13 @@ empテーブルの dept\_id は、deptテーブルの id である。
 実行例
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ SELECT \ * \\
- \qquad --$>$ FROM \ emp \\
- \qquad --$>$ \underline{JOIN} \ dept \\
- \qquad --$>$ \underline{ON} \ emp.dept\_id \ = \ dept.id;
+ MariaDB [sample]$>$ SELECT \ * \ FROM \ emp \ \underline{\textsf{JOIN}} \ dept \ 
+ \underline{\textsf{ON}} \ emp.dept\_id \ = \ dept.id;
 \end{tcolorbox}
 
 \begin{tabular}{|l|} \hline
- SELECT * \\
- FROM メインの表 \\
- \verb![INNER]!  JOIN  サブの表 \ \\
- ON  メインの表.キーカラム名  =  サブの表.キーカラム名 \\ \hline
+ SELECT \ * \ FROM \ メインの表 \ [INNER] \ JOIN \ サブの表 \ \\
+ ON \ メインの表.キーカラム名 \ = \ サブの表.キーカラム名 \\ \hline
 \end{tabular}
 
 \vspace{3mm}
@@ -69,14 +65,9 @@ emp表の id, name, age と dept表の name だけを表示させる。
 
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ SELECT \\
- \qquad --$>$ \quad emp.id, \\
- \qquad --$>$ \quad emp.name, \\
- \qquad --$>$ \quad age, \\
- \qquad --$>$ \quad dept.name \\ 
- \qquad --$>$ FROM \ emp \\
- \qquad --$>$ JOIN \ dept \\
- \qquad --$>$ \quad ON \ emp.dept\_id \ = \ dept.id;
+ MariaDB [sample]$>$ SELECT \ \underline{emp.id, \ emp.name, \ age, \ dept.name} \ 
+ FROM \ emp \ JOIN \ dept \\
+ \hspace{6mm} \verb!->! ON \ emp.dept\_id \ = \ dept.id;
 \end{tcolorbox}
 
 \begin{spacing}{0.8}        
@@ -98,17 +89,14 @@ emp表の id, name, age と dept表の name だけを表示させる。
 
 それには、\textsf{AS句} というのが使える。
 
-たとえば、``emp.name AS 名前'' とすると、``emp.name'' は ``名前'' と表示される。
+たとえば、``emp.name AS 名前'' とすると、``emp.neme'' は ``名前'' と表示される。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ SELECT \\
- \qquad --$>$ \quad emp.id \ AS \ ID, \\ 
- \qquad --$>$ \quad emp.name \ AS \ 名前, \\
- \qquad --$>$ \quad age \ AS \ 年齢, \\ 
- \qquad --$>$ \quad dept.name \ AS \ 部署名 \\
- \qquad --$>$ FROM \ emp \\
- \qquad --$>$ JOIN \ dept \\
- \qquad --$>$ \quad ON \ emp.dept\_id \ = \ dept.id;
+ MariaDB [sample]$>$ SELECT \ \underline{emp.id \ AS \ ID}, \ 
+ \underline{emp.name \ AS \ 名前}, \ \underline{age \ AS \ 年齢}, \\ 
+ \hspace{6mm} \verb!->! \underline{dept.name \ AS \ 部署名} \\
+ \hspace{6mm} \verb!->! FROM \  emp \ JOIN \ dept \\
+ \hspace{6mm} \verb!->! ON \ emp.dept\_id \ = \ dept.id;
 \end{tcolorbox}
 
 \begin{spacing}{0.8}        
@@ -137,15 +125,11 @@ emp表の id, name, age と dept表の name だけを表示させる。
 
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ SELECT \\
- \qquad --$>$ \quad emp.id \ AS \ ID, \\
- \qquad --$>$ \quad emp.name \ AS \ 名前, \\
- \qquad --$>$ \quad age \ AS \ 年齢,\\
- \qquad --$>$ \quad dept.name \ AS \ 部署名 \\
- \qquad --$>$ FROM \ emp \\
- \qquad --$>$ JOIN \ dept \\
- \qquad --$>$ \quad ON \ emp.dept\_id \ = \ dept.id \\
- \qquad --$>$ ORDER \ BY \ ID;
+ MariaDB [sample]$>$ SELECT \ emp.id \ AS \ ID, \ emp.name \ AS \ 名前, \ age \ AS \ 年齢,\\
+ \hspace{6mm} \verb!->! dept.name \ AS \ 部署名 \\
+ \hspace{6mm} \verb!->! FROM \ emp \ JOIN \ dept \\
+ \hspace{6mm} \verb!->! ON \ emp.dept\_id \ = \ dept.id \\
+ \hspace{6mm} \verb!->! \underline{ORDER \ BY \ ID};
 \end{tcolorbox}
 
 \begin{spacing}{0.8}        
@@ -171,30 +155,22 @@ emp表の id, name, age と dept表の name だけを表示させる。
 emp とか dept とかのテーブルの指定も別名を使うことで簡略化できる。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ SELECT \\
- \qquad --$>$ \quad e.id \ AS \ ID, \\
- \qquad --$>$ \quad e.name \ AS \ 名前, \\
- \qquad --$>$ \quad age \ AS \ 年齢,\\
- \qquad --$>$ \quad d.name \ AS \ 部署名 \\
- \qquad --$>$ FROM \ emp \ AS \ e \\
- \qquad --$>$ JOIN \ dept \ AS \ d \\
- \qquad --$>$ \quad ON \ e.dept\_id \ = \ d.id \\
- \qquad --$>$ ORDER \ BY \ ID;
+ MariaDB [sample]$>$ SELECT \ \underline{e.id} \ AS \ ID, \ \underline{e.name} \ AS \ 名前, \ age \ AS \ 年齢,\\
+ \hspace{6mm} \verb!->! \underline{d.name} \ AS \ 部署名 \\
+ \hspace{6mm} \verb!->! FROM \ emp \ \underline{AS \ e} \ JOIN \ dept \ \underline{AS \ d} \\
+ \hspace{6mm} \verb!->! ON \ \underline{e.dept\_id} \ = \ \underline{d.id} \\
+ \hspace{6mm} \verb!->! ORDER \ BY \ ID;
 \end{tcolorbox}
 
 さらに、FROM や JOIN の後では、すぐ後ろに 別名(ここでは e や d のこと)がくる場合、{\em AS} は
 省略できる。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ SELECT \\
- \qquad --$>$ \quad e.id \ AS \ ID, \\
- \qquad --$>$ \quad e.name \ AS \ 名前, \\
- \qquad --$>$ \quad age \ AS \ 年齢,\\
- \qquad --$>$ \quad d.name \ AS \ 部署名 \\
- \qquad --$>$ FROM \ emp \ e \\
- \qquad --$>$ JOIN \ dept \ d \\
- \qquad --$>$ \quad ON \ e.dept\_id \ = \ d.id \\
- \qquad --$>$ ORDER \ BY \ ID;
+ MariaDB [sample]$>$ SELECT \ e.id \ AS \ ID, \ e.name \ AS \ 名前, \ age \ AS \ 年齢,\\
+ \hspace{6mm} \verb!->! d.name \ AS \ 部署名 \\
+ \hspace{6mm} \verb!->! FROM \ emp \ \underline{e} \ JOIN \ dept \ \underline{d} \\
+ \hspace{6mm} \verb!->! ON \ e.dept\_id \ = \ d.id \\
+ \hspace{6mm} \verb!->! ORDER \ BY \ ID;
 \end{tcolorbox}
 
 
@@ -221,10 +197,8 @@ emp とか dept とかのテーブルの指定も別名を使うことで簡略�
 \end{tcolorbox}
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ INSERT INTO emp \\
- \qquad --$>$ (name, age, birthday) \\
- \qquad --$>$ VALUES \\
- \qquad --$>$ ('成田三樹夫', 38, 1935);
+ MariaDB [sample]$>$ \textsf{INSERT INTO emp (name, age, birthday) VALUES} \\
+ \hspace{6mm} \verb!->! \textsf{('成田三樹夫', 38, 1935);}
 \end{tcolorbox}
 
 \begin{spacing}{0.8}        
@@ -248,14 +222,10 @@ MariaDB [sample]> SELECT * FROM emp;
 この状態で 内部結合 をすると、どうなるか？
 
 \begin{verbatim}
-MariaDB [sample]> SELECT 
-    ->   e.id AS ID, 
-    ->   e.name AS 名前, 
-    ->   e.age AS 年齢, 
-    ->   d.name AS 部署名
-    -> FROM emp e
-    -> JOIN dept d
-    ->   ON e.dept_id = d.id
+MariaDB [sample]> SELECT e.id AS ID, e.name AS 名前, e.age AS 年齢,
+    -> d.name AS 部署名
+    -> FROM emp e JOIN dept d
+    -> ON e.dept_id = d.id
     -> order by ID;
 \end{verbatim}
 
@@ -272,7 +242,7 @@ MariaDB [sample]> SELECT
 \end{verbatim}
 \end{spacing}
 
-成田三樹夫は、結合表には出てこない。
+結合表には出てこない。
 
 これを図であらわすと、このようになる。
 
@@ -285,15 +255,11 @@ MariaDB [sample]> SELECT
 こんなときは \emph{左外部結合(LEFT [OUTER] JOIN)} を使う。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ SELECT \\
- \qquad --$>$ \quad e.id \ AS \ ID, \\
- \qquad --$>$ \quad e.name \ AS \ 名前, \\
- \qquad --$>$ \quad e.age \ AS \ 年齢, \\ 
- \qquad --$>$ \quad d.name \ as \ 部署名 \\
- \qquad --$>$ FROM \ emp \ e \\
- \qquad --$>$ LEFT JOIN \ dept \ d \\
- \qquad --$>$ \quad ON \ e.dept\_id \ = \ d.id \\
- \qquad --$>$ ORDER \ BY \ ID;
+ MariaDB [sample]$>$ SELECT \ e.id \ AS \ ID, \ e.name \ AS \ 名前, \ e.age \ AS \ 年齢, \ 
+ d.name \ as \ 部署名 \\
+ \hspace{6mm} \verb!->! FROM \ emp \ e \ \underline{\textsf{LEFT JOIN}} \ dept \ d \\
+ \hspace{6mm} \verb!->! \textsf{ON} \ e.dept\_id \ = \ d.id \\
+ \hspace{6mm} \verb!->! ORDER \ BY \ ID;
 \end{tcolorbox}
 
 \rightline{※ LEFT OUTER JOIN と記述することもできる}
@@ -314,40 +280,30 @@ MariaDB [sample]> SELECT
 
 \subsubsection{右外部結合 RIGHT [OUTER] JOIN}
 
-また、dept表をみてみると、
-id : '004' が  開発部、
-id : '005' が  人事部、
-id : '006' が  情報システム部
-であるが、
-emp表には dept\_id が '004'、'005'、'006' である人はいない。
+また、dept表をみてみると、\textsf{id : '004'} が  \textsf{開発部} であるが、
+emp表には dept\_id が '004' である人はいない。
 
-この状態で結合表をつくり、開発部などの項目も表示させるには、次のようにする。
+この状態で結合表をつくり、開発部という項目も表示させるには、次のようにする。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ SELECT \\
- \qquad --$>$ \quad e.id \ AS \ ID, \\
- \qquad --$>$ \quad e.name \ AS \ 名前, \\
- \qquad --$>$ \quad e.age \ AS \ 年齢, \\ 
- \qquad --$>$ \quad d.name \ AS \ 部署名 \\
- \qquad --$>$ FROM \ emp \ e \\
- \qquad --$>$ RIGHT JOIN \ dept \ d \\
- \qquad --$>$ \quad ON \ e.dept\_id \ = \ d.id \\
- \qquad --$>$ ORDER \ BY \ ID;
+ MariaDB [sample]$>$ SELECT \ e.id \ AS \ ID, \ e.name \ AS \ 名前, \ e.age \ AS \ 年齢, \ 
+ d.name \ AS \ 部署名 \\
+ \hspace{6mm} \verb!->! FROM \ emp \ e \ \underline{\textsf{RIGHT JOIN}} \ dept \ d \\
+ \hspace{6mm} \verb!->! \textsf{ON} \ e.dept\_id \ = \ d.id \\
+ \hspace{6mm} \verb!->! ORDER \ BY \ ID;
 \end{tcolorbox}
 
 \begin{spacing}{0.8}        
 \begin{verbatim}
-+------+------------+------+---------------+
-| ID   | 名前       | 年齢 | 部署名         |
-+------+------------+------+---------------+
-| NULL | NULL       | NULL | 開発部        |
-| NULL | NULL       | NULL | 人事部        |
-| NULL | NULL       | NULL | 情報システム部 |
-|    1 | 菅原文太    |   40 | 総務部        |
-|    2 | 千葉真一    |   34 | 営業部        |
-|    3 | 北大路欣也  |   30 | 経理部        |
-|    4 | 梶芽衣子    |   26 | 営業部        |
-+------+------------+------+---------------+
++------+------------+------+--------+
+| ID   | 名前       | 年齢 | 部署名 |
++------+------------+------+--------+
+| NULL | NULL       | NULL | 開発部 |
+|    1 | 菅原文太   |   40 | 総務部 |
+|    2 | 千葉真一   |   34 | 営業部 |
+|    3 | 北大路欣也 |   30 | 経理部 |
+|    4 | 梶芽衣子   |   26 | 営業部 |
++------+------------+------+--------+
 \end{verbatim}
 \end{spacing}
 
@@ -355,4 +311,4 @@ emp表には dept\_id が '004'、'005'、'006' である人はいない。
 
 \include{end}
 
-%% 修正時刻： Tue 2023/03/28 17:33:091
+%% 修正時刻： Sat Oct  9 10:45:20 2021

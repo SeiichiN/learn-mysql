@@ -34,8 +34,6 @@
    002  & 営業部 \\ \hline
    003  & 経理部 \\ \hline
    004  & 開発部 \\ \hline
-   005  & 人事部 \\ \hline
-   006  & 情報システム部 \\ \hline
   \end{tabular}
  \end{center}
 \end{table}
@@ -55,10 +53,10 @@ emp表を定義する前に dept表が定義されていなくてはならない
 
 \begin{tcolorbox}
  MariaDB [sample]$>$ CREATE \ TABLE \ dept \ ( \\
- \qquad --$>$   id \ CHAR(3), \\
- \qquad --$>$   name \ VARCHAR(20) \ NOT \ NULL , \\
- \qquad --$>$   PRIMARY \ KEY \ (id) \\
- \qquad --$>$ );
+ \hspace{6mm} \verb!->! id \ CHAR(3), \ (カンマ) \\
+ \hspace{6mm} \verb!->! name \ VARCHAR(20) \ NOT \ NULL , \ (カンマ) \\
+ \hspace{6mm} \verb!->! PRIMARY \ KEY \ (id) \ (カンマなし) \\
+ \hspace{6mm} \verb!->! );
 \end{tcolorbox}
 
 
@@ -70,9 +68,9 @@ emp表を定義する前に dept表が定義されていなくてはならない
  \hspace{6mm} \verb!->! name \ VARCHAR(20) NOT NULL, \\
  \hspace{6mm} \verb!->! age \ INT \ NOT \ NULL , \\
  \hspace{6mm} \verb!->! birthday \ YEAR \ NOT \ NULL , \\
- \hspace{6mm} \verb!->! dept\_id \ CHAR(3),  \\
- \hspace{6mm} \verb!->! PRIMARY KEY (id) ,  \\
- \hspace{6mm} \verb!->! \underline{FOREIGN \ KEY \ (dept\_id) \ REFERENCES \ dept \ (id)} \\
+ \hspace{6mm} \verb!->! dept\_id \ CHAR(3),  (カンマをつける) \\
+ \hspace{6mm} \verb!->! PRIMARY KEY (id) ,  (カンマをつける) \\
+ \hspace{6mm} \verb!->! \underline{FOREIGN \ KEY \ (dept\_id) \ REFERENCES \ dept \ (id)} \ (カンマなし) \\
  \hspace{6mm} \verb!->! );
 \end{tcolorbox}
 
@@ -114,23 +112,22 @@ CREATE TABLE IF NOT EXISTS emp (
   FOREIGN KEY(dept_id) REFERENCES dept(id)
 );
 
+-- 自動連番を初期化する。
+ALTER TABLE emp AUTO_INCREMENT = 1;
+
 -- dept表の初期データ
-INSERT INTO dept
-  (id, name)
-VALUES
-  ('001', '総務部'),
-  ('002', '営業部'),
-  ('003', '経理部'),
-  ('004', '開発部');
+INSERT INTO dept (id, name) VALUES
+('001', '総務部'),
+('002', '営業部'),
+('003', '経理部'),
+('004', '開発部');
 
 -- emp表の初期データ
-INSERT INTO emp
-  (name, age, birthday, dept_id)
-VALUES
-  ('菅原文太',   40, 1933, '001'),
-  ('千葉真一',   34, 1939, '002') ,
-  ('北大路欣也', 30, 1943, '003'),
-  ('梶芽衣子',   26, 1947, '002');
+INSERT INTO emp (name, age, birthday, dept_id) VALUES
+('菅原文太',   40, 1933, '001'),
+('千葉真一',   34, 1939, '002') ,
+('北大路欣也', 30, 1943, '003'),
+('梶芽衣子',   26, 1947, '002');
 
 SELECT * FROM dept;
 SELECT * FROM emp;
@@ -143,7 +140,8 @@ SELECT * FROM emp;
 
 \begin{tcolorbox}
  $>$ mysql -u sampleuser -p \\
- Enter password: ******** 
+ Enter password: ******** \\
+ MariaDB [(none)]$>$
 \end{tcolorbox}
 
 今作成したファイルを 読み込む。
@@ -155,16 +153,14 @@ SELECT * FROM emp;
 
 \begin{spacing}{0.8}        
 \begin{verbatim}
-+-----+---------------+
-| id  | name          |
-+-----+---------------+
-| 001 | 総務部        |
-| 002 | 営業部        |
-| 003 | 経理部        |
-| 004 | 開発部        |
-| 005 | 人事部        |
-| 006 | 情報システム部 |
-+-----+---------------+
++-----+--------+
+| id  | name   |
++-----+--------+
+| 001 | 総務部 |
+| 002 | 営業部 |
+| 003 | 経理部 |
+| 004 | 開発部 |
++-----+--------+
 \end{verbatim}
 \end{spacing}
 
@@ -185,10 +181,8 @@ SELECT * FROM emp;
 データを入力してみる。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ INSERT INTO emp \\
- \qquad --$>$ (name, age, birthday, dept\_id) \\
- \qquad --$>$ VALUES \\
- \qquad --$>$ ('成田三樹夫', 38, 1935, '007');
+ MariaDB [sample]$>$ INSERT INTO emp (name, age, birthday, dept\_id) VALUES \\
+ \hspace{6mm} \verb!->! ('成田三樹夫', 38, 1935, '005');
 \end{tcolorbox}
 
 すると、次のようなエラーメッセージが出て、入力に失敗する。
@@ -204,16 +198,14 @@ FOREIGN KEY (`dept_id`) REFERENCES `dept` (`id`))
 dept表にある値にして入力する。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ INSERT INTO emp \\
- \qquad --$>$ (name, age, birthday, dept\_id) \\
- \qquad --$>$ VALUES \\
- \qquad --$>$ ('成田三樹夫', 38, 1935, '004');
+ MariaDB [sample]$>$ INSERT INTO emp (name, age, birthday, dept\_id) VALUES \\
+ \hspace{6mm} \verb!->! ('成田三樹夫', 38, 1935, '004');
 \end{tcolorbox}
 
 するとうまく入力できることがわかる。
 
 \vspace{5mm}
-※ もし dept表の id が、たとえば 営業部が 2 から 7 に変更になったとすると
+※ もし dept表の id が、たとえば 営業部が 2 から 5 に変更になったとすると
 どうなるか？
 
 emp表の dept\_id も修正しなくてはならなくなる。
@@ -476,4 +468,4 @@ ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constrai
 
 \include{end}
 
-%% 修正時刻： Tue 2023/03/28 17:33:091
+%% 修正時刻： Sat Oct  9 19:03:20 2021

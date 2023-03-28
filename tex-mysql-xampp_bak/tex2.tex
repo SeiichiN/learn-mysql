@@ -31,8 +31,6 @@
    002  & 営業部 \\ \hline
    003  & 経理部 \\ \hline
    004  & 開発部 \\ \hline
-   005  & 人事部 \\ \hline
-   006  & 情報システム部 \\ \hline
   \end{tabular}
  \end{center}
 \end{table}
@@ -125,12 +123,12 @@ deptテーブルは、このような定義になる。
 
 \begin{tcolorbox}
  MariaDB [sample]$>$ CREATE \ TABLE \ emp \ ( \\
- \hspace{6mm} \verb!->   id       INT         AUTO_INCREMENT,! \\
+ \hspace{6mm} \verb!->   id       INT         AUTO_INCREMENT,! -\,- (カンマ) \\
  \hspace{6mm} \verb!->   name     VARCHAR(20) NOT NULL,! \\
  \hspace{6mm} \verb!->   age      INT         NOT NULL,! \\
  \hspace{6mm} \verb!->   birthday YEAR        NOT NULL,! \\
  \hspace{6mm} \verb!->   dept_id  CHAR(3), ! \\
- \hspace{6mm} \verb!->   PRIMARY KEY (id) ! \\
+ \hspace{6mm} \verb!->   PRIMARY KEY (id) ! -\,- (カンマなし) \\
  \hspace{6mm} \verb!-> ); !
 \end{tcolorbox}
 
@@ -139,8 +137,8 @@ deptテーブルは、このような定義になる。
 
 \begin{tcolorbox}
  MariaDB [sample]$>$ CREATE \ TABLE \ dept \ ( \\
- \hspace{6mm} \verb!->   id   CHAR(3)     PRIMARY KEY,! \\
- \hspace{6mm} \verb!->   name VARCHAR(20) NOT NULL! \\
+ \hspace{6mm} \verb!->   id   CHAR(3)     PRIMARY KEY,! -\ - (カンマ) \\
+ \hspace{6mm} \verb!->   name VARCHAR(20) NOT NULL! -\ - (カンマなし) \\
  \hspace{6mm} \verb!-> );!
 \end{tcolorbox}
 
@@ -179,29 +177,36 @@ CREATE TABLE `emp` (
 データの登録は、以下のコマンドでできる。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ INSERT INTO emp \\
- \qquad --$>$ ( name, age, birthday, dept\_id ) \\
- \qquad --$>$ VALUES \\
- \qquad --$>$ ( '菅原文太', 40, 1933, '001' );
+ MariaDB [sample]$>$ \textsf{INSERT INTO emp (name, age, birthday, dept\_id) VALUES ('菅原文太', 40, 1933, '001');}
 \end{tcolorbox}
+
+\begin{tabular}{|l|} \hline
+ INSERT \ INTO \ テーブル名
+ ( \ カラム名1, \ カラム名2, \ カラム名3, \ \dots \dots \ ) \ VALUES \ (データ1, \\
+ データ2, \ データ3, \ \dots \dots) \\ \hline
+\end{tabular}
+
 
 \rightline{※ 各データの区切りは \textsf{,}(カンマ)}
 \noindent
 ''id'' は auto\_increment なので、指定しない。\\
 また、dept\_id は char(3) なので、\textsf{'001'} シングルクォーテーションを使って入力する。
 
+画面の関係で一行で入力しづらければ、次のように二行で入力することもできる。
+
+\begin{tcolorbox}
+ MariaDB [sample]$>$ \textsf{INSERT \ INTO \ emp (name, age, birthday, dept\_id)} \\
+ \hspace{6mm} \verb!->! \textsf{VALUES \ ('千葉真一', 34, 1939, '002');}
+\end{tcolorbox}
 
 TeraPad などのエディタで記述しておいて、コピー\&貼り付け ですることもできる。
 
 以下のようにすると、一度で入力できてしまう。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ INSERT INTO emp \\
- \qquad --$>$   ( name, age, birthday, dept\_id ) \\
- \qquad --$>$ VALUES \\
- \qquad --$>$ ('千葉真一', 34, 1939, '002'), \\
- \qquad --$>$ ('北大路欣也', 30, 1943, '003'), \\
- \qquad --$>$ ('梶芽衣子', 26, 1947, '002');
+ MariaDB [sample]$>$ \textsf{INSERT \ INTO \ emp (name, age, birthday, dept\_id) VALUES} \\
+ \hspace{6mm} \verb!->! \textsf{('北大路欣也', 30, 1943, '003'),}   (カンマ) \\
+ \hspace{6mm} \verb!->! \textsf{('梶芽衣子', 26, 1947, '002');}
 \end{tcolorbox}
 
 これも、エディタに記述しておいて、コピー\&貼り付けでも できる。
@@ -242,18 +247,14 @@ TeraPad などのエディタで記述しておいて、コピー\&貼り付け 
 \begin{lstlisting}[caption=insert\_dept.sql]
 -- dept テーブル
 
-INSERT INTO dept
-  (id, name)
-VALUES
-  ('001', '総務部'),
-  ('002', '営業部'),
-  ('003', '経理部'),
-  ('004', '開発部'),
-  ('005', '人事部'),
-  ('006', '情報システム部');
+INSERT INTO dept (id, name) VALUES
+('001', '総務部'),
+('002', '営業部'),
+('003', '経理部'),
+('004', '開発部');
 \end{lstlisting}
 
-{-}{-}(半角空白) で始まる行は、コメントである。
+{-}{-} で始まる行は、コメントである。
 \footnote{ほかに、\# で始まる行もコメント。また複数行は、/* ... */ が使える。}
 
 また、SQLのコマンドは大文字で記述したほうがよい。
@@ -311,43 +312,40 @@ SQLのコマンド文字列は大文字で記述し、ユーザーが用意し�
  \textsf{Enter password: **********}
 \end{tcolorbox}
 
-\* rootユーザーでログインしてもよい。
-
-sampleデータベースの使用を宣言する。
+\textsf{sample}データベースの使用を宣言する。
 
 \begin{tcolorbox}
- MariaDB [(none)]$>$ USE sample; 
+ MariaDB [(none)]$>$ \textsf{USE sample;} \\
+ MariaDB [sample]$>$
 \end{tcolorbox}
 
-次に、以下のコマンドで insert\_dept.sql を実行できる。
+次に、以下のコマンドで \textsf{insert\_dept.sql} を実行できる。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ source insert\_dept.sql
+ MariaDB [sample]$>$ \textsf{source insert\_dept.sql}
 \end{tcolorbox}
 
 あるいは、以下のような省略形もある。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ \yen . insert\_dept.sql
+ MariaDB [sample]$>$ \textsf{\yen . insert\_dept.sql}
 \end{tcolorbox}
 
 確認する。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ SELECT * FROM dept;
+ MariaDB [sample]$>$ \textsf{SELECT * FROM dept;}
 \end{tcolorbox}
 
 \begin{verbatim}
-+-----+----------------+
-| id  | name           |
-+-----+----------------+
-| 001 | 総務部         |
-| 002 | 営業部         |
-| 003 | 経理部         |
-| 004 | 開発部         |
-| 005 | 人事部         |
-| 006 | 情報システム部  |
-+-----+----------------+
++-----+--------+
+| id  | name   |
++-----+--------+
+| 001 | 総務部 |
+| 002 | 営業部 |
+| 003 | 経理部 |
+| 004 | 開発部 |
++-----+--------+
 \end{verbatim}
 
 読み込めているのがわかる。
@@ -374,11 +372,11 @@ sampleデータベースの使用を宣言する。
  DROP TABLE IF EXISTS emp;
  
  CREATE TABLE emp (
-   id       INT         AUTO_INCREMENT,
-   name     VARCHAR(20) NOT NULL,
-   age      INT         NOT NULL,
-   birthday YEAR        NOT NULL,
-   dept_id  CHAR(3),
+   id INT AUTO_INCREMENT,
+   name VARCHAR(20) NOT NULL,
+   age INT NOT NULL,
+   birthday YEAR NOT NULL,
+   dept_id CHAR(3),
    PRIMARY KEY (id)
  );
 
@@ -387,28 +385,24 @@ sampleデータベースの使用を宣言する。
  DROP TABLE IF EXISTS dept; 
  
  CREATE TABLE dept (
-   id   CHAR(3)     PRIMARY KEY,
+   id CHAR(3) PRIMARY KEY,
    name VARCHAR(20) NOT NULL
  );
 
- INSERT INTO emp
-   (name, age, birthday, dept_id)
- VALUES
-   ('菅原文太',   40, 1933, '001'),
-   ('千葉真一',   34, 1939, '002') ,
-   ('北大路欣也', 30, 1943, '003'),
-   ('梶芽衣子',   26, 1947, '002');
-
- INSERT INTO dept
-   (id, name)
- VALUES
-   ('001', '総務部'),
-   ('002', '営業部'),
-   ('003', '経理部'),
-   ('004', '開発部'),
-   ('005', '人事部'),
-   ('006', '情報システム部');
+ -- 自動連番を初期化する。
+ ALTER TABLE emp AUTO_INCREMENT = 1;
  
+ INSERT INTO emp (name, age, birthday, dept_id) VALUES
+ ('菅原文太', 40, 1933, '001'),
+ ('千葉真一', 34, 1939, '002') ,
+ ('北大路欣也', 30, 1943, '003'),
+ ('梶芽衣子', 26, 1947, '002');
+
+ INSERT INTO dept (id, name) VALUES
+ ('001', '総務部'),
+ ('002', '営業部'),
+ ('003', '経理部'),
+ ('004', '開発部');
 
  SELECT * FROM emp;
  SELECT * FROM dept;
@@ -428,4 +422,4 @@ sampleデータベースの使用を宣言する。
 
 \include{end}
 
-%% 修正時刻： Tue 2023/03/28 17:33:091
+%% 修正時刻： Sat 2023/03/25 15:49:081

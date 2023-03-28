@@ -8,7 +8,7 @@
 
 データの入力が終わったら、データベースをバックアップする。
 
-ここでは、mysqldump というコマンドを使っておこなう。
+ここでは、\textsf{mysqldump} を使っておこなう。
 
 まず、MySQLをログアウトする。
 
@@ -24,22 +24,24 @@
 ここで以下のコマンドを実行する。
 
 \begin{tcolorbox}
- $>$ mysqldump -u root -p -B sample $>$ sample.dump
+ $>$ mysqldump \ -u \ sampleuser \ -p \ -\! -databases \ sample \ $>$ \ sample\_db.dump
 \end{tcolorbox}
 
 \begin{tabular}{|l|} \hline
- mysqldump \ -u \ ユーザー名 \ -p \ -B \ データベース名 \ $>$
+ mysqldump \ -u \ ユーザー名 \ -p \ -\! -databases \ データベース名 \ $>$
  保存ファイル名 \\ \hline
 \end{tabular}
 
-ここでは保存ファイル名を sample.dump としたが、好みのファイル名を指定すればよい。
+\rightline{※ -\! -databases は -(ハイフン)2つ}
 
-dir というコマンドを実行すると、ファイル一覧が見れる。
+ここでは保存ファイル名を sample\_db.dump としたが、好みのファイル名を指定すればよい。
 
-ファイル群の中に sample.dump があるはず。
+\textsf{dir} というコマンドを実行すると、ファイル一覧が見れる。
+
+ファイル群の中に \textsf{sample\_db.dump} があるはず。
 
 これは テキストファイルなので、TeraPad などのエディタで内容を見ることができる。
-\footnote{また、{\em -B} オプションをつけずにバックアップを取ることもできる。 \\
+\footnote{また、{\em --databases} オプションをつけずにバックアップを取ることもできる。 \\
 \fbox{ $>$ mysqldump -u sampleuser -p sample $>$ sample\_db.dump } \\
 この場合は、バックアップファイルの記述の中に、CREATE DATABASE 文がない。
 }
@@ -47,14 +49,14 @@ dir というコマンドを実行すると、ファイル一覧が見れる。
 \subsection{データのリストア(復元)}
 
 以下のコマンドを実行する。
-\footnote{-B オプションをつけずにバックアップファイルを作成した場合は、まず sampleデータベースを作成してから \\
-\fbox{ $>$ mysql -u sampleuser -p $<$ sample.dump } \\
+\footnote{--databases オプションをつけずにバックアップファイルを作成した場合は、まず sample
+データベースを作成してから \\
+\fbox{ $>$ mysql -u sampleuser -p $<$ sample\_db.dump } \\
 とするか、あるいは、sampleuserでログインしてから \\
-\fbox{MariaDB[sample] $>$ source sample.dump} とすればよい。
+\fbox{MariaDB[sample] $>$ source sample\_db.dump} とすればよい。
 }
-
 \begin{tcolorbox}
- $>$ mysql -u sampleuser -p $<$ sample.dump
+ $>$ mysql -u sampleuser -p $<$ sample\_db.dump
 \end{tcolorbox}
 
 \fbox{mysql \ -u \ ユーザー名 \ -p \ $<$ \ 保存したファイル名}
@@ -66,4 +68,4 @@ dir というコマンドを実行すると、ファイル一覧が見れる。
 
 \include{end}
 
-%% 修正時刻： Tue 2023/03/28 17:33:091
+%% 修正時刻： Sat Oct  9 07:53:15 2021

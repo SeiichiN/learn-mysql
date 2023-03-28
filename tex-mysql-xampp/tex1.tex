@@ -38,185 +38,111 @@
  \end{tabular}
 \vspace{3mm}
 
-あなたがプログラマで、上のような社員名簿アプリを作成することになったとする。
-PHP か Java でアプリを作成することになる。クライアントの会社の総務部がこの
-アプリを使うことになる。そのアプリには社員の登録画面、一覧画面、編集画面、
-削除画面などがあるだろう。そういった画面と処理をあなたは作らなければならない。
-
-そのときに、データを保存するしくみとして、データベースを使うことになる。
-かりに PHP でプログラミングするならば、PHPという言語を使って
-データベースを操作することになる。
-
-\subsection{どのような表をつくるか?}
-
-データベースは表の形でイメージすることができる。
-しかし、上記のデータを見て、それをそのまま表にしてはいけない。
+また、その会社には以下のような部署があるとする。
 
 \vspace{3mm}
-\includegraphics[width=10cm]{img/table01.png}
-\vspace{3mm}
-
-この表は、1件のデータが縦に配置されて、それが人数分横に続いている。これは良くない。
-
-次の表のように、1件のデータを横に配置する。
-
-\vspace{3mm}
-\includegraphics[width=10cm]{img/table02.png}
-\vspace{3mm}
-
-そして、縦には同じ種類のデータが並ぶ。
-だから、それぞれの列には、その列の内容を表す項目名をつけることができる。
-
-この列のことを \textgt{カラム}(項目) という。(フィールドともいう)
-
-そして、1件のデータを表す横1行を \textgt{レコード} という。
-この表には4件のデータがあり、カラムは4である。
-
-しかし、これだけではデータベースにはならない。
-各レコードには、そのレコードの独自性を保証するデータが必要なのである。
-それを プライマリー・キー という。
-
-\subsection{primary key}
-
-データベースにデータを格納する際には、そのデータに primary key (独自キー) が必要となる。
-primary key とは、そのデータを他と区別するためのデータである。
-菅原文太というデータは、この4つの中では独自であるが、他のデータを追加する際に、同じデータに出会う可能性
-(同姓同名)を排除できない。
-さらに日本語である以上、文字コードの問題を避けることもできない。つまり、同じ菅原文太という文字でも
-UTF-8 と Shift\_JIS では別物と判定されるのである。
-
-となると、この4つのデータには primary key となるものがないということになる。
-
-このような場合、データベースの設計者が primary key を追加することになる。
-ここでは 数字を primary key として追加する。
-つまり、菅原文太は 1、千葉真一は 2 というふうにする。
-
-そして、その項目名を ここでは id とした。
-
-\vspace{3mm}
-\includegraphics[width=10cm]{img/table03.png}
-\vspace{3mm}
-
-primary key には、数字やコードが使われる。
-\footnote{'001'や'C001'など、固定長の文字列がよく使われる。また、整数もよく使われる。可変長の文字列は使われない。正確さに欠ける。}
-
-
-\subsection{表を分ける}
-
-4つの各データには、総務部、営業部、経理部 という部署名がはいっている。
-これらは、部署データとして、別の表で管理するのが自然である。
-そして、各人のデータから部署データを参照しているというふうにするのがよい。
-
-\vspace{3mm}
-XX会社 部署一覧 \\
-\hspace{5mm}
-\begin{tabular}{|c|} \hline
+\begin{tabular}{|l|} \hline
  総務部 \\
- 営業部 \\
  経理部 \\
- 開発部 \\ \hline
-\end{tabular}\vspace{3mm}
+ 営業部 \\
+ 開発部 \\
+ 人事部 \\
+ 情報システム部 \\ \hline
+\end{tabular}
+\vspace{3mm}
+
 
 
 \newpage
 \section{データベースを作成する}
 
-\subsection{ユーザーを作成して、データベースを作成する}
+\subsection{rootユーザーでログインする}
 
-\subsubsection{MySQLの起動}
+作業をするために、rootユーザーでログインする。
 
-まず、MySQLを起動しなくてはならない。
-\begin{enumerate}
- \item XAMPP コントロールパネルを管理者として起動する。
- \item MySQL の行の Start ボタンをクリックして MySQLを起動する。
-\end{enumerate}
+\begin{tcolorbox}
+ $>$ mysql -u root -p \\
+ $>$ Enter password: 
+\end{tcolorbox}
+
+
+\subsection{データベースを作成する}
+
+データベース名を \textsf{sample} とする。
+
+\begin{tcolorbox}
+ MariaDB [(none)]$>$ CREATE DATABASE sample;
+\end{tcolorbox}
+
+
+\subsection{sample専用ユーザーを作成する}
+
+アプリケーションがこのデータベースにアクセスするためには、
+アプリケーションがこのデータベースにログインできなければならない。
+
+ふつう、アプリケーションには rootではログインさせない。
+そのアプリケーション専用のユーザーアカウントを作成し、
+そのアカウントでログインさせるようにする。
 
 \vspace{3mm}
-\includegraphics[width=10cm]{../06-mysql/02-mysql-start.png}
+\begin{tabular}{|l|l|} \hline
+ ユーザー名 & sampleuser \\
+ パスワード & sampleuser \\ \hline
+\end{tabular}
 \vspace{3mm}
 
-
-\subsubsection{rootユーザーでログインする}
-
-データベースを作成するために、まずそのデータベースを扱うことのできるユーザーを作成する。
-
-ユーザーを作成するために、まず管理者(root) でログインする。
-MariaDBの場合、以下の手順でログインできる。
-
-コマンドプロンプトを起動して、以下のコマンドを入力する。
+ユーザーの作成は以下のコマンドでできる。
 
 \begin{tcolorbox}
- $>$ mysql -u root -p (Enterキー)\\
- $>$ Enter password: (何も入力せず、Enterキー)
+ MariaDB [(none)]$>$ CREATE USER 'sampleuser'@'localhost' \\
+ \qquad --$>$ IDENTIFIED BY 'sampleuser'; 
 \end{tcolorbox}
 
-これで、4行ほどのメッセージと、次のプロンプトが表示される。
+そのユーザーに、sampleデータベースへの権限を与える。
 
 \begin{tcolorbox}
- MariaDB [(none)]$>$
+ MariaDB [(none)]$>$ GRANT ALL ON sample.* TO 'sampleuser'@'localhost'; 
 \end{tcolorbox}
 
-\newpage
-\subsubsection{ユーザーの作成と権限の付与}
+``sample.*'' というのは、``sampleというデータベースの全てのテーブル''
+に対してという意味である。
 
-以下のコマンドで \textsf{sampleuser} を作成し、\textsf{sampleuser} というパスワードを設定し、
-\textsf{sample} データベースへの権限を与えることができる。
-\footnote{ユーザーの作成と権限付与を別々にすることもできる。\\
-sampleuser というユーザーの作成と sampleuser というパスワードの設定\\
-MariaDB [(note)]$>$ CREATE USER 'sampleuser'@'localhost' IDENTIFIED BY 'sampleuser'; \\
-sampleuser に sample データベースへの権限を付与する。\\
-MariaDB [(none)]$>$ GRANT ALL [PRIVILEGES] ON sample.* TO 'sampleuser'@'localhost';
-}
-ここでは、ユーザー名を sampleuser、パスワードを sampleuser としている。
+ユーザー名は文字列であることを明示するために 'sampleuser' とする。
 
-\begin{tcolorbox}
-MariaDB [(note)]$>$ GRANT \ ALL \ ON \ sample.* \ TO \ 'sampleuser'@'localhost' \\
-\hspace{20mm} -$>$ IDENTIFIED \ BY \ 'sampleuser';
-\end{tcolorbox}
+次に ``@'' を記述し、そのあとに ホスト名を 文字列で指定する。
+そのユーザーの属しているホストの名前である。
+'\%' と指定すると、全てのホストから接続可能となるが、通常はそのような指定は
+しない。
+'localhost'というのは、このデータベースに接続しようとしているアプリの所属
+するホストである。つまり、このデータベースとアプリとは同じホストに属している
+ということになる。
 
-\fbox{GRANT \ ALL \ ON \ データベース名.* \ TO \ 'ユーザー名'@'localhost'
- \ IDENTIFIED \ BY \ 'パスワード';}
 \vspace{3mm}
+\begin{tabular}{|l|} \hline
+ ユーザーの作成と権限の設定は、以下のコマンドで一度にできる。\\
+  MariaDB [(none)]$>$ GRANT ALL ON sample.* TO 'sampleuser'@'localhost' \\
+ \qquad --$>$ IDENTIFIED BY 'sampleuser'; \\ \hline
+\end{tabular}
 
-
-\textsf{sample} というデータベースを作成すると、いくつかファイルを作成することになるので、
-それら全部に権限を与えるため、\textsf{sample.*} としている。
-
-\rightline{※ \textsf{sample.(ドット)*(アスタリスク)}}
-
-
-これで root としての仕事は終了である。\textsf{exit} あるいは \textsf{quit} でログアウトする。
-
-\begin{tcolorbox}
- MariaDB [(none)]$>$ \textsf{exit}
-\end{tcolorbox}
 
 \subsubsection{作成したユーザーでログインし、データベースを作成する}
+
+このまま rootユーザーとして作業をしてもいいのであるが、
+ここでは、今作成したユーザーでログインして作業することにする。
+
+\textsf{exit} あるいは \textsf{quit} でログアウトする。
+
+\begin{tcolorbox}
+ MariaDB [(none)]$>$ exit
+\end{tcolorbox}
+
 
 作成したユーザー \textsf{sampleuser} でログインする。
 
 \begin{tcolorbox}
  $>$ mysql -u sampleuser -p (Enterキー)\\
- $>$ Enter password: ********** (sampleuser と入力) \\
- (... 省略 ...) \\
- MariaDB [(none)]$>$ 
+ Enter password: ********** (sampleuser と入力)
 \end{tcolorbox}
-
-\fbox{mysql \ -u \ ユーザー名 \ -p} \\
-Enter password: \fbox{パスワード}
-\vspace{3mm}
-
-データベース \textsf{sample} を作成する。
-
-\begin{tcolorbox}
- MariaDB [(none)]$>$ \textsf{create database sample;}
-\end{tcolorbox}
-
-\fbox{CREATE \ DATABASE \ データベース名 \,;}
-
-これで、この作成したデータベース sample は、sampleuserユーザーでアクセスできる。
-(もちろん root ユーザーもアクセスできる)
-
 
 
 
@@ -225,4 +151,4 @@ Enter password: \fbox{パスワード}
 
 \include{end}
 
-%% 修正時刻： Wed Oct 13 14:31:48 2021
+%% 修正時刻： Tue 2023/03/28 17:33:091

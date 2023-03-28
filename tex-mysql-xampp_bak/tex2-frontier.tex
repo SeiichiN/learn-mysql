@@ -23,7 +23,7 @@
 \end{table}
 
 \begin{table}[h]
- \caption{dept}
+ \caption{dep}
  \begin{center}
   \begin{tabular}{|l|c|} \hline
    ID   & 部署名 \\ \hline\hline
@@ -31,8 +31,6 @@
    002  & 営業部 \\ \hline
    003  & 経理部 \\ \hline
    004  & 開発部 \\ \hline
-   005  & 人事部 \\ \hline
-   006  & 情報システム部 \\ \hline
   \end{tabular}
  \end{center}
 \end{table}
@@ -63,7 +61,7 @@
  \begin{center}
   \begin{tabular}{|l|l|l|} \hline
    項目 & 型 & オプション \\ \hline
-   id   & int & primary key, auto\_increment \\ 
+   id   & int & primary key auto\_increment \\ 
    name & varchar(20) & not null \\ 
    age  & int & not null \\ 
    birthday & year & not null \\ 
@@ -118,30 +116,28 @@ deptテーブルは、このような定義になる。
 テーブルを作成する前に、データベースの使用を宣言する。
 
 \begin{tcolorbox}
- MariaDB [(none)]$>$ USE \ sample; \hspace{20mm} \fbox{use \ データベース名 \,;}
+ MariaDB [(none)]$>$ use sample; 
 \end{tcolorbox}
 
 以下のコマンドにより empテーブルを作成できる。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ CREATE \ TABLE \ emp \ ( \\
- \hspace{6mm} \verb!->   id       INT         AUTO_INCREMENT,! \\
- \hspace{6mm} \verb!->   name     VARCHAR(20) NOT NULL,! \\
- \hspace{6mm} \verb!->   age      INT         NOT NULL,! \\
- \hspace{6mm} \verb!->   birthday YEAR        NOT NULL,! \\
- \hspace{6mm} \verb!->   dept_id  CHAR(3), ! \\
- \hspace{6mm} \verb!->   PRIMARY KEY (id) ! \\
- \hspace{6mm} \verb!-> ); !
+ MariaDB [sample]$>$ create table emp ( \\
+ \hspace{6mm} \verb!->! id int primary key auto\_increment, (カンマ) \\
+ \hspace{6mm} \verb!->! name varchar(20) not null, \\
+ \hspace{6mm} \verb!->! age int not null, \\
+ \hspace{6mm} \verb!->! birthday year not null, \\
+ \hspace{6mm} \verb!->! dept\_id char(3) (カンマなし) \\
+ \hspace{6mm} \verb!->! );
 \end{tcolorbox}
 
 同様に deptテーブルも作成する。
-\footnote{primary key の指定は、id の指定のときに書くこともできるし、別項目に分けて書くこともできる。}
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ CREATE \ TABLE \ dept \ ( \\
- \hspace{6mm} \verb!->   id   CHAR(3)     PRIMARY KEY,! \\
- \hspace{6mm} \verb!->   name VARCHAR(20) NOT NULL! \\
- \hspace{6mm} \verb!-> );!
+ MariaDB [sample]$>$ create table dept ( \\
+ \hspace{6mm} \verb!->! id char(3) primary key, (カンマ) \\
+ \hspace{6mm} \verb!->! name varchar(20) not null (カンマなし) \\
+ \hspace{6mm} \verb!->! );
 \end{tcolorbox}
 
 \vspace{3mm}
@@ -165,11 +161,11 @@ MariaDB [sample]$>$ \textsf{show create table emp;}
 \begin{verbatim}
 ...(省略)... 
 CREATE TABLE `emp` ( 
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO\_INCREMENT,
   `name` varchar(20) NOT NULL,
   `age` int(11) NOT NULL,
   `birthday` year(4) NOT NULL,
-  `dept_id` char(3) DEFAULT NULL,
+  `dept\_id` char(3) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
 \end{verbatim}
@@ -179,29 +175,28 @@ CREATE TABLE `emp` (
 データの登録は、以下のコマンドでできる。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ INSERT INTO emp \\
- \qquad --$>$ ( name, age, birthday, dept\_id ) \\
- \qquad --$>$ VALUES \\
- \qquad --$>$ ( '菅原文太', 40, 1933, '001' );
+ MariaDB [sample]$>$ \textsf{insert into emp (name, age, birthday, dept\_id) values ('菅原文太', 40, 1933, '001');}
 \end{tcolorbox}
-
 \rightline{※ 各データの区切りは \textsf{,}(カンマ)}
 \noindent
 ''id'' は auto\_increment なので、指定しない。\\
 また、dept\_id は char(3) なので、\textsf{'001'} シングルクォーテーションを使って入力する。
 
+画面の関係で一行で入力しづらければ、次のように二行で入力することもできる。
+
+\begin{tcolorbox}
+ MariaDB [sample]$>$ \textsf{insert into emp (name, age, birthday, dept\_id)} \\
+ \hspace{6mm} \verb!->! \textsf{values ('千葉真一', 34, 1939, '002');}
+\end{tcolorbox}
 
 TeraPad などのエディタで記述しておいて、コピー\&貼り付け ですることもできる。
 
 以下のようにすると、一度で入力できてしまう。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ INSERT INTO emp \\
- \qquad --$>$   ( name, age, birthday, dept\_id ) \\
- \qquad --$>$ VALUES \\
- \qquad --$>$ ('千葉真一', 34, 1939, '002'), \\
- \qquad --$>$ ('北大路欣也', 30, 1943, '003'), \\
- \qquad --$>$ ('梶芽衣子', 26, 1947, '002');
+ MariaDB [sample]$>$ \textsf{insert into emp (name, age, birthday, dept\_id) values} \\
+ \hspace{6mm} \verb!->! \textsf{('北大路欣也', 30, 1943, '003'),}   (カンマ) \\
+ \hspace{6mm} \verb!->! \textsf{('梶芽衣子', 26, 1947, '002');}
 \end{tcolorbox}
 
 これも、エディタに記述しておいて、コピー\&貼り付けでも できる。
@@ -209,10 +204,8 @@ TeraPad などのエディタで記述しておいて、コピー\&貼り付け 
 データの確認は次のコマンドでできる。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ \textsf{SELECT * FROM emp;}
+ MariaDB [sample]$>$ \textsf{select * from emp;}
 \end{tcolorbox}
-
-\fbox{SELECT \ * \ FROM \ テーブル名}
 
 \begin{verbatim}
 +----+------------+-----+----------+---------+
@@ -242,18 +235,14 @@ TeraPad などのエディタで記述しておいて、コピー\&貼り付け 
 \begin{lstlisting}[caption=insert\_dept.sql]
 -- dept テーブル
 
-INSERT INTO dept
-  (id, name)
-VALUES
-  ('001', '総務部'),
-  ('002', '営業部'),
-  ('003', '経理部'),
-  ('004', '開発部'),
-  ('005', '人事部'),
-  ('006', '情報システム部');
+INSERT INTO dept (id, name) VALUES
+('001', '総務部'),
+('002', '営業部'),
+('003', '経理部'),
+('004', '開発部');
 \end{lstlisting}
 
-{-}{-}(半角空白) で始まる行は、コメントである。
+{-}{-} で始まる行は、コメントである。
 \footnote{ほかに、\# で始まる行もコメント。また複数行は、/* ... */ が使える。}
 
 また、SQLのコマンドは大文字で記述したほうがよい。
@@ -311,43 +300,40 @@ SQLのコマンド文字列は大文字で記述し、ユーザーが用意し�
  \textsf{Enter password: **********}
 \end{tcolorbox}
 
-\* rootユーザーでログインしてもよい。
-
-sampleデータベースの使用を宣言する。
+\textsf{sample}データベースの使用を宣言する。
 
 \begin{tcolorbox}
- MariaDB [(none)]$>$ USE sample; 
+ MariaDB [(none)]$>$ \textsf{use sample;} \\
+ MariaDB [sample]$>$
 \end{tcolorbox}
 
-次に、以下のコマンドで insert\_dept.sql を実行できる。
+次に、以下のコマンドで \textsf{insert\_dept.sql} を実行できる。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ source insert\_dept.sql
+ MariaDB [sample]$>$ \textsf{source insert\_dept.sql}
 \end{tcolorbox}
 
 あるいは、以下のような省略形もある。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ \yen . insert\_dept.sql
+ MariaDB [sample]$>$ \textsf{\yen . insert\_dept.sql}
 \end{tcolorbox}
 
 確認する。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ SELECT * FROM dept;
+ MariaDB [sample]$>$ \textsf{select * from dept;}
 \end{tcolorbox}
 
 \begin{verbatim}
-+-----+----------------+
-| id  | name           |
-+-----+----------------+
-| 001 | 総務部         |
-| 002 | 営業部         |
-| 003 | 経理部         |
-| 004 | 開発部         |
-| 005 | 人事部         |
-| 006 | 情報システム部  |
-+-----+----------------+
++-----+--------+
+| id  | name   |
++-----+--------+
+| 001 | 総務部 |
+| 002 | 営業部 |
+| 003 | 経理部 |
+| 004 | 開発部 |
++-----+--------+
 \end{verbatim}
 
 読み込めているのがわかる。
@@ -361,54 +347,46 @@ sampleデータベースの使用を宣言する。
 以下のような記述が考えられる。
 
 \begin{lstlisting}[caption=init\_data.sql]
- -- もし存在していなかったら sample データベースを作成する
- CREATE DATABASE IF NOT EXISTS sample;
-
- -- sample データベースを使用
- USE sample;
- 
  -- emp テーブルの作成
- -- もし empテーブルが存在していたら削除する。
- -- その empテーブルの定義がこれから作成するのと同じという保証がないからである。
-
- DROP TABLE IF EXISTS emp;
+ -- もし empテーブルが存在しなかったら作成する。
+ -- もし存在したら、このSQL文は実行されない。
  
- CREATE TABLE emp (
-   id       INT         AUTO_INCREMENT,
-   name     VARCHAR(20) NOT NULL,
-   age      INT         NOT NULL,
-   birthday YEAR        NOT NULL,
-   dept_id  CHAR(3),
-   PRIMARY KEY (id)
+ CREATE TABLE IF NOT EXISTS emp (
+   id INT PRIMARY KEY AUTO_INCREMENT,
+   name VARCHAR(20) NOT NULL,
+   age INT NOT NULL,
+   birthday YEAR NOT NULL,
+   dept_id CHAR(3)
  );
 
  -- dept テーブルの作成
- -- もし deptテーブルが存在していたら削除する。
- DROP TABLE IF EXISTS dept; 
+ -- もし deptテーブルが存在しなかったら作成する。
+ -- もし存在したら、このSQL文は実行されない。
  
- CREATE TABLE dept (
-   id   CHAR(3)     PRIMARY KEY,
+ CREATE TABLE IF NOT EXISTS dept (
+   id CHAR(3) PRIMARY KEY,
    name VARCHAR(20) NOT NULL
  );
 
- INSERT INTO emp
-   (name, age, birthday, dept_id)
- VALUES
-   ('菅原文太',   40, 1933, '001'),
-   ('千葉真一',   34, 1939, '002') ,
-   ('北大路欣也', 30, 1943, '003'),
-   ('梶芽衣子',   26, 1947, '002');
+ -- もし、データが存在していたら、削除する。
+ DELETE FROM emp;
 
- INSERT INTO dept
-   (id, name)
- VALUES
-   ('001', '総務部'),
-   ('002', '営業部'),
-   ('003', '経理部'),
-   ('004', '開発部'),
-   ('005', '人事部'),
-   ('006', '情報システム部');
+ -- 自動連番を初期化する。
+ ALTER TABLE emp AUTO_INCREMENT = 1;
  
+ INSERT INTO emp (name, age, birthday, dept_id) VALUES
+ ('菅原文太', 40, 1933, '001'),
+ ('千葉真一', 34, 1939, '002') ,
+ ('北大路欣也', 30, 1943, '003'),
+ ('梶芽衣子', 26, 1947, '002');
+
+ DELETE FROM dept;
+ 
+ INSERT INTO dept (id, name) VALUES
+ ('001', '総務部'),
+ ('002', '営業部'),
+ ('003', '経理部'),
+ ('004', '開発部');
 
  SELECT * FROM emp;
  SELECT * FROM dept;
@@ -423,9 +401,6 @@ sampleデータベースの使用を宣言する。
 これにより、いつでもデータを初期状態に戻すことができるようになった。
 
 
-
-
-
 \include{end}
 
-%% 修正時刻： Tue 2023/03/28 17:33:091
+%% 修正時刻： Tue Aug 10 08:07:44 2021
