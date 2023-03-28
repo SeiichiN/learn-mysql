@@ -139,7 +139,7 @@ SELECT * FROM emp;
 このファイルを C:\yen Users\yen XXXXX\yen Documents\yen mysql に
 作成する。
 
-そのフォルダで コマンドプロンプトを起動し、sampleuserユーザーで mysql にログインする。
+そのフォルダで コマンドプロンプトを起動し、sampleuserユーザーで mysql にログインする。(rootユーザーでもよい)
 
 \begin{tcolorbox}
  $>$ mysql -u sampleuser -p \\
@@ -222,18 +222,18 @@ emp表の dept\_id も修正しなくてはならなくなる。
 
 
 \begin{tcolorbox}
- \textsf{
 CREATE \ TABLE \ IF \ NOT \ EXISTS \ emp \ ( \\
-\hspace{3mm}  id \     INT  \      AUTO\_INCREMENT, \\
-\hspace{3mm}  name \   VARCHAR(20) \ NOT \ NULL, \\
-\hspace{3mm}  age \    INT \       NOT \ NULL, \\
-\hspace{3mm}  birthday \ YEAR    \   NOT \ NULL, \\
-\hspace{3mm}  dept\_id \ CHAR(3), \\
-\hspace{3mm}  PRIMARY \ KEY \ (id),  \\
-\hspace{3mm}  FOREIGN \ KEY(dept\_id) \ REFERENCES \ dept(id) \\
-\hspace{3mm}  \underline{ON \ DELETE \ SET \ NULL \ ON \ UPDATE \ CASCADE} \\
-);}
- \end{tcolorbox}
+\verb!  id       INT         AUTO_INCREMENT,! \\
+\verb!  name     VARCHAR(20) NOT NULL,! \\
+\verb!  age      INT         NOT NULL,! \\
+\verb!  birthday YEAR        NOT NULL,! \\
+\verb!  dept_id  CHAR(3),! \\
+\verb!  PRIMARY KEY (id),!  \\
+\verb!  FOREIGN KEY(dept_id)  REFERENCES dept(id)! \\
+\verb!  !\underline{ON \ DELETE \ SET \ NULL} \ 
+         \underline{ON \ UPDATE \ CASCADE} \\
+);
+\end{tcolorbox}
 \noindent
 ON DELETE SET NULL --- 参照先を delete すると、参照元が null になる。\\
 ON UPDATE CASCADE  --- 参照先を update すると、参照元も update される。
@@ -269,14 +269,16 @@ ON UPDATE CASCADE  --- 参照先を update すると、参照元も update さ�
 \begin{spacing}{0.8}        
 \begin{quote}
  \begin{verbatim}
-+-----+--------+
-| id  | name   |
-+-----+--------+
-| 001 | 総務部 |
-| 003 | 経理部 |
-| 004 | 開発部 |
-| 005 | 営業部 |
-+-----+--------+
++-----+-----------------------+
+| id  | name                  |
++-----+-----------------------+
+| 001 | 総務部                |
+| 003 | 経理部                |
+| 004 | 開発部                |
+| 005 | 人事部                |
+| 006 | 情報システム部        |
+| 007 | 営業部                |
++-----+-----------------------+
 \end{verbatim}
 \end{quote}
 \end{spacing}
@@ -292,9 +294,9 @@ ON UPDATE CASCADE  --- 参照先を update すると、参照元も update さ�
 | id | name       | age | birthday | dept_id |
 +----+------------+-----+----------+---------+
 |  1 | 菅原文太   |  40 |     1933 | 001     |
-|  2 | 千葉真一   |  34 |     1939 | 005     |
+|  2 | 千葉真一   |  34 |     1939 | 007     |
 |  3 | 北大路欣也 |  30 |     1943 | 003     |
-|  4 | 梶芽衣子   |  26 |     1947 | 005     |
+|  4 | 梶芽衣子   |  26 |     1947 | 007     |
 +----+------------+-----+----------+---------+
 \end{verbatim}
 \end{quote}
@@ -326,13 +328,15 @@ dept表の id:'003' name:'経理部' を削除してみる。
 \begin{spacing}{0.8}        
 \begin{quote}
  \begin{verbatim}
-+-----+--------+
-| id  | name   |
-+-----+--------+
-| 001 | 総務部 |
-| 004 | 開発部 |
-| 005 | 営業部 |
-+-----+--------+
++-----+-----------------------+
+| id  | name                  |
++-----+-----------------------+
+| 001 | 総務部                |
+| 004 | 開発部                |
+| 005 | 人事部                |
+| 006 | 情報システム部        |
+| 007 | 営業部                |
++-----+-----------------------+
 \end{verbatim}
 \end{quote}
 \end{spacing}
@@ -368,17 +372,16 @@ dept表の id:'003' name:'経理部' を削除してみる。
 そこで、もっと厳しい制限をかけたほうがいい場合もある。
 
 \begin{tcolorbox}
- \textsf{
 CREATE \ TABLE \ IF \ NOT \ EXISTS \ emp \ ( \\
-\hspace{3mm}  id   \    INT \        AUTO\_INCREMENT, \\
-\hspace{3mm}  name \    VARCHAR(20) \ NOT \ NULL, \\
-\hspace{3mm}  age  \    INT  \       NOT \ NULL, \\
-\hspace{3mm}  birthday \ YEAR  \      NOT \ NULL, \\
-\hspace{3mm}  dept\_id \  CHAR(3), \\
-\hspace{3mm}  PRIMARY \ KEY \ (id), \\ 
-\hspace{3mm}  FOREIGN \ KEY \ (dept\_id) \ REFERENCES \ dept(id) \\
-\hspace{3mm}  \underline{ON \ DELETE \ RESTRICT \ ON \ UPDATE \ RESTRICT} \\
-);}
+\verb!  id       INT         AUTO_INCREMENT,! \\
+\verb!  name     VARCHAR(20) NOT  NULL,! \\
+\verb!  age      INT         NOT  NULL,! \\
+\verb!  birthday YEAR        NOT  NULL,! \\
+\verb!  dept_id  CHAR(3),! \\
+\verb!  PRIMARY KEY (id),! \\ 
+\verb!  FOREIGN KEY (dept_id) REFERENCES dept(id)! \\
+\verb!  !\underline{ON  DELETE  RESTRICT  ON  UPDATE  RESTRICT} \\
+);
 \end{tcolorbox}
 
 \noindent
@@ -435,18 +438,17 @@ NO UPDATE RESTRICT --- 参照している表(dept)のデータを変更すると
 ファイル ''reinit\_data.sql'' の emp表定義の部分を以下のように修正する。
 
 \begin{tcolorbox}
- \textsf{
  CREATE TABLE IF NOT EXISTS emp ( \\
- \hspace{3mm}  id       INT         AUTO\_INCREMENT, \\
- \hspace{3mm}  name     VARCHAR(20) NOT NULL, \\
- \hspace{3mm}  age      INT         NOT NULL, \\
- \hspace{3mm}  birthday YEAR        NOT NULL, \\
- \hspace{3mm}  dept\_id  CHAR(3), \\
- \hspace{3mm}  PRIMARY KEY (id), \\ 
- \hspace{3mm}  \underline{CONSTRAINT fk\_dept\_id} \\
- \hspace{3mm}  FOREIGN KEY(dept\_id) REFERENCES dept(id) \\
- \hspace{3mm}  ON DELETE RESTRICT ON UPDATE RESTRICT \\
- );}
+ \verb!  id       INT         AUTO\_INCREMENT,! \\
+ \verb!  name     VARCHAR(20) NOT NULL,! \\
+ \verb!  age      INT         NOT NULL,! \\
+ \verb!  birthday YEAR        NOT NULL,! \\
+ \verb!  dept\_id CHAR(3),! \\
+ \verb!  PRIMARY KEY (id),! \\ 
+ \verb!  !\underline{CONSTRAINT fk\_dept\_id} \\
+ \verb!  FOREIGN KEY(dept_id) REFERENCES dept(id)! \\
+ \verb!  ON DELETE RESTRICT ON UPDATE RESTRICT! \\
+ );
 \end{tcolorbox}
 \rightline{※ CONSTRAINT は ''制約'' という意味。}
 
@@ -476,4 +478,4 @@ ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constrai
 
 \include{end}
 
-%% 修正時刻： Tue 2023/03/28 17:33:091
+%% 修正時刻： Wed 2023/03/29 05:28:461
