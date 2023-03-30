@@ -38,6 +38,24 @@ CREATE TABLE student (
 \end{tabular}
 \vspace{3mm}
 
+
+\subsubsection{カラム名の変更}
+
+nameカラムの名称を st\_name に変更したいときは、以下のようにする。
+
+\begin{tcolorbox}
+ MariaDB$>$ ALTER \ TABLE \ student \\
+ \qquad --$>$ RENAME \ COLUMN \ name \ TO \ st\_name;
+\end{tcolorbox}
+
+\vspace{3mm}
+\begin{tabular}{|l|} \hline
+ ALTER TABLE テーブル名 \\
+ RENAME COLUMN カラム名 TO 新しいカラム名 \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+
 \subsubsection{表定義にカラムを追加}
 
 また、age (年齢) という項目を追加したいとする。以下のようにできる。
@@ -260,4 +278,4 @@ MySQLで今までに作成したユーザーの一覧を見たい場合、以下
 
 \include{end}
 
-%% 修正時刻： Thu Oct 14 07:25:07 2021
+%% 修正時刻： Thu 2023/03/30 19:24:471
