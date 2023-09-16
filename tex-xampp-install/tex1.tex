@@ -103,54 +103,42 @@ XAMPPコントロールパネルを起動するときは、``管理者として�
 \includegraphics[width=14cm]{../02-install/07-kanrisya.png}
 \vspace{3mm}
 
-\subsection{一般ユーザーで実行できるようにする}
+\subsection{管理者ユーザーで実行できるようにする}
 
-XAMPPコントロールパネルを一般ユーザーで起動できるようにするには、
-\textsf{C:\yen xampp} フォルダのなかの \textsf{xampp-control.ini} を
-書き込み可能にするとよい。
+右クリックしなくても、XAMPPコントロールパネルを
+管理者ユーザーで起動できるようにする。
 
 \textsf{C:\yen xampp} フォルダを開き、
-``xampp-control.ini'' を右クリックして、
+``xampp-control.exe'' を右クリックして、
 ``プロパティ''を選択する。
 
 \vspace{3mm}
-\includegraphics[width=10cm]{../02-install/11-xampp-control.png}
+\includegraphics[width=10cm]{../02-install/20-xampp-ctrl-01.png}
 \vspace{3mm}
 
-``xampp-control.iniのプロパティ''のダイアログが開くので、
-``セキュリティ''タブを選択する。
-
 \vspace{3mm}
-\includegraphics[width=6cm]{../02-install/12-xampp-control.png}
+\includegraphics[width=4cm]{../02-install/21-xampp-ctrl-02.png}
 \vspace{3mm}
 
-開いた ``セキュリティ''タブでは、
-下段の''アクセス許可:Everyone''が''読み取り''のみ
-許可されているので、
-``書き込み''も許可されるように ``編集''ボタンをクリックする。
+``xampp-control.exeのプロパティ''のダイアログが開くので、
+``互換性''タブを選択する。
 
 \vspace{3mm}
-\includegraphics[width=6cm]{../02-install/13-xampp-control.png}
+\includegraphics[width=6cm]{../02-install/22-xampp-ctrl-03.png}
 \vspace{3mm}
 
-\newpage
+開いた ``互換性''タブで、
+`` 管理者としてこのプログラムを実行する''にチェックを入れて
+``OK''とする。
+
 
 開いたダイアログで、 Everyone が選択されているのを確認して、
 ``書き込み''欄にチェックを入れて ``OK''とする。
 
-\vspace{3mm}
-\includegraphics[width=6cm]{../02-install/14-xampp-control.png}
-\vspace{3mm}
-
-``書き込み''にチェックが入っている。
-
-\vspace{3mm}
-\includegraphics[width=6cm]{../02-install/15-xampp-control.png}
-\vspace{3mm}
 
 
 
 
 \include{end}
 
-%% 修正時刻： Sat 2023/03/25 10:51:031
+%% 修正時刻： Sat 2023/09/16 15:01:141
