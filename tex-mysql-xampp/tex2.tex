@@ -361,6 +361,76 @@ sampleデータベースの使用を宣言する。
 以下のような記述が考えられる。
 
 \begin{lstlisting}[caption=init\_data.sql]
+ CREATE DATABASE sample;
+
+ -- sample データベースを使用
+ USE sample;
+ 
+ -- emp テーブルの作成
+
+ CREATE TABLE emp (
+   id       INT         AUTO_INCREMENT,
+   name     VARCHAR(20) NOT NULL,
+   age      INT         NOT NULL,
+   birthday YEAR        NOT NULL,
+   dept_id  CHAR(3),
+   PRIMARY KEY (id)
+ );
+
+ -- dept テーブルの作成
+ 
+ CREATE TABLE dept (
+   id   CHAR(3)     PRIMARY KEY,
+   name VARCHAR(20) NOT NULL
+ );
+
+ INSERT INTO emp
+   (name, age, birthday, dept_id)
+ VALUES
+   ('菅原文太',   40, 1933, '001'),
+   ('千葉真一',   34, 1939, '002') ,
+   ('北大路欣也', 30, 1943, '003'),
+   ('梶芽衣子',   26, 1947, '002');
+
+ INSERT INTO dept
+   (id, name)
+ VALUES
+   ('001', '総務部'),
+   ('002', '営業部'),
+   ('003', '経理部'),
+   ('004', '開発部'),
+   ('005', '人事部'),
+   ('006', '情報システム部');
+ 
+
+ SELECT * FROM emp;
+ SELECT * FROM dept;
+\end{lstlisting}
+
+これを実行するには、まず最初に sample データベースを削除して
+おかねばならない。なぜなら、最初に\\
+\qquad \fbox{CREATE DATABASE sample;} \\
+としているからである。
+
+\rightline{\small 削除しなくてもエラーを無視することもできる。}
+
+\begin{tcolorbox}
+ MariaDB [sample]$>$ \yen . init\_data.sql
+\end{tcolorbox}
+
+また、途中で CREATE TABLE emp としているが、
+すでにempテーブルが存在していたら、エラーが発生する。
+
+ただ、そのとき、存在しているempテーブルが、これから作ろうとしている
+テーブルの定義に合致したものなのかは不明である。
+たまたま同名のempテーブルが存在しているのかもしれない。
+
+だから、テーブルを作成するときに、すでに同名のテーブルが存在するときは、
+そのテーブルを削除してからテーブルを作成したほうがよい。
+
+それらを踏まえて記述したのが、以下である。
+
+\begin{lstlisting}[caption=init\_data.sql]
  -- もし存在していなかったら sample データベースを作成する
  CREATE DATABASE IF NOT EXISTS sample;
 
@@ -414,18 +484,24 @@ sampleデータベースの使用を宣言する。
  SELECT * FROM dept;
 \end{lstlisting}
 
-これを実行する。
+\section{アプリケーションを作るときの初期データの投入}
 
-\begin{tcolorbox}
- MariaDB [sample]$>$ \yen . init\_data.sql
-\end{tcolorbox}
+データベースを使ったアプリケーションを作るときは、まず最初に
+データベースに何件かのデータを入れておく。
+なぜなら、これからアプリケーションを作成するから。
+データベースにデータを挿入したり、更新したり、削除したりする
+機能をこれから作成する。
+で、最初に作成する機能が、データ一覧の機能であることが多い。
 
-これにより、いつでもデータを初期状態に戻すことができるようになった。
+データベースのCRUD機能をアプリケーションに組み込んでいる際に、
+データベースのデータを初期状態に戻したいことがよくある。
 
+また、別のPCを使ってプログラミングするときも、こういうスクリプトを
+作成しておけば、簡単に初期データを作成することができる。
 
 
 
 
 \include{end}
 
-%% 修正時刻： Tue 2023/03/28 17:33:091
+%% 修正時刻： Fri 2023/09/22 06:06:041

@@ -48,8 +48,8 @@ emp表のデータの ''部署ID'' を入力するとき、dept表にない番�
 
 これを ''外部キー制約'' という。
 
-emp表の dept\_id に入力する値は dept表にある値に制限するのであるから、
-emp表を定義する前に dept表が定義されていなくてはならない。 \\
+ここでは、emp表とdept表を作成したあとに、emp表の定義に外部キー制約を
+つけ加える形でおこなうことにする。
 
 \textgt{dept表の定義(再掲)}
 
@@ -62,7 +62,7 @@ emp表を定義する前に dept表が定義されていなくてはならない
 \end{tcolorbox}
 
 
-\textgt{emp表の定義(外部キー制約)}
+\textgt{emp表の定義(再掲)}
 
 \begin{tcolorbox}
  MariaDB [sample]$>$ CREATE \ TABLE \ emp \ ( \\
@@ -71,10 +71,21 @@ emp表を定義する前に dept表が定義されていなくてはならない
  \hspace{6mm} \verb!->! age \ INT \ NOT \ NULL , \\
  \hspace{6mm} \verb!->! birthday \ YEAR \ NOT \ NULL , \\
  \hspace{6mm} \verb!->! dept\_id \ CHAR(3),  \\
- \hspace{6mm} \verb!->! PRIMARY KEY (id) ,  \\
- \hspace{6mm} \verb!->! \underline{FOREIGN \ KEY \ (dept\_id) \ REFERENCES \ dept \ (id)} \\
+ \hspace{6mm} \verb!->! PRIMARY KEY (id) \\
  \hspace{6mm} \verb!->! );
 \end{tcolorbox}
+
+\textgt{emp表に外部キー制約を追加}
+
+\begin{tcolorbox}
+ MariaDB [sample]$>$ ALTER \ TABLE \ emp \ ( \\
+ \hspace{6mm} \verb!->! ADD  \\
+ \hspace{6mm} \verb!->! FOREIGN \ KEY \ (dept\_id) \ REFERENCES \ dept \ (id) \\
+ \hspace{6mm} \verb!->! );
+\end{tcolorbox}
+
+
+
 
 現在の empテーブル、deptテーブルを削除して、再定義、初期データを
 入力する。
@@ -110,9 +121,14 @@ CREATE TABLE IF NOT EXISTS emp (
   age      INT         NOT NULL,
   birthday YEAR        NOT NULL,
   dept_id  CHAR(3),
-  PRIMARY KEY (id),
-  FOREIGN KEY(dept_id) REFERENCES dept(id)
+  PRIMARY KEY (id)
 );
+
+-- emp表に外部キー制約を追加
+ALTER TABLE emp (
+  ADD
+  FOREIGN KEY(dept_id) REFERENCES dept(id)
+); 
 
 -- dept表の初期データ
 INSERT INTO dept
@@ -478,4 +494,4 @@ ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constrai
 
 \include{end}
 
-%% 修正時刻： Wed 2023/03/29 05:28:461
+%% 修正時刻： Fri 2023/09/22 06:06:041
