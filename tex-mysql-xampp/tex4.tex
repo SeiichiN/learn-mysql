@@ -1,0 +1,358 @@
+\documentclass[dvipdfmx]{jsarticle}
+
+\include{begin}
+
+\section{2つのテーブルを結合する}
+
+\subsection{内部結合(JOIN句)}
+
+empテーブルの dept\_id は、deptテーブルの id である。
+
+だから、dept\_idをキーにして、二つのテーブルを結合できる。
+
+結合するには \textsf{JOIN}句を使う。
+
+実行例
+
+\begin{tcolorbox}
+ MariaDB [sample]$>$ SELECT \ * \\
+ \qquad --$>$ FROM \ emp \\
+ \qquad --$>$ \underline{JOIN} \ dept \\
+ \qquad --$>$ \underline{ON} \ emp.dept\_id \ = \ dept.id;
+\end{tcolorbox}
+
+\begin{tabular}{|l|} \hline
+ SELECT * \\
+ FROM メインの表 \\
+ \verb![INNER]!  JOIN  サブの表 \ \\
+ ON  メインの表.キーカラム名  =  サブの表.キーカラム名 \\ \hline
+\end{tabular}
+
+\vspace{3mm}
+\begin{itemize}
+ \item *(アスタリスク) --- メインの表、サブの表のすべての項目を表示する。
+ \item emp.dept\_id --- emp表の dept\_id カラム名。ピリオドで区切って指定。
+ピリオドの後に空白を入れてはいけない。
+ \item dept.id --- dept表の id カラム名。
+\end{itemize}
+
+
+\vspace{3mm}
+これで二つのテーブルが結合される。
+
+\begin{spacing}{0.8}        
+\begin{verbatim}
++----+------------+-----+----------+---------+-----+--------+
+| id | name       | age | birthday | dept_id | id  | name   |
++----+------------+-----+----------+---------+-----+--------+
+|  1 | 菅原文太   |  40 |     1933 | 001     | 001 | 総務部 |
+|  2 | 千葉真一   |  34 |     1939 | 002     | 002 | 営業部 |
+|  4 | 梶芽衣子   |  26 |     1947 | 002     | 002 | 営業部 |
+|  3 | 北大路欣也 |  30 |     1943 | 003     | 003 | 経理部 |
++----+------------+-----+----------+---------+-----+--------+
+\end{verbatim}
+\end{spacing}
+
+\textsf{JOIN} は \textsf{INNER JOIN} と記述できる。
+``内部結合''と呼ばれている。
+
+\textsf{ON emp.dept\_id = dept.id} は 
+emp の dept\_id と dept の id が等しければ、そのレコードを抜き出す。
+
+\rightline{※ emp.dept\_id は empテーブルの dept\_id という意味になる。}
+
+\subsection{表示項目を絞る}
+
+現在は項目を全て表示しているが、これを変更する。
+
+emp表の id, name, age と dept表の name だけを表示させる。
+
+
+\begin{tcolorbox}
+ MariaDB [sample]$>$ SELECT \\
+ \qquad --$>$ \quad emp.id, \\
+ \qquad --$>$ \quad emp.name, \\
+ \qquad --$>$ \quad age, \\
+ \qquad --$>$ \quad dept.name \\ 
+ \qquad --$>$ FROM \ emp \\
+ \qquad --$>$ JOIN \ dept \\
+ \qquad --$>$ \quad ON \ emp.dept\_id \ = \ dept.id;
+\end{tcolorbox}
+
+\begin{spacing}{0.8}        
+\begin{verbatim}
++----+------------+-----+--------+
+| id | name       | age | name   |
++----+------------+-----+--------+
+|  1 | 菅原文太   |  40 | 総務部 |
+|  2 | 千葉真一   |  34 | 営業部 |
+|  4 | 梶芽衣子   |  26 | 営業部 |
+|  3 | 北大路欣也 |  30 | 経理部 |
++----+------------+-----+--------+
+\end{verbatim}
+\end{spacing}        
+
+このように必要な項目のみ表示させることができる。
+ただ、name という項目が二つあったり、英語であったりするので、
+これを適切な日本語に変えることにする。
+
+それには、\textsf{AS句} というのが使える。
+
+たとえば、``emp.name AS 名前'' とすると、``emp.name'' は ``名前'' と表示される。
+
+\begin{tcolorbox}
+ MariaDB [sample]$>$ SELECT \\
+ \qquad --$>$ \quad emp.id \ AS \ ID, \\ 
+ \qquad --$>$ \quad emp.name \ AS \ 名前, \\
+ \qquad --$>$ \quad age \ AS \ 年齢, \\ 
+ \qquad --$>$ \quad dept.name \ AS \ 部署名 \\
+ \qquad --$>$ FROM \ emp \\
+ \qquad --$>$ JOIN \ dept \\
+ \qquad --$>$ \quad ON \ emp.dept\_id \ = \ dept.id;
+\end{tcolorbox}
+
+\begin{spacing}{0.8}        
+\begin{verbatim}
++----+------------+------+--------+
+| ID | 名前       | 年齢 | 部署名 |
++----+------------+------+--------+
+|  1 | 菅原文太   |   40 | 総務部 |
+|  2 | 千葉真一   |   34 | 営業部 |
+|  4 | 梶芽衣子   |   26 | 営業部 |
+|  3 | 北大路欣也 |   30 | 経理部 |
++----+------------+------+--------+
+\end{verbatim}
+\end{spacing}
+
+さらによく見てみると、この表は部署名の順に並んでいる。
+これを ID順に並びかえる。
+
+そのためには \textsf{ORDER句} というのが使える。
+
+たとえば、今回の場合だと、\fbox{\textsf{ORDER BY emp.id [\! ASC\! ]}} とすることで、ID順になる。
+
+\textsf{ASC} というのは''昇順''という意味で、省略すると ASC と指定したことになる。
+
+また、\textsf{DESC} と指定すると ''降順'' で並びかえできる。
+
+
+\begin{tcolorbox}
+ MariaDB [sample]$>$ SELECT \\
+ \qquad --$>$ \quad emp.id \ AS \ ID, \\
+ \qquad --$>$ \quad emp.name \ AS \ 名前, \\
+ \qquad --$>$ \quad age \ AS \ 年齢,\\
+ \qquad --$>$ \quad dept.name \ AS \ 部署名 \\
+ \qquad --$>$ FROM \ emp \\
+ \qquad --$>$ JOIN \ dept \\
+ \qquad --$>$ \quad ON \ emp.dept\_id \ = \ dept.id \\
+ \qquad --$>$ ORDER \ BY \ ID;
+\end{tcolorbox}
+
+\begin{spacing}{0.8}        
+\begin{verbatim}
++----+------------+------+--------+
+| ID | 名前       | 年齢 | 部署名 |
++----+------------+------+--------+
+|  1 | 菅原文太   |   40 | 総務部 |
+|  2 | 千葉真一   |   34 | 営業部 |
+|  3 | 北大路欣也 |   30 | 経理部 |
+|  4 | 梶芽衣子   |   26 | 営業部 |
++----+------------+------+--------+
+\end{verbatim}
+\end{spacing}
+
+\textsf{ORDER BY emp.id} とするところを \textsf{ORDER BY ID} としている。
+
+これは、1行目で \textsf{emp.id AS ID} としているので、ID を使うことができるのである。
+
+
+\subsection{テーブルの指定を簡略化する}
+
+emp とか dept とかのテーブルの指定も別名を使うことで簡略化できる。
+
+\begin{tcolorbox}
+ MariaDB [sample]$>$ SELECT \\
+ \qquad --$>$ \quad e.id \ AS \ ID, \\
+ \qquad --$>$ \quad e.name \ AS \ 名前, \\
+ \qquad --$>$ \quad age \ AS \ 年齢,\\
+ \qquad --$>$ \quad d.name \ AS \ 部署名 \\
+ \qquad --$>$ FROM \ emp \ AS \ e \\
+ \qquad --$>$ JOIN \ dept \ AS \ d \\
+ \qquad --$>$ \quad ON \ e.dept\_id \ = \ d.id \\
+ \qquad --$>$ ORDER \ BY \ ID;
+\end{tcolorbox}
+
+さらに、FROM や JOIN の後では、すぐ後ろに 別名(ここでは e や d のこと)がくる場合、{\em AS} は
+省略できる。
+
+\begin{tcolorbox}
+ MariaDB [sample]$>$ SELECT \\
+ \qquad --$>$ \quad e.id \ AS \ ID, \\
+ \qquad --$>$ \quad e.name \ AS \ 名前, \\
+ \qquad --$>$ \quad age \ AS \ 年齢,\\
+ \qquad --$>$ \quad d.name \ AS \ 部署名 \\
+ \qquad --$>$ FROM \ emp \ e \\
+ \qquad --$>$ JOIN \ dept \ d \\
+ \qquad --$>$ \quad ON \ e.dept\_id \ = \ d.id \\
+ \qquad --$>$ ORDER \ BY \ ID;
+\end{tcolorbox}
+
+
+
+
+
+
+
+\newpage
+\subsection{外部結合(LEFT OUTER JOIN / RIGHT OUTER JOIN)}
+
+\subsubsection{左外部結合 LEFT OUTER JOIN}
+
+この emp表に次のデータを追加する。
+
+\begin{tcolorbox}
+ \begin{tabular}{lcl}
+  ID & : & 5 \\
+  名前 & : & 成田三樹夫 \\
+  年齢 & : &  38 \\
+  誕生年 & : & 1935 \\
+  部署ID & : & (なし) \\
+ \end{tabular}
+\end{tcolorbox}
+
+\begin{tcolorbox}
+ MariaDB [sample]$>$ INSERT INTO emp \\
+ \qquad --$>$ (name, age, birthday) \\
+ \qquad --$>$ VALUES \\
+ \qquad --$>$ ('成田三樹夫', 38, 1935);
+\end{tcolorbox}
+
+\begin{spacing}{0.8}        
+\begin{verbatim}
+MariaDB [sample]> SELECT * FROM emp;
++----+------------+-----+----------+---------+
+| id | name       | age | birthday | dept_id |
++----+------------+-----+----------+---------+
+|  1 | 菅原文太   |  40 |     1933 | 001     |
+|  2 | 千葉真一   |  34 |     1939 | 002     |
+|  3 | 北大路欣也 |  30 |     1943 | 003     |
+|  4 | 梶芽衣子   |  26 |     1947 | 002     |
+|  5 | 成田三樹夫 |  38 |     1935 | NULL    |
++----+------------+-----+----------+---------+    
+\end{verbatim}
+\end{spacing}
+
+
+このデータには dept\_id、つまり部署ID がない。たとえば社長とかの場合である。
+
+この状態で 内部結合 をすると、どうなるか？
+
+\begin{verbatim}
+MariaDB [sample]> SELECT 
+    ->   e.id AS ID, 
+    ->   e.name AS 名前, 
+    ->   e.age AS 年齢, 
+    ->   d.name AS 部署名
+    -> FROM emp e
+    -> JOIN dept d
+    ->   ON e.dept_id = d.id
+    -> order by ID;
+\end{verbatim}
+
+\begin{spacing}{0.8}        
+\begin{verbatim}
++----+------------+------+--------+
+| ID | 名前       | 年齢 | 部署名 |
++----+------------+------+--------+
+|  1 | 菅原文太   |   40 | 総務部 |
+|  2 | 千葉真一   |   34 | 営業部 |
+|  3 | 北大路欣也 |   30 | 経理部 |
+|  4 | 梶芽衣子   |   26 | 営業部 |
++----+------------+------+--------+    
+\end{verbatim}
+\end{spacing}
+
+成田三樹夫は、結合表には出てこない。
+
+これを図であらわすと、このようになる。
+
+\vspace{3mm}
+\includegraphics[width=13cm]{../06-mysql/ketsugo.png}
+\vspace{3mm}
+
+成田三樹夫は部署IDがないので結合の対象ではない。
+
+こんなときは \emph{左外部結合(LEFT [OUTER] JOIN)} を使う。
+
+\begin{tcolorbox}
+ MariaDB [sample]$>$ SELECT \\
+ \qquad --$>$ \quad e.id \ AS \ ID, \\
+ \qquad --$>$ \quad e.name \ AS \ 名前, \\
+ \qquad --$>$ \quad e.age \ AS \ 年齢, \\ 
+ \qquad --$>$ \quad d.name \ as \ 部署名 \\
+ \qquad --$>$ FROM \ emp \ e \\
+ \qquad --$>$ LEFT JOIN \ dept \ d \\
+ \qquad --$>$ \quad ON \ e.dept\_id \ = \ d.id \\
+ \qquad --$>$ ORDER \ BY \ ID;
+\end{tcolorbox}
+
+\rightline{※ LEFT OUTER JOIN と記述することもできる}
+
+\begin{spacing}{0.8}        
+\begin{verbatim}
++----+------------+------+--------+
+| ID | 名前       | 年齢 | 部署名 |
++----+------------+------+--------+
+|  1 | 菅原文太   |   40 | 総務部 |
+|  2 | 千葉真一   |   34 | 営業部 |
+|  3 | 北大路欣也 |   30 | 経理部 |
+|  4 | 梶芽衣子   |   26 | 営業部 |
+|  6 | 成田三樹夫 |   38 | NULL   |
++----+------------+------+--------+
+\end{verbatim}
+\end{spacing}
+
+\subsubsection{右外部結合 RIGHT [OUTER] JOIN}
+
+また、dept表をみてみると、
+id : '004' が  開発部、
+id : '005' が  人事部、
+id : '006' が  情報システム部
+であるが、
+emp表には dept\_id が '004'、'005'、'006' である人はいない。
+
+この状態で結合表をつくり、開発部などの項目も表示させるには、次のようにする。
+
+\begin{tcolorbox}
+ MariaDB [sample]$>$ SELECT \\
+ \qquad --$>$ \quad e.id \ AS \ ID, \\
+ \qquad --$>$ \quad e.name \ AS \ 名前, \\
+ \qquad --$>$ \quad e.age \ AS \ 年齢, \\ 
+ \qquad --$>$ \quad d.name \ AS \ 部署名 \\
+ \qquad --$>$ FROM \ emp \ e \\
+ \qquad --$>$ RIGHT JOIN \ dept \ d \\
+ \qquad --$>$ \quad ON \ e.dept\_id \ = \ d.id \\
+ \qquad --$>$ ORDER \ BY \ ID;
+\end{tcolorbox}
+
+\begin{spacing}{0.8}        
+\begin{verbatim}
++------+------------+------+---------------+
+| ID   | 名前       | 年齢 | 部署名         |
++------+------------+------+---------------+
+| NULL | NULL       | NULL | 開発部        |
+| NULL | NULL       | NULL | 人事部        |
+| NULL | NULL       | NULL | 情報システム部 |
+|    1 | 菅原文太    |   40 | 総務部        |
+|    2 | 千葉真一    |   34 | 営業部        |
+|    3 | 北大路欣也  |   30 | 経理部        |
+|    4 | 梶芽衣子    |   26 | 営業部        |
++------+------------+------+---------------+
+\end{verbatim}
+\end{spacing}
+
+
+
+\include{end}
+
+%% 修正時刻： Tue 2023/03/28 17:33:091

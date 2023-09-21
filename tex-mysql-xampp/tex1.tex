@@ -1,0 +1,154 @@
+\documentclass[dvipdfmx]{jsarticle}
+
+\include{begin}
+
+\section{データベースを設計する}
+
+\subsection{扱うデータ}
+
+以下のようなデータを扱うこととする。
+
+\vspace{3mm}
+ \begin{tabular}{|c|} \hline
+  菅原文太 \\
+  40歳 \\
+  1933年生まれ \\
+  総務部 \\ \hline
+ \end{tabular}
+ \quad
+ \begin{tabular}{|c|} \hline
+  千葉真一 \\
+  34歳 \\
+  1939年生まれ \\
+  営業部 \\ \hline
+ \end{tabular}
+ \quad
+ \begin{tabular}{|c|} \hline
+  北大路欣也 \\
+  30歳 \\
+  1943年生まれ \\
+  経理部 \\ \hline
+ \end{tabular}
+ \quad
+ \begin{tabular}{|c|} \hline
+  梶芽衣子 \\
+  26歳 \\
+  1947年生まれ \\
+  営業部 \\ \hline
+ \end{tabular}
+\vspace{3mm}
+
+また、その会社には以下のような部署があるとする。
+
+\vspace{3mm}
+\begin{tabular}{|l|} \hline
+ 総務部 \\
+ 経理部 \\
+ 営業部 \\
+ 開発部 \\
+ 人事部 \\
+ 情報システム部 \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+
+
+\newpage
+\section{データベースを作成する}
+
+\subsection{rootユーザーでログインする}
+
+作業をするために、rootユーザーでログインする。
+
+\begin{tcolorbox}
+ $>$ mysql -u root -p \\
+ $>$ Enter password: 
+\end{tcolorbox}
+
+
+\subsection{データベースを作成する}
+
+データベース名を \textsf{sample} とする。
+
+\begin{tcolorbox}
+ MariaDB [(none)]$>$ CREATE DATABASE sample;
+\end{tcolorbox}
+
+
+\subsection{sample専用ユーザーを作成する}
+
+アプリケーションがこのデータベースにアクセスするためには、
+アプリケーションがこのデータベースにログインできなければならない。
+
+ふつう、アプリケーションには rootではログインさせない。
+そのアプリケーション専用のユーザーアカウントを作成し、
+そのアカウントでログインさせるようにする。
+
+\vspace{3mm}
+\begin{tabular}{|l|l|} \hline
+ ユーザー名 & sampleuser \\
+ パスワード & sampleuser \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+ユーザーの作成は以下のコマンドでできる。
+
+\begin{tcolorbox}
+ MariaDB [(none)]$>$ CREATE USER 'sampleuser'@'localhost' \\
+ \qquad --$>$ IDENTIFIED BY 'sampleuser'; 
+\end{tcolorbox}
+
+そのユーザーに、sampleデータベースへの権限を与える。
+
+\begin{tcolorbox}
+ MariaDB [(none)]$>$ GRANT ALL ON sample.* TO 'sampleuser'@'localhost'; 
+\end{tcolorbox}
+
+``sample.*'' というのは、``sampleというデータベースの全てのテーブル''
+に対してという意味である。
+
+ユーザー名は文字列であることを明示するために 'sampleuser' とする。
+
+次に ``@'' を記述し、そのあとに ホスト名を 文字列で指定する。
+そのユーザーの属しているホストの名前である。
+'\%' と指定すると、全てのホストから接続可能となるが、通常はそのような指定は
+しない。
+'localhost'というのは、このデータベースに接続しようとしているアプリの所属
+するホストである。つまり、このデータベースとアプリとは同じホストに属している
+ということになる。
+
+\vspace{3mm}
+\begin{tabular}{|l|} \hline
+ ユーザーの作成と権限の設定は、以下のコマンドで一度にできる。\\
+  MariaDB [(none)]$>$ GRANT ALL ON sample.* TO 'sampleuser'@'localhost' \\
+ \qquad --$>$ IDENTIFIED BY 'sampleuser'; \\ \hline
+\end{tabular}
+
+
+\subsubsection{作成したユーザーでログインし、データベースを作成する}
+
+このまま rootユーザーとして作業をしてもいいのであるが、
+ここでは、今作成したユーザーでログインして作業することにする。
+
+\textsf{exit} あるいは \textsf{quit} でログアウトする。
+
+\begin{tcolorbox}
+ MariaDB [(none)]$>$ exit
+\end{tcolorbox}
+
+
+作成したユーザー \textsf{sampleuser} でログインする。
+
+\begin{tcolorbox}
+ $>$ mysql -u sampleuser -p (Enterキー)\\
+ Enter password: ********** (sampleuser と入力)
+\end{tcolorbox}
+
+
+
+
+
+
+\include{end}
+
+%% 修正時刻： Tue 2023/03/28 17:33:091

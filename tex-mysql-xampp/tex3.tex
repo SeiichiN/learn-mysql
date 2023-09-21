@@ -1,0 +1,69 @@
+\documentclass[dvipdfmx]{jsarticle}
+
+\include{begin}
+
+\section{データベースをバックアップする}
+
+\subsection{バックアップ}
+
+データの入力が終わったら、データベースをバックアップする。
+
+ここでは、mysqldump というコマンドを使っておこなう。
+
+まず、MySQLをログアウトする。
+
+\begin{tcolorbox}
+ MariaDB [sample]$>$ exit (もしくは quit) \\
+ C:\yen Users\yen XXXXXX\yen Documents\yen mysql$>$
+\end{tcolorbox}
+
+\rightline{※ XXXXXX は、各自のユーザー名}
+
+コマンドプロンプトに戻る。
+
+ここで以下のコマンドを実行する。
+
+\begin{tcolorbox}
+ $>$ mysqldump -u root -p -B sample $>$ sample.dump
+\end{tcolorbox}
+
+\begin{tabular}{|l|} \hline
+ mysqldump \ -u \ ユーザー名 \ -p \ -B \ データベース名 \ $>$
+ 保存ファイル名 \\ \hline
+\end{tabular}
+
+ここでは保存ファイル名を sample.dump としたが、好みのファイル名を指定すればよい。
+
+dir というコマンドを実行すると、ファイル一覧が見れる。
+
+ファイル群の中に sample.dump があるはず。
+
+これは テキストファイルなので、TeraPad などのエディタで内容を見ることができる。
+\footnote{また、{\em -B} オプションをつけずにバックアップを取ることもできる。 \\
+\fbox{ $>$ mysqldump -u sampleuser -p sample $>$ sample\_db.dump } \\
+この場合は、バックアップファイルの記述の中に、CREATE DATABASE 文がない。
+}
+
+\subsection{データのリストア(復元)}
+
+以下のコマンドを実行する。
+\footnote{-B オプションをつけずにバックアップファイルを作成した場合は、まず sampleデータベースを作成してから \\
+\fbox{ $>$ mysql -u sampleuser -p $<$ sample.dump } \\
+とするか、あるいは、sampleuserでログインしてから \\
+\fbox{MariaDB[sample] $>$ source sample.dump} とすればよい。
+}
+
+\begin{tcolorbox}
+ $>$ mysql -u sampleuser -p $<$ sample.dump
+\end{tcolorbox}
+
+\fbox{mysql \ -u \ ユーザー名 \ -p \ $<$ \ 保存したファイル名}
+\vspace{3mm}
+
+これでリストアができている。
+
+
+
+\include{end}
+
+%% 修正時刻： Tue 2023/03/28 17:33:091
