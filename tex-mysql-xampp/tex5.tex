@@ -78,10 +78,9 @@ emp表のデータの ''部署ID'' を入力するとき、dept表にない番�
 \textgt{emp表に外部キー制約を追加}
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ ALTER \ TABLE \ emp \ ( \\
+ MariaDB [sample]$>$ ALTER \ TABLE \ emp \\
  \hspace{6mm} \verb!->! ADD  \\
- \hspace{6mm} \verb!->! FOREIGN \ KEY \ (dept\_id) \ REFERENCES \ dept \ (id) \\
- \hspace{6mm} \verb!->! );
+ \hspace{6mm} \verb!->! FOREIGN \ KEY \ (dept\_id) \ REFERENCES \ dept \ (id) \ ; 
 \end{tcolorbox}
 
 
@@ -125,10 +124,9 @@ CREATE TABLE IF NOT EXISTS emp (
 );
 
 -- emp表に外部キー制約を追加
-ALTER TABLE emp (
+ALTER TABLE emp
   ADD
-  FOREIGN KEY(dept_id) REFERENCES dept(id)
-); 
+  FOREIGN KEY(dept_id) REFERENCES dept(id);
 
 -- dept表の初期データ
 INSERT INTO dept
@@ -494,4 +492,4 @@ ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constrai
 
 \include{end}
 
-%% 修正時刻： Fri 2023/09/22 06:06:041
+%% 修正時刻： Fri 2023/09/22 09:14:051
