@@ -1,0 +1,42 @@
+\documentclass[dvipdfmx]{jsarticle}
+
+\include{begin}
+
+\section{IISの動作を止める}
+
+XAMPPのコントロールパネルでApacheを起動しようと Start ボタンをクリック
+しても、Apacheが起動しないことがある。
+
+\vspace{3mm}
+\includegraphics[width=10cm]{img/apache-error.png}
+\vspace{3mm}
+
+これは、Apacheが使用する80番と443番ポートが、すでに他のアプリによって
+使用されているためかもしれない。
+
+Windowsのタスクバーの検索で、``Windowsの機能の有効化または無効化''を
+検索する。
+
+すると、以下のようなダイアログが表示されるので、
+``インターネット・インフォーメーション・サービス''の項目を見てみる。
+
+黒くなっていたら、その''+''をクリックして展開し、
+``World Wide Webサービス''の黒をクリックして白くする。
+そして、OKとする。
+
+\vspace{3mm}
+\includegraphics[width=10cm]{img/win-iis.png}
+\vspace{3mm}
+
+すると、インターネット・インフォーメーション・サービスを停止できるので、
+80番ポート、443番ポートが開放されるので、Apacheが起動できる。
+
+
+
+
+
+
+
+\include{end}
+
+%% 修正時刻： Mon 2023/09/25 13:38:000
