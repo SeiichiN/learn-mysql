@@ -48,7 +48,7 @@ gender表 \\
 条件
 \vspace{-3mm}
 \begin{enumerate}
- \item gender表の主キー(id)はchar型にする。
+ \item gender表の主キー(gid)はchar型にする。
 \end{enumerate}
 
 
@@ -83,7 +83,7 @@ person表 \\
 \vspace{3mm}
 person\_teizan表 \\
 \begin{tabular}{|c|c|} \hline
- p\_id & t\_id \\ \hline\hline
+ person\_id & teizan\_id \\ \hline\hline
  1 &   20 \\ \hline
  1 &   30  \\ \hline
  1 &   50  \\ \hline
@@ -111,8 +111,8 @@ person\_teizan表 \\
 \begin{enumerate}
  \item person\_teizan表は、personを表すキーとteizanを表すキーの2つが主キーと
        なっている(複合主キー)。
- \item p\_id は int型であり、主キーである。
- \item t\_id は int型であり、主キーである。
+ \item person\_id は int型であり、主キーである。
+ \item teizan\_id は int型であり、主キーである。
 \end{enumerate}
 
 
@@ -269,4 +269,4 @@ mysql> SELECT timestampdiff(YEAR, birthday, curdate()) AS 年齢 FROM person;
 
 \include{end}
 
-%% 修正時刻： Sat 2023/09/30 16:53:062
+%% 修正時刻： Sun 2023/10/01 06:42:112
