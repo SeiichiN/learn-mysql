@@ -341,9 +341,7 @@ emp表には、表には現れていないが、id に従属せず、別のキ�
      ->   age INT NOT NULL,
      ->   birthyear INT NOT NULL,
      ->   dept_id CHAR(3),
-     ->   PRIMARY KEY (id),
-     ->   FOREIGN KEY (gender_id) REFERENCES gender (gid),
-     ->   FOREIGN KEY (dept_id) REFERENCES dept (did)
+     ->   PRIMARY KEY (id)
      -> );
 \end{lstlisting}
 
@@ -537,4 +535,4 @@ MariaDB> CREATE VIEW hobby_view AS
 
 \include{end}
 
-%% 修正時刻： Sat 2023/09/30 08:46:152
+%% 修正時刻： Tue 2023/10/03 06:54:002
