@@ -270,10 +270,10 @@ ON UPDATE CASCADE  --- 参照先を update すると、参照元も update さ�
  \verb!UPDATE <テーブル名> SET <変更するカラム名> = <新しい値> WHERE <条件となるカラム> = <値>!
 \end{tcolorbox}
 
-たとえば、''営業部'' の ''002'' を ''005'' に変更してみる。
+たとえば、''営業部'' の ''002'' を ''007'' に変更してみる。
 
 \begin{tcolorbox}
- MariaDB [sample]$>$ \textsf{UPDATE \ dept \ SET \ id \ = \ '005' \ WHERE \ id \ = \ '002';}
+ MariaDB [sample]$>$ \textsf{UPDATE \ dept \ SET \ id \ = \ '007' \ WHERE \ id \ = \ '002';}
 \end{tcolorbox}
 
 \begin{tabular}{|l|} \hline
@@ -399,8 +399,8 @@ CREATE \ TABLE \ IF \ NOT \ EXISTS \ emp \ ( \\
 \end{tcolorbox}
 
 \noindent
-NO DELETE RESTRICT --- 参照している表(dept)のデータを削除するときエラーにする。\\
-NO UPDATE RESTRICT --- 参照している表(dept)のデータを変更するときエラーにする。
+ON DELETE RESTRICT --- 参照している表(dept)のデータを削除するときエラーにする。\\
+ON UPDATE RESTRICT --- 参照している表(dept)のデータを変更するときエラーにする。
 
 ファイル ''reinit\_data.sql'' の emp表の定義部分を上記のように書き変えたのち、
 ''source reinit\_data.sql'' でファイル reinit\_data.sql を読み込む。
@@ -492,4 +492,4 @@ ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constrai
 
 \include{end}
 
-%% 修正時刻： Fri 2023/09/22 09:14:051
+%% 修正時刻： Thu 2023/10/05 18:28:431
