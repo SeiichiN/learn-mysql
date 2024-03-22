@@ -32,11 +32,67 @@ Windowsのタスクバーの検索で、``Windowsの機能の有効化または�
 80番ポート、443番ポートが開放されるので、Apacheが起動できる。
 
 
+\section{MySQLをサービスに登録する}
+
+MariaDB(MySQL)を停止させずに Windowsを終了させると、MariaDBのテーブルが
+壊れやすくなると言われている。また、身近にもそういうケースが見られる。
+
+そこで、mysqlをWindowsのサービスに登録する。
+サービスに登録すれば、Windowsは終了時にサービスに登録しているプロセスを
+停止させるだろうからである。
+
+MySQLをサービスに登録するには、\textbf{C:\yen xampp\yen mysql} にある
+``mysql\_installservice.bat''を使う。これは、mysqlをサービスに登録する
+ためのスクリプトである。
+
+ただ、このファイルの中を修正しなければならない点が1つある。
+このファイルをTerapadなどのエディタで開く。
+
+\begin{lstlisting}[title=mysql\_installservice.bat, language=bash]
+ ... (略) ...
+ 
+28 :MainNT
+29 echo Installing MySQL as an Service 
+30 copy "%cd%\bin\my.cnf" /-y %windir%\my.ini
+31 bin\mysqld --install mysql --defaults-file="%cd%\bin\my.ini"
+32 echo Try to start the MySQL deamon as service ... 
+33 net start MySQL
+
+ ... (略) ...
+\end{lstlisting}
+
+これの31行目の ``\verb!bin\mysqld!'' を
+``\verb!bin\mysqld.exe!'' に変更する。
+
+それから、コマンドプロンプトを 管理者権限で起動し、``C:\yen xampp\yen mysql''
+に移動する。
+
+\begin{lstlisting}
+ C:\Widows\System32> cd C:\xampp\mysql
+ C:\xampp\mysql>
+\end{lstlisting}
+
+そこで、``mysql\_installservice.bat''を実行する。
+
+\begin{lstlisting}
+ C:\xampp\mysql> mysql_installservice.bat
+\end{lstlisting}
+
+これで、mysql をサービスに登録できた。
+
+\vspace{3mm}
+\includegraphics[width=10cm]{../02-install/23-mysql-installservice.png}
+\vspace{3mm}
 
 
+\begin{tcolorbox}[title=注意]
+ mysql\_installservice.bat を右クリック--- 管理者権限で実行、では、
+ うまくいかない。
+\end{tcolorbox}
 
+XAMPPコントロールパネルを起動しなおすと、mysqlが動作しているのがわかる。
 
 
 \include{end}
 
-%% 修正時刻： Mon 2023/09/25 13:38:000
+%% 修正時刻： Fri 2024/03/22 21:11:150
