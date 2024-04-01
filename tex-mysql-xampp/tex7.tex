@@ -45,13 +45,13 @@ nameカラムの名称を st\_name に変更したいときは、以下のよう
 
 \begin{tcolorbox}
  MariaDB$>$ ALTER \ TABLE \ student \\
- \qquad --$>$ RENAME \ COLUMN \ name \ TO \ st\_name;
+ \qquad --$>$ CHANGE \ name \ st\_name VARCHAR(20);
 \end{tcolorbox}
 
 \vspace{3mm}
 \begin{tabular}{|l|} \hline
  ALTER TABLE テーブル名 \\
- RENAME COLUMN カラム名 TO 新しいカラム名 \\ \hline
+ CHANGE カラム名 新しいカラム名 新しいデータ型 \\ \hline
 \end{tabular}
 \vspace{3mm}
 
@@ -278,4 +278,4 @@ MySQLで今までに作成したユーザーの一覧を見たい場合、以下
 
 \include{end}
 
-%% 修正時刻： Thu 2023/03/30 19:24:471
+%% 修正時刻： Mon 2024/04/01 17:02:171
