@@ -453,11 +453,11 @@ ON UPDATE RESTRICT --- 参照している表(dept)のデータを変更すると
 
 \begin{tcolorbox}
  CREATE TABLE IF NOT EXISTS emp ( \\
- \verb!  id       INT         AUTO\_INCREMENT,! \\
+ \verb!  id       INT         AUTO_INCREMENT,! \\
  \verb!  name     VARCHAR(20) NOT NULL,! \\
  \verb!  age      INT         NOT NULL,! \\
  \verb!  birthday YEAR        NOT NULL,! \\
- \verb!  dept\_id CHAR(3),! \\
+ \verb!  dept_id CHAR(3),! \\
  \verb!  PRIMARY KEY (id),! \\ 
  \verb!  !\underline{CONSTRAINT fk\_dept\_id} \\
  \verb!  FOREIGN KEY(dept_id) REFERENCES dept(id)! \\
@@ -492,4 +492,4 @@ ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constrai
 
 \include{end}
 
-%% 修正時刻： Thu 2023/10/05 18:28:431
+%% 修正時刻： Wed 2024/04/03 21:16:291

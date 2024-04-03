@@ -34,12 +34,34 @@ Windowsのタスクバーの検索で、``Windowsの機能の有効化または�
 
 \section{MySQLをサービスに登録する}
 
+\subsection{ボタンをクリックするだけ}
+
 MariaDB(MySQL)を停止させずに Windowsを終了させると、MariaDBのテーブルが
 壊れやすくなると言われている。また、身近にもそういうケースが見られる。
 
 そこで、mysqlをWindowsのサービスに登録する。
 サービスに登録すれば、Windowsは終了時にサービスに登録しているプロセスを
 停止させるだろうからである。
+
+MySQLをサービスに登録するには、XAMPPコントロールパネルの左の×印ボタンを
+クリックするとよい。
+
+\vspace{3mm}
+\includegraphics[width=10cm]{img/service-stop.png}
+\vspace{3mm}
+
+すると、以下のようになる。
+
+\vspace{3mm}
+\includegraphics[width=10cm]{img/service-start.png}
+\vspace{3mm}
+
+\subsection{もしもエラーが出たときのために}
+
+もしも、エラーが出たときのために、以下の記述を残しておく。
+以下は、以前に書いていたものである。
+
+\hrulefill
 
 MySQLをサービスに登録するには、\textbf{C:\yen xampp\yen mysql} にある
 ``mysql\_installservice.bat''を使う。これは、mysqlをサービスに登録する
@@ -95,4 +117,4 @@ XAMPPコントロールパネルを起動しなおすと、mysqlが動作して�
 
 \include{end}
 
-%% 修正時刻： Fri 2024/03/22 21:11:150
+%% 修正時刻： Wed 2024/04/03 21:02:370
