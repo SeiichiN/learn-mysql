@@ -66,6 +66,27 @@ php.ini が TeraPad で 開くので、上の虫メガネの左端のアイコ�
 
 \href{https://www.php.net/manual/ja/mbstring.configuration.php}{https://www.php.net/manual/ja/mbstring.configuration.php}
 
+\subsection{my.iniの設定}
+
+XAMPPコントロールパネルの''MySQL''の行の''Config''をクリックして、
+表示されたサブメニューから ``my.ini'' を選択する。
+
+my.iniがTeraPadで開くので、
+
+\begin{lstlisting}
+ [client]
+ ...
+ character-set-database=utf8mb4             # <-
+ ...
+ [mysqld]
+ ...
+ character-set-server=utf8mb4               # <-
+ collation-server=utf8mb4_general_ci        # <-
+ ...
+\end{lstlisting}
+
+
+
 \vspace{3cm}
 
 \section{環境変数への登録}
@@ -155,4 +176,4 @@ mysql (MariaDB) のバージョンが表示される。
 
 \include{end}
 
-%% 修正時刻： Sat 2023/03/25 10:51:031
+%% 修正時刻： Thu 2024/09/26 05:50:571
