@@ -71,19 +71,61 @@ php.ini が TeraPad で 開くので、上の虫メガネの左端のアイコ�
 XAMPPコントロールパネルの''MySQL''の行の''Config''をクリックして、
 表示されたサブメニューから ``my.ini'' を選択する。
 
+\vspace{3mm}
+\includegraphics[width=13cm]{img/mysql-config.png}
+\vspace{3mm}
+
 my.iniがTeraPadで開くので、
 
-\begin{lstlisting}
+\begin{lstlisting}[numbers=none]
  [client]
  ...
- character-set-database=utf8mb4             # <-
+ default-character-set=utf8mb4             # <-
+ ...
+ [mysqld]
+\end{lstlisting}
+
+\vspace{3mm}
+\includegraphics[width=13cm]{img/my-ini-01.png}
+\vspace{3mm}
+
+
+\begin{lstlisting}[numbers=none]
  ...
  [mysqld]
  ...
  character-set-server=utf8mb4               # <-
  collation-server=utf8mb4_general_ci        # <-
  ...
+ [mysqldump]
 \end{lstlisting}
+
+\vspace{3mm}
+\includegraphics[width=13cm]{img/my-ini-02.png}
+\vspace{3mm}
+
+上記のように記述を追加したのち、
+mysql を ``stop'' してから ``start'' と再起動する。
+
+\vspace{6mm}
+\textgt{確認方法}
+
+コマンドプロンプトを起動して、MySQLにログインする。
+
+\framebox{$>$ mysql -u root -p}
+
+以下のコマンドを実行する。
+
+
+\begin{tabular}{|l|} \hline
+ \verb!MariaDB[(nome)]> show variables like '%char%';! \\ \hline
+\end{tabular}
+
+以下のように表示されればよい。
+
+\vspace{3mm}
+\includegraphics[width=13cm]{img/charset.png}
+\vspace{3mm}
 
 
 
@@ -176,4 +218,4 @@ mysql (MariaDB) のバージョンが表示される。
 
 \include{end}
 
-%% 修正時刻： Thu 2024/09/26 05:50:571
+%% 修正時刻： Fri 2024/09/27 09:15:021
