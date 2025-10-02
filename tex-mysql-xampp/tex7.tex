@@ -14,7 +14,7 @@
 \newsavebox{\sqlbox}
 \setbox\sqlbox=\vbox{\hsize 6cm
 \begin{verbatim}
-CREATE TABLE student (
+CREATE TABLE students (
   id char(3),
   name varchar(20)
 )
@@ -27,7 +27,7 @@ CREATE TABLE student (
 以下のようにできる。
 
 \begin{tcolorbox}
-\verb!MariaDB> ALTER TABLE student! \\
+\verb!MariaDB> ALTER TABLE students! \\
 \verb!    -> MODIFY name varchar(20) NOT NULL;!
 \end{tcolorbox}
 
@@ -44,7 +44,7 @@ CREATE TABLE student (
 nameカラムの名称を st\_name に変更したいときは、以下のようにする。
 
 \begin{tcolorbox}
- MariaDB$>$ ALTER \ TABLE \ student \\
+ MariaDB$>$ ALTER \ TABLE \ students \\
  \qquad --$>$ CHANGE \ name \ st\_name VARCHAR(20);
 \end{tcolorbox}
 
@@ -61,7 +61,7 @@ nameカラムの名称を st\_name に変更したいときは、以下のよう
 また、age (年齢) という項目を追加したいとする。以下のようにできる。
 
 \begin{tcolorbox}
-\verb!MariaDB> ALTER TABLE student! \\
+\verb!MariaDB> ALTER TABLE students! \\
 \verb!    -> ADD age int NOT NULL;!
 \end{tcolorbox}
 
@@ -77,7 +77,7 @@ nameカラムの名称を st\_name に変更したいときは、以下のよう
 あるいは、id に PRIMARY KEY を設定したいとする。以下のようにできる。
 
 \begin{tcolorbox}
-\verb!MariaDB> ALTER TABLE student! \\
+\verb!MariaDB> ALTER TABLE students! \\
 \verb!    -> ADD PRIMARY KEY (id);!
 \end{tcolorbox}
 
@@ -278,4 +278,4 @@ MySQLで今までに作成したユーザーの一覧を見たい場合、以下
 
 \include{end}
 
-%% 修正時刻： Mon 2024/04/01 17:02:171
+%% 修正時刻： Thu 2025/10/02 12:34:071

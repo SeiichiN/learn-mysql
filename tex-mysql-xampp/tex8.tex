@@ -321,15 +321,15 @@ emp表には、表には現れていないが、id に従属せず、別のキ�
 
 \begin{lstlisting}[caption=gender表, language=sql]
  MariaDB> CREATE TABLE gender (
-     ->   gid CHAR(1) PRIMARY KEY,
-     ->   gname VARCHAR(3) NOT NULL
+     ->   id CHAR(1) PRIMARY KEY,
+     ->   name VARCHAR(3) NOT NULL
      -> );
 \end{lstlisting}
 
 \begin{lstlisting}[caption=dept表, language=sql]
  MariaDB> CREATE TABLE dept (
-     ->   did CHAR(3) PRIMARY KEY,
-     ->   dname VARCHAR(20) NOT NULL
+     ->   id CHAR(3) PRIMARY KEY,
+     ->   name VARCHAR(20) NOT NULL
      -> );
 \end{lstlisting}
 
@@ -345,44 +345,44 @@ emp表には、表には現れていないが、id に従属せず、別のキ�
      -> );
 \end{lstlisting}
 
-gender\_id に外部キー制約を追加する。参照先は gender表のgidである。
+gender\_id に外部キー制約を追加する。参照先は gender表のidである。
 
 \begin{lstlisting}[caption=emp表, language=sql]
  MariaDB> ALTER TABLE emp
      -> ADD
      ->   CONSTRAINT fk_gender_id
      ->     FOREIGN KEY (gender_id)
-     ->     REFERENCES gender (gid);
+     ->     REFERENCES gender (id);
 \end{lstlisting}
 
-dept\_id に外部キー制約を追加する。参照先は dept表のdidである。
+dept\_id に外部キー制約を追加する。参照先は dept表のidである。
 
 \begin{lstlisting}[caption=emp表, language=sql]
  MariaDB> ALTER TABLE emp
      -> ADD
      ->   CONSTRAINT fk_dept_id
      ->     FOREIGN KEY (dept_id)
-     ->     REFERENCES dept (did);
+     ->     REFERENCES dept (id);
 \end{lstlisting}
 
 hobby表を定義する。
 
 \begin{lstlisting}[caption=hobby表, language=sql]
  mysql> CREATE TABLE hobby (
-     ->   hid CHAR(3) PRIMARY KEY,
-     ->   hname VARCHAR(20) NOT NULL
+     ->   id CHAR(3) PRIMARY KEY,
+     ->   name VARCHAR(20) NOT NULL
      -> );
 \end{lstlisting}
 
 誰がどういう趣味を持っているかの対応表を作成する。
-この表では、カラムid と カラムhid の2つセットで主キーとなる。
+この表では、カラムemp\_id と カラムhobby\_id の2つセットで主キーとなる。
 (複合主キー)
 
 \begin{lstlisting}[caption=emp\_hobby表, language=sql]
  mysql> CREATE TABLE emp_hobby (
-     ->   id INT NOT NULL,
-     ->   hid CHAR(3) NOT NULL,
-     ->   PRIMARY KEY (id, hid)
+     ->   emp_id INT NOT NULL,
+     ->   hobby_id CHAR(3) NOT NULL,
+     ->   PRIMARY KEY (emp_id, hobby_id)
      -> );
 \end{lstlisting}
 
@@ -392,7 +392,7 @@ gender表のデータは全部で4件である。gidはchar型1文字である�
 
 \begin{lstlisting}[caption=gender表]
 INSERT INTO gender
-  (gid, gname)
+  (id, name)
 VALUES
   ('0', '不明'),
   ('1', '男性'),
@@ -404,7 +404,7 @@ dept表のデータを入力する。didはchar型3文字である。
 
 \begin{lstlisting}[caption=dept表]
 INSERT INTO dept
-  (did, dname)
+  (id, name)
 VALUES
   ('001', '総務部'),
   ('002', '営業部'),
@@ -428,7 +428,7 @@ hobby表を入力する。
 
 \begin{lstlisting}[caption=hobby]
 INSERT INTO hobby
-  (hid, hname)
+  (id, name)
 VALUES
   ('H01', '釣り'),
   ('H02', '油絵'),
@@ -444,7 +444,7 @@ VALUES
 
 \begin{lstlisting}[caption=emp\_hobby]
 INSERT INTO emp_hobby
-  (id, hid)
+  (emp_id, hobby_id)
 VALUES
   (1, 'H01'),
   (1, 'H02'),
@@ -467,18 +467,18 @@ VALUES
 \begin{lstlisting}[language=sql, numbers=none]
  MariaDB> SELECT
    ->   e.name AS 名前,
-   ->   g.gname AS 性別,
-   ->   d.dname AS 所属,
-   ->   h.hname AS 趣味
+   ->   g.name AS 性別,
+   ->   d.name AS 所属,
+   ->   h.name AS 趣味
    -> FROM emp e
    -> INNER JOIN emp_hobby eh
-   -> ON eh.id = e.id
+   -> ON eh.emp_id = e.id
    ->   INNER JOIN gender g
-   ->   ON g.gid = e.gender_id
+   ->   ON g.id = e.gender_id
    ->     INNER JOIN dept d
-   ->     ON d.did = e.dept_id
+   ->     ON d.id = e.dept_id
    ->       INNER JOIN hobby h
-   ->       ON h.hid = eh.hid
+   ->       ON h.id = eh.hobby_id
    -> ORDER BY e.id;
 \end{lstlisting}
 
@@ -492,18 +492,18 @@ VALUES
 MariaDB> CREATE VIEW hobby_view AS
    -> SELECT
    ->   e.name AS 名前,
-   ->   g.gname AS 性別,
-   ->   d.dname AS 所属,
-   ->   h.hname AS 趣味
+   ->   g.name AS 性別,
+   ->   d.name AS 所属,
+   ->   h.name AS 趣味
    -> FROM emp e
    -> INNER JOIN emp_hobby eh
-   -> ON eh.id = e.id
+   -> ON eh.emp_id = e.id
    ->   INNER JOIN gender g
-   ->   ON g.gid = e.gender_id
+   ->   ON g.id = e.gender_id
    ->     INNER JOIN dept d
-   ->     ON d.did = e.dept_id
+   ->     ON d.id = e.dept_id
    ->       INNER JOIN hobby h
-   ->       ON h.hid = eh.hid 
+   ->       ON h.hid = eh.hobby_id 
    -> ORDER BY e.id;
 \end{lstlisting}
 
@@ -535,4 +535,4 @@ MariaDB> CREATE VIEW hobby_view AS
 
 \include{end}
 
-%% 修正時刻： Tue 2023/10/03 06:54:002
+%% 修正時刻： Thu 2025/10/02 12:34:072
